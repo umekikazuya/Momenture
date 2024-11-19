@@ -1,11 +1,9 @@
 {
     "version": 2,
     "builds": [
-        {
-            "src": "/api/index.php",
-            "use": "vercel-php@0.7.3"
-        }
+        { "src": "/api/index.php", "use": "vercel-php@0.7.3" }
     ],
+
     "routes": [
         {
             "src": "/(css|js)/(.*)",
@@ -14,16 +12,13 @@
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
-        },
-        {
-            "src": "/api/(.*)",
-            "dest": "/public/index.php"
         }
     ],
     "env": {
         "APP_NAME": "Vercel Laravel",
         "APP_ENV": "production",
         "APP_DEBUG": "false",
+        "APP_URL": "https://momenture.vercel.app/",
         "VERCEL_DEMO_MODE": "true",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
