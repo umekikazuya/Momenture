@@ -32,9 +32,19 @@ class ProfileController extends Controller
     {
         $validatedData = $request->validate([
             'displayName' => 'nullable|string|max:255',
+            'displayShortName' => 'nullable|string|max:50',
+            'address' => 'nullable|string|max:500',
+            'from' => 'nullable|string|max:255',
+            'github' => 'nullable|string|max:255',
             'introduction' => 'nullable|string',
+            'job' => 'nullable|string|max:255',
             'likes' => 'nullable|array',
-            'likes.*' => 'string',
+            'likes.*' => 'string|max:50',
+            'qiita' => 'nullable|string|max:255',
+            'skills' => 'nullable|array',
+            'skills.*' => 'string|max:50',
+            'summaryIntroduction' => 'nullable|string|max:500',
+            'zenn' => 'nullable|string|max:255',
         ]);
 
         $profile = $this->profileService->updateProfile($validatedData);

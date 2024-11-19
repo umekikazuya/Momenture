@@ -35,9 +35,18 @@ class ProfileRepository implements ProfileRepositoryInterface
 
         return new Profile([
             'id' => $attributes['PK'],
-            'displayName' => $attributes['field_display_name'],
-            'introduction' => $attributes['field_introduction'],
-            'likes' => $attributes['field_like'],
+            'displayName' => $attributes['display_name'],
+            'displayShortName' => $attributes['display_short_name'] ?? null,
+            'address' => $attributes['address'] ?? null,
+            'from' => $attributes['from'] ?? null,
+            'github' => $attributes['github'] ?? null,
+            'introduction' => $attributes['introduction'] ?? null,
+            'job' => $attributes['job'] ?? null,
+            'likes' => $attributes['like'] ?? [],
+            'qiita' => $attributes['qiita'] ?? null,
+            'skills' => $attributes['skill'] ?? [],
+            'summaryIntroduction' => $attributes['summary_introduction'] ?? null,
+            'zenn' => $attributes['zenn'] ?? null,
             'updatedAt' => $attributes['updated_at'],
         ]);
     }
@@ -46,9 +55,18 @@ class ProfileRepository implements ProfileRepositoryInterface
     {
         $item = $this->toDynamoDbFormat([
             'PK' => $profile->id,
-            'field_display_name' => $profile->displayName,
-            'field_introduction' => $profile->introduction,
-            'field_like' => $profile->likes,
+            'display_name' => $profile->displayName,
+            'display_short_name' => $profile->displayShortName,
+            'address' => $profile->address,
+            'from' => $profile->from,
+            'github' => $profile->github,
+            'introduction' => $profile->introduction,
+            'job' => $profile->job,
+            'like' => $profile->likes,
+            'qiita' => $profile->qiita,
+            'skill' => $profile->skills,
+            'summary_introduction' => $profile->summaryIntroduction,
+            'zenn' => $profile->zenn,
             'updated_at' => $profile->updatedAt,
         ]);
 
@@ -74,11 +92,26 @@ class ProfileRepository implements ProfileRepositoryInterface
         return array_map(function ($value) {
             if (isset($value['S'])) {
                 return $value['S'];
+            } elseif (isset($value['N'])) {
+                return (float) $value['N'];
             } elseif (isset($value['L'])) {
-                return array_map(fn ($v) => $this->fromDynamoDbFormat($v), $value['L']);
+                // リストの場合、要素を個別に変換
+                return array_map(function ($v) {
+                    if (isset($v['S'])) {
+                        return $v['S'];
+                    } elseif (isset($v['N'])) {
+                        return (float) $v['N'];
+                    } elseif (isset($v['NULL'])) {
+                        return null;
+                    }
+
+                    throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: '.json_encode($v));
+                }, $value['L']);
+            } elseif (isset($value['NULL'])) {
+                return null;
             }
 
-            return $value;
+            throw new \InvalidArgumentException('Unsupported DynamoDB data type: '.json_encode($value));
         }, $data);
     }
 
@@ -88,13 +121,27 @@ class ProfileRepository implements ProfileRepositoryInterface
     private function toDynamoDbFormat(array $data): array
     {
         return array_map(function ($value) {
-            if (is_string($value)) {
+            if (is_null($value)) {
+                return ['NULL' => true];
+            } elseif (is_string($value)) {
                 return ['S' => $value];
+            } elseif (is_numeric($value)) {
+                return ['N' => (string) $value];
             } elseif (is_array($value)) {
-                return ['L' => array_map(fn ($v) => $this->toDynamoDbFormat($v), $value)];
+                // 配列の場合はスカラ値を判定して変換
+                return ['L' => array_map(function ($v) {
+                    if (is_null($v)) {
+                        return ['NULL' => true];
+                    } elseif (is_string($v)) {
+                        return ['S' => $v];
+                    } elseif (is_numeric($v)) {
+                        return ['N' => (string) $v];
+                    }
+                    throw new \InvalidArgumentException('Unsupported array element type');
+                }, $value)];
             }
 
-            return $value;
+            throw new \InvalidArgumentException('Unsupported data type');
         }, $data);
     }
 }
