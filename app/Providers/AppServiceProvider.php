@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
             return new DynamoDbClient([
                 'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
                 'version' => 'latest',
-                'endpoint' => env('DYNAMODB_ENDPOINT'),
+                'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
                 'credentials' => [
                     'key' => env('AWS_ACCESS_KEY_ID'),
                     'secret' => env('AWS_SECRET_ACCESS_KEY'),
