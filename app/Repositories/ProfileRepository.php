@@ -47,7 +47,7 @@ class ProfileRepository implements ProfileRepositoryInterface
             'skills' => $attributes['skill'] ?? [],
             'summaryIntroduction' => $attributes['summary_introduction'] ?? null,
             'zenn' => $attributes['zenn'] ?? null,
-            'updatedAt' => $attributes['updated_at'],
+            'updatedAt' => $attributes['updated_at'] ?? null,
         ]);
     }
 
