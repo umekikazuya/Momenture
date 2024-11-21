@@ -47,7 +47,7 @@ class ProfileRepository implements ProfileRepositoryInterface
             'skills' => $attributes['skill'] ?? [],
             'summaryIntroduction' => $attributes['summary_introduction'] ?? null,
             'zenn' => $attributes['zenn'] ?? null,
-            'updatedAt' => $attributes['updated_at'],
+            'updatedAt' => $attributes['updated_at'] ?? null,
         ]);
     }
 
@@ -105,13 +105,13 @@ class ProfileRepository implements ProfileRepositoryInterface
                         return null;
                     }
 
-                    throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: ' . json_encode($v));
+                    throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: '.json_encode($v));
                 }, $value['L']);
             } elseif (isset($value['NULL'])) {
                 return null;
             }
 
-            throw new \InvalidArgumentException('Unsupported DynamoDB data type: ' . json_encode($value));
+            throw new \InvalidArgumentException('Unsupported DynamoDB data type: '.json_encode($value));
         }, $data);
     }
 
