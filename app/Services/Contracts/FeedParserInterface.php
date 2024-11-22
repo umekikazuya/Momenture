@@ -3,28 +3,26 @@
 namespace App\Services\Contracts;
 
 /**
- * Interface that provide to parse feed data.
+ * フィードデータを解析するためのインターフェース。
  */
 interface FeedParserInterface
 {
     /**
-     * Loads and parses raw feed data into a SimpleXMLElement.
+     * 生のフィードデータを読み込み、SimpleXMLElement に変換.
      *
-     * This method takes a raw XML string and converts it into a SimpleXMLElement.
-     * If the XML string is malformed or empty, the method should return false.
+     * このメソッドは、生のXML文字列を受け取り、SimpleXMLElement に変換.
+     * XML文字列が不正または空の場合、このメソッドは false を返す.
      *
-     * @param  string  $feed
-     *                        The raw feed data as a string.
-     * @return \SimpleXMLElement|false The SimpleXMLElement object if the XML is well-formed and valid, or false if the XML is invalid or cannot be parsed.
+     * @param string $feed 生のフィードデータを含む文字列
+     * @return \SimpleXMLElement|false XMLが正しく形成されていれば SimpleXMLElement オブジェクトを返し、不正または解析できない場合は false を返す.
      */
     public function loadRawFeedData(string $feed): \SimpleXMLElement|false;
 
     /**
-     * Parse an XML feed into a structured array.
+     * XMLフィードを構造化された配列に解析.
      *
-     * @param  \SimpleXMLElement  $xml
-     *                                  The XML data to parse, typically retrieved from a feed source.
-     * @return array An associative array containing the parsed data.
+     * @param \SimpleXMLElement $xml フィードソースから取得されたXMLデータ
+     * @return array 解析されたデータを含む連想配列を返す.
      */
     public function parseXml(\SimpleXMLElement $xml): array;
 }
