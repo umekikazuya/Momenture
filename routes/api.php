@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeedQiitaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,3 +15,5 @@ Route::prefix('profile')->group(function () {
     Route::put('/', [ProfileController::class, 'update']);
     Route::delete('/', [ProfileController::class, 'destroy']);
 });
+
+Route::get('qiita/{id}', FeedQiitaController::class);
