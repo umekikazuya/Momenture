@@ -1,15 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::prefix('profile')->group(function () {
-    Route::get('/', [ProfileController::class, 'show']);
-    Route::post('/', [ProfileController::class, 'store']);
-    Route::put('/', [ProfileController::class, 'update']);
-    Route::delete('/', [ProfileController::class, 'destroy']);
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Welcome to the Momenture API!',
+        'version' => '1.0.0',
+        'site_url' => 'https://www.umekikazuya.me',
+    ]);
 });
