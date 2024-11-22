@@ -105,13 +105,13 @@ class ProfileRepository implements ProfileRepositoryInterface
                         return null;
                     }
 
-                    throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: '.json_encode($v));
+                    throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: ' . json_encode($v));
                 }, $value['L']);
             } elseif (isset($value['NULL'])) {
                 return null;
             }
 
-            throw new \InvalidArgumentException('Unsupported DynamoDB data type: '.json_encode($value));
+            throw new \InvalidArgumentException('Unsupported DynamoDB data type: ' . json_encode($value));
         }, $data);
     }
 
