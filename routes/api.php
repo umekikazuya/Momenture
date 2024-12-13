@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FeedQiitaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
@@ -14,6 +15,10 @@ Route::prefix('profile')->group(function () {
     Route::post('/', [ProfileController::class, 'store']);
     Route::put('/', [ProfileController::class, 'update']);
     Route::delete('/', [ProfileController::class, 'destroy']);
+});
+
+Route::prefix('article')->group(function () {
+    Route::get('/', [ArticleController::class, 'index']);
 });
 
 Route::get('qiita/{id}', FeedQiitaController::class);
