@@ -2,25 +2,14 @@
 
 namespace App\UseCases\Article;
 
+use App\Http\Requests\Article\ListRequest;
 use App\Models\Article;
 
 class IndexAction
 {
-    public function handle(array $filters, array $sort, array $pagination)
+    public function handle(ListRequest $request)
     {
-        $query = Article::query();
-
-        // ソートの適用
-        foreach ($sort as $column => $direction) {
-            $query->orderBy($column, $direction);
-        }
-
-        // ページネーションの適用
-        return $query->paginate(
-            $pagination['per_page'],
-            ['*'],
-            'page',
-            $pagination['page']
-        );
+        // 検索処理を実行
+        return Article::query()->get();
     }
 }

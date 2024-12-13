@@ -2,7 +2,7 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/index.php": {
+        "api/*.php": {
             "runtime": "vercel-php@0.7.3"
         }
     },
@@ -13,9 +13,8 @@
         }
     ],
     "env": {
-        "APP_NAME": "Vercel Laravel",
+        "APP_NAME": "Momenture",
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
         "APP_URL": "https://momenture.vercel.app",
         "VERCEL_DEMO_MODE": "true",
         "APP_CONFIG_CACHE": "/tmp/config.php",
@@ -25,7 +24,6 @@
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "array",
         "VIEW_COMPILED_PATH": "/tmp/views",
         "SSR_TEMP_PATH": "/tmp/ssr",
         "NODE_PATH": "node"

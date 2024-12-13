@@ -10,6 +10,7 @@ use App\Services\Contracts\ProfileServiceInterface;
 use App\Services\FeedFetcherService;
 use App\Services\FeedQiitaParserService;
 use App\Services\ProfileService;
+use App\UseCases\Article\IndexAction;
 use Aws\DynamoDb\DynamoDbClient;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
                     'secret' => env('AWS_SECRET_ACCESS_KEY'),
                 ],
             ]);
+        });
+        $this->app->bind(IndexAction::class, function ($app) {
+            return new IndexAction();
         });
     }
 
