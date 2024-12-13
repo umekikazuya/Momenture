@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Presentation\Resources;
 
-use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
+use App\Presentation\Resources\ArticleResource\Pages;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class ArticleResource extends Resource
@@ -22,10 +24,11 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->required(),
-                TextInput::make('link')->url()->required(),
-                DatePicker::make('published')->required(),
-            ]);
+                TextInput::make('title')->label('記事タイトル')->required(),
+                TextInput::make('link')->label('リンク')->required(),
+                DatePicker::make('published')->label('公開日')->required(),
+                Toggle::make('is_pickup')->label('注目記事に表示する')->required(),
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
@@ -34,6 +37,7 @@ class ArticleResource extends Resource
             ->columns([
                 TextColumn::make('title'),
                 TextColumn::make('link'),
+                ToggleColumn::make('is_pickup'),
                 TextColumn::make('published'),
             ])
             ->filters([

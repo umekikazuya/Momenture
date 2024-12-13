@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\ArticleResource\Pages;
+namespace App\Presentation\Resources\ArticleResource\Pages;
 
-use App\Filament\Resources\ArticleResource;
+use App\Presentation\Resources\ArticleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
