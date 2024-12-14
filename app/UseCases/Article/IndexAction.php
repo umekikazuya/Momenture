@@ -9,7 +9,12 @@ class IndexAction
 {
     public function handle(ListRequest $request)
     {
-        // 検索処理を実行
-        return Article::query()->get();
+        $query = Article::query();
+        $filters = $request->filters();
+        if (isset($filters['is_pickup'])) {
+            $query->where('is_pickup', $filters['is_pickup']);
+        }
+
+        return $query->get();
     }
 }

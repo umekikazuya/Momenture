@@ -21,7 +21,9 @@ class ListRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'is_pickup' => 'nullable|boolean',
+        ];
     }
 
     public function filters(): array
