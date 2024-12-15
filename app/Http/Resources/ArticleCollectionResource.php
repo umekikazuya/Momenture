@@ -20,6 +20,7 @@ class ArticleCollectionResource extends ResourceCollection
                     'link' => $article->link,
                     'service' => $article->service,
                     'is_pickup' => $article->is_pickup,
+                    'published' => $article->published,
                 ];
             }),
             'meta' => [],
