@@ -18,6 +18,7 @@ class ArticleCollectionResource extends ResourceCollection
                     'id' => $article->id,
                     'title' => $article->title,
                     'link' => $article->link,
+                    'service' => $article->service,
                     'is_pickup' => $article->is_pickup,
                 ];
             }),

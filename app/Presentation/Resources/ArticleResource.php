@@ -5,6 +5,7 @@ namespace App\Presentation\Resources;
 use App\Models\Article;
 use App\Presentation\Resources\ArticleResource\Pages;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -26,6 +27,15 @@ class ArticleResource extends Resource
             ->schema([
                 TextInput::make('title')->label('記事タイトル')->required(),
                 TextInput::make('link')->label('リンク')->required(),
+                Select::make('service')
+                ->label('サービス')
+                ->options([
+                    'Qiita' => 'Qiita',
+                    'Zenn' => 'Zenn',
+                    'モチヤブログ' => 'モチヤブログ',
+                ])
+                ->required()
+                ->placeholder('サービスを選択'),
                 DatePicker::make('published')->label('公開日')->required(),
                 Toggle::make('is_pickup')->label('注目記事に表示する')->required(),
             ])->columns(1);

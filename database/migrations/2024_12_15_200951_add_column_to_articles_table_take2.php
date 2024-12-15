@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->boolean('is_pickup')->default(false);
+            $table->string('service')->nullable();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('articles', function (Blueprint $table) {
-            Schema::dropIfExists('feature_articles');
+            $table->dropColumn('service');
         });
     }
 };

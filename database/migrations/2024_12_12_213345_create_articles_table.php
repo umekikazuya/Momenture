@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->string('link');
+            $table->boolean('is_pickup');
             $table->timestamp('published');
         });
     }
