@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Article;
 
-use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -25,14 +24,8 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             'link' => 'required|string',
-            'published' => 'required|string',
+            'published' => 'required|date',
             'is_pickup' => 'required|boolean',
         ];
-    }
-
-    public function makeArticle(): Article
-    {
-        // バリデーションした値で埋めた Article を取得
-        return new Article($this->validated());
     }
 }

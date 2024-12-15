@@ -20,6 +20,7 @@ class ArticleResource extends JsonResource
             'link' => $this->resource->link,
             'service' => $this->resource->service,
             'is_pickup' => $this->resource->is_pickup,
+            'published' => $this->resource->published,
         ];
     }
 }

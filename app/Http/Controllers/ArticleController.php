@@ -7,27 +7,19 @@ use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\ArticleCollectionResource;
 use App\Http\Resources\ArticleResource;
-use App\Models\Article;
 use App\UseCases\Article\IndexAction;
+use App\UseCases\Article\ShowAction;
+use App\UseCases\Article\StoreAction;
+use App\UseCases\Article\UpdateAction;
 
 class ArticleController extends Controller
 {
     /**
-     * Constructor.
-     */
-    public function __construct(
-        private IndexAction $indexAction,
-    ) {
-        $this->indexAction = $indexAction;
-    }
-
-    /**
      * API - 一覧.
      */
-    public function index(IndexRequest $request)
+    public function index(IndexRequest $request, IndexAction $action)
     {
-        // UseCaseを実行して結果を取得
-        $collection = $this->indexAction->handle($request);
+        $collection = $action->handle($request);
 
         return new ArticleCollectionResource($collection);
     }
@@ -35,12 +27,9 @@ class ArticleController extends Controller
     /**
      * API - 作成.
      */
-    public function store(StoreRequest $request): ArticleResource
+    public function store(StoreRequest $request, StoreAction $action): ArticleResource
     {
-        // 認可 + フォーマットバリデーション.
-        $article = $request->makeArticle();
-
-        $article->save();
+        $article = $action->handle($request);
 
         return new ArticleResource($article);
     }
@@ -48,9 +37,9 @@ class ArticleController extends Controller
     /**
      * API - 取得.
      */
-    public function show(string $id): ArticleResource
+    public function show(string $id, ShowAction $action): ArticleResource
     {
-        $article = Article::findOrFail($id);
+        $article = $action->handle($id);
 
         return new ArticleResource($article);
     }
@@ -58,14 +47,9 @@ class ArticleController extends Controller
     /**
      * API - 更新.
      */
-    public function update(UpdateRequest $request, string $id)
+    public function update(UpdateRequest $request, string $id, UpdateAction $action)
     {
-        // FormRequestからArticleを取得
-        $article = $request->findArticle($id);
-
-        // 更新を適用
-        $request->fillArticle($article);
-        $article->save();
+        $article = $action->handle($id, $request);
 
         return new ArticleResource($article);
     }
