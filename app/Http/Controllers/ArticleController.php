@@ -3,26 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Article\ListRequest;
-use App\Http\Resources\ArticleCollectionResource;
+use App\Http\Resources\ArticleResource;
 use App\UseCases\Article\IndexAction;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Constructor.
      */
-    public function index(ListRequest $request, IndexAction $action): ArticleCollectionResource
+    public function __construct(
+        private IndexAction $indexAction,
+    ) {
+        $this->indexAction = $indexAction;
+    }
+
+    /**
+     * API - 一覧.
+     */
+    public function index(ListRequest $request)
     {
-        // 検索条件を取得
-        $filters = $request->filters();
-        $sort = $request->sort();
-        $pagination = $request->pagination();
-
         // UseCaseを実行して結果を取得
-        $articles = $action->handle($filters, $sort, $pagination);
+        $articles = $this->indexAction->handle($request);
 
-        return new ArticleCollectionResource($articles);
+        return new ArticleResource($articles);
     }
 
     /**

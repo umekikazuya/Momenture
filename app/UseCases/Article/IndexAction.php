@@ -2,25 +2,19 @@
 
 namespace App\UseCases\Article;
 
+use App\Http\Requests\Article\ListRequest;
 use App\Models\Article;
 
 class IndexAction
 {
-    public function handle(array $filters, array $sort, array $pagination)
+    public function handle(ListRequest $request)
     {
         $query = Article::query();
-
-        // ソートの適用
-        foreach ($sort as $column => $direction) {
-            $query->orderBy($column, $direction);
+        $filters = $request->filters();
+        if (isset($filters['is_pickup'])) {
+            $query->where('is_pickup', $filters['is_pickup']);
         }
 
-        // ページネーションの適用
-        return $query->paginate(
-            $pagination['per_page'],
-            ['*'],
-            'page',
-            $pagination['page']
-        );
+        return $query->get();
     }
 }

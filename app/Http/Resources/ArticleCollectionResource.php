@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ArticleCollectionResource extends ResourceCollection
 {
+    /**
+     * {@inheritDoc}
+     */
     public function toArray($request): array
     {
         return [
@@ -18,11 +21,7 @@ class ArticleCollectionResource extends ResourceCollection
                     'is_pickup' => $article->is_pickup,
                 ];
             }),
-            'meta' => [
-                'current_page' => $this->currentPage(),
-                'per_page' => $this->perPage(),
-                'total' => $this->total(),
-            ],
+            'meta' => [],
         ];
     }
 }
