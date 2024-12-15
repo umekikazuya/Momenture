@@ -24,7 +24,8 @@ class StoreAction
     /**
      * オブジェクト生成.
      */
-    private function create(array $data): Article {
+    private function create(array $data): Article
+    {
         return new Article($data);
     }
 }
