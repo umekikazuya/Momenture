@@ -4,7 +4,7 @@ namespace App\Http\Requests\Article;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,25 +22,10 @@ class ListRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => 'nullable|string',
+            'link' => 'nullable|string',
+            'published' => 'nullable|date',
             'is_pickup' => 'nullable|boolean',
-        ];
-    }
-
-    public function filters(): array
-    {
-        return $this->only(['title', 'is_pickup']);
-    }
-
-    public function sort(): array
-    {
-        return $this->input('sort', ['created_at' => 'desc']);
-    }
-
-    public function pagination(): array
-    {
-        return [
-            'per_page' => $this->input('per_page', 15),
-            'page' => $this->input('page', 1),
         ];
     }
 }

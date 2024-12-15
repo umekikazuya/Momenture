@@ -2,12 +2,12 @@
 
 namespace App\UseCases\Article;
 
-use App\Http\Requests\Article\ListRequest;
+use App\Http\Requests\Article\IndexRequest;
 use App\Models\Article;
 
 class IndexAction
 {
-    public function handle(ListRequest $request)
+    public function handle(IndexRequest $request)
     {
         $query = Article::query();
         $filters = $request->filters();

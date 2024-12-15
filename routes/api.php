@@ -17,8 +17,6 @@ Route::prefix('profile')->group(function () {
     Route::delete('/', [ProfileController::class, 'destroy']);
 });
 
-Route::prefix('article')->group(function () {
-    Route::get('/', [ArticleController::class, 'index']);
-});
+Route::apiResource('article', ArticleController::class);
 
 Route::get('qiita/{id}', FeedQiitaController::class);

@@ -2,55 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Article\ListRequest;
+use App\Http\Requests\Article\IndexRequest;
+use App\Http\Requests\Article\StoreRequest;
+use App\Http\Requests\Article\UpdateRequest;
+use App\Http\Resources\ArticleCollectionResource;
 use App\Http\Resources\ArticleResource;
 use App\UseCases\Article\IndexAction;
-use Illuminate\Http\Request;
+use App\UseCases\Article\ShowAction;
+use App\UseCases\Article\StoreAction;
+use App\UseCases\Article\UpdateAction;
 
 class ArticleController extends Controller
 {
     /**
-     * Constructor.
-     */
-    public function __construct(
-        private IndexAction $indexAction,
-    ) {
-        $this->indexAction = $indexAction;
-    }
-
-    /**
      * API - 一覧.
      */
-    public function index(ListRequest $request)
+    public function index(IndexRequest $request, IndexAction $action)
     {
-        // UseCaseを実行して結果を取得
-        $articles = $this->indexAction->handle($request);
+        $collection = $action->handle($request);
 
-        return new ArticleResource($articles);
+        return new ArticleCollectionResource($collection);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * API - 作成.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, StoreAction $action): ArticleResource
     {
-        //
+        $article = $action->handle($request);
+
+        return new ArticleResource($article);
     }
 
     /**
-     * Display the specified resource.
+     * API - 取得.
      */
-    public function show(string $id)
+    public function show(string $id, ShowAction $action): ArticleResource
     {
-        //
+        $article = $action->handle($id);
+
+        return new ArticleResource($article);
     }
 
     /**
-     * Update the specified resource in storage.
+     * API - 更新.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id, UpdateAction $action)
     {
-        //
+        $article = $action->handle($id, $request);
+
+        return new ArticleResource($article);
     }
 
     /**
