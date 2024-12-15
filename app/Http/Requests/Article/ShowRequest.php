@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Article;
 
+use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListRequest extends FormRequest
+class ShowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,25 +23,16 @@ class ListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_pickup' => 'nullable|boolean',
+            'title' => 'required|string',
+            'link' => 'required|string',
+            'published' => 'required|string',
+            'is_pickup' => 'required|boolean',
         ];
     }
 
-    public function filters(): array
+    public function makeArticle(): Article
     {
-        return $this->only(['title', 'is_pickup']);
-    }
-
-    public function sort(): array
-    {
-        return $this->input('sort', ['created_at' => 'desc']);
-    }
-
-    public function pagination(): array
-    {
-        return [
-            'per_page' => $this->input('per_page', 15),
-            'page' => $this->input('page', 1),
-        ];
+        // バリデーションした値で埋めた Article を取得
+        return new Article($this->validated());
     }
 }

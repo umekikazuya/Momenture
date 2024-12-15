@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Article\ListRequest;
+use App\Http\Requests\Article\IndexRequest;
+use App\Http\Requests\Article\StoreRequest;
+use App\Http\Requests\Article\UpdateRequest;
+use App\Http\Resources\ArticleCollectionResource;
 use App\Http\Resources\ArticleResource;
+use App\Models\Article;
 use App\UseCases\Article\IndexAction;
-use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -21,36 +24,50 @@ class ArticleController extends Controller
     /**
      * API - 一覧.
      */
-    public function index(ListRequest $request)
+    public function index(IndexRequest $request)
     {
         // UseCaseを実行して結果を取得
-        $articles = $this->indexAction->handle($request);
+        $collection = $this->indexAction->handle($request);
 
-        return new ArticleResource($articles);
+        return new ArticleCollectionResource($collection);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * API - 作成.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request): ArticleResource
     {
-        //
+        // 認可 + フォーマットバリデーション.
+        $article = $request->makeArticle();
+
+        $article->save();
+
+        return new ArticleResource($article);
     }
 
     /**
-     * Display the specified resource.
+     * API - 取得.
      */
-    public function show(string $id)
+    public function show(string $id): ArticleResource
     {
-        //
+        $article = Article::findOrFail($id);
+
+        return new ArticleResource($article);
     }
 
     /**
-     * Update the specified resource in storage.
+     * API - 更新.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
-        //
+        // FormRequestからArticleを取得
+        $article = $request->findArticle($id);
+
+        // 更新を適用
+        $request->fillArticle($article);
+        $article->save();
+
+        return new ArticleResource($article);
     }
 
     /**
