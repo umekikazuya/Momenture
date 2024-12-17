@@ -10,13 +10,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('profile')->group(function () {
-    Route::get('/', [ProfileController::class, 'show']);
-    Route::post('/', [ProfileController::class, 'store']);
-    Route::put('/', [ProfileController::class, 'update']);
-    Route::delete('/', [ProfileController::class, 'destroy']);
-});
+Route::apiResource('profile', ProfileController::class);
 
-Route::apiResource('article', ArticleController::class);
+Route::apiResource('article', ArticleController::class)->only(['show', 'store']);
 
 Route::get('qiita/{id}', FeedQiitaController::class);
