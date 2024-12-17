@@ -22,4 +22,10 @@ class Profile extends Model
         'introduction',
         'job',
     ];
+
+    // JSONBや配列型を配列に自動キャスト
+    protected $casts = [
+        'skill' => 'array',
+        'likes' => 'array',
+    ];
 }
