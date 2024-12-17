@@ -1,0 +1,77 @@
+{
+    "Items": [
+        {
+            "github": {
+                "S": "umekikazuya"
+            },
+            "qiita": {
+                "S": "umekikazuya"
+            },
+            "address": {
+                "S": "Fukuoka, Japan."
+            },
+            "zenn": {
+                "S": "kazu_u"
+            },
+            "skill": {
+                "L": [
+                    {
+                        "S": "Drupal"
+                    },
+                    {
+                        "S": "PHP"
+                    },
+                    {
+                        "S": "Symfony"
+                    },
+                    {
+                        "S": "Next.js"
+                    },
+                    {
+                        "S": "React"
+                    },
+                    {
+                        "S": "TypeScript"
+                    }
+                ]
+            },
+            "display_name": {
+                "S": "Kazuya Umeki"
+            },
+            "updated_at": {
+                "S": "2024-11-20T21:47:26+09:00"
+            },
+            "display_short_name": {
+                "S": "umekikazuya"
+            },
+            "from": {
+                "S": "Tokyo, Japan."
+            },
+            "like": {
+                "L": [
+                    {
+                        "S": "Mr.Children"
+                    },
+                    {
+                        "S": "FRUITS ZIPPER"
+                    }
+                ]
+            },
+            "summary_introduction": {
+                "NULL": true
+            },
+            "PK": {
+                "S": "PROFILE#1"
+            },
+            "introduction": {
+                "S": "Default Introduction"
+            },
+            "job": {
+                "S": "Web Creator"
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

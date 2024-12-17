@@ -2,63 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Contracts\ProfileServiceInterface;
-use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Profile\UpdateRequest;
+use App\Http\Resources\ProfileResource;
+use App\Models\Profile;
+use App\UseCases\Profile\ShowAction;
+use App\UseCases\Profile\UpdateAction;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    protected ProfileServiceInterface $profileService;
-
-    public function __construct(ProfileServiceInterface $profileService)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        $this->profileService = $profileService;
+        //
     }
 
     /**
-     * プロフィールの表示
+     * Store a newly created resource in storage.
      */
-    public function show(): JsonResponse
+    public function store(Request $request)
     {
-        $profile = $this->profileService->getProfile();
-
-        return response()->json($profile);
+        //
     }
 
     /**
-     * プロフィールの更新
+     * Display the specified resource.
      */
-    public function update(Request $request): JsonResponse
+    public function show(string $id, ShowAction $action)
     {
-        $validatedData = $request->validate([
-            'displayName' => 'nullable|string|max:255',
-            'displayShortName' => 'nullable|string|max:50',
-            'address' => 'nullable|string|max:500',
-            'from' => 'nullable|string|max:255',
-            'github' => 'nullable|string|max:255',
-            'introduction' => 'nullable|string',
-            'job' => 'nullable|string|max:255',
-            'likes' => 'nullable|array',
-            'likes.*' => 'string|max:50',
-            'qiita' => 'nullable|string|max:255',
-            'skills' => 'nullable|array',
-            'skills.*' => 'string|max:50',
-            'summaryIntroduction' => 'nullable|string|max:500',
-            'zenn' => 'nullable|string|max:255',
-        ]);
+        $profile = $action->handle($id);
 
-        $profile = $this->profileService->updateProfile($validatedData);
-
-        return response()->json($profile);
+        return new ProfileResource($profile);
     }
 
     /**
-     * プロフィールの削除
+     * Update the specified resource in storage.
      */
-    public function destroy(): JsonResponse
+    public function update(UpdateRequest $request, string $id, UpdateAction $action)
     {
-        $this->profileService->deleteProfile();
+        $profile = $action->handle($id, $request);
 
-        return response()->json(['message' => 'Profile deleted successfully.']);
+        return new ProfileResource($profile);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }
