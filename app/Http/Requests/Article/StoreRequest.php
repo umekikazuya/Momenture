@@ -24,8 +24,9 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             'link' => 'required|string',
-            'published' => 'required|date',
-            'is_pickup' => 'required|boolean',
+            'published' => 'nullable|date',
+            'is_pickup' => 'nullable|boolean',
+            'service' => 'nullable|string',
         ];
     }
 }
