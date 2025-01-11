@@ -2,7 +2,6 @@
 
 namespace App\UseCases\Article;
 
-use App\Http\Requests\Article\IndexRequest;
 use App\Http\Requests\Article\UpdateRequest;
 use App\Models\Article;
 
