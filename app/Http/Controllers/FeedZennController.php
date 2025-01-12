@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Services\Contracts\FeedFetcherInterface;
-use App\Services\Contracts\FeedParserInterface;
-use App\Services\FeedQiitaParserService;
+use App\Services\FeedZennParserService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class FeedQiitaController extends Controller
+class FeedZennController extends Controller
 {
-    private const ENDPOINT = 'https://qiita.com/';
+    private const ENDPOINT = 'https://zenn.dev/';
 
     /**
      * Constructor.
      */
     public function __construct(
         private FeedFetcherInterface $feedFetcher,
-        private FeedQiitaParserService $feedParser,
+        private FeedZennParserService $feedParser,
     ) {
         $this->feedFetcher = $feedFetcher;
         $this->feedParser = $feedParser;

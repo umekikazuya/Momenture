@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Services\Contracts\FeedParserInterface;
@@ -20,15 +22,23 @@ abstract class FeedParserServiceBase implements FeedParserInterface
     public function loadRawFeedData(string $feed): \SimpleXMLElement|false
     {
         $data = simplexml_load_string($feed);
-        if (assert($data instanceof \SimpleXMLElement)) {
-            return $data;
-        }
 
-        return false;
+        return assert($data instanceof \SimpleXMLElement)
+        ? $data
+        : false;
     }
 
     /**
      * {@inheritDoc}
      */
     abstract public function parseXml(\SimpleXMLElement $xml): array;
+
+    /**
+     * Get articles.
+     *
+     * @param \SimpleXMLElement $items
+     *
+     * @return \Generator
+     */
+    abstract protected function getArticles(\SimpleXMLElement $items): \Generator;
 }
