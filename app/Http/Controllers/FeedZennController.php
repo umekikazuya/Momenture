@@ -28,7 +28,7 @@ class FeedZennController extends Controller
     public function __invoke(string $id): JsonResponse
     {
         try {
-            $feed = $this->feedFetcher->get(self::ENDPOINT.$id.'/feed');
+            $feed = $this->feedFetcher->get(self::ENDPOINT . $id . '/feed');
             $data = $this->feedParser->loadRawFeedData($feed);
             if (! $data) {
                 throw new HttpException('Invalid XML data');
