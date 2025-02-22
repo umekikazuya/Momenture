@@ -97,7 +97,7 @@ file_size_limit = "50MiB"
 # objects_path = "./images"
 
 [auth]
-enabled = true
+enabled = false
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
 site_url = "http://127.0.0.1:3000"
@@ -124,7 +124,7 @@ password_requirements = ""
 
 # Configure one of the supported captcha providers: `hcaptcha`, `turnstile`.
 # [auth.captcha]
-# enabled = true
+# enabled = false
 # provider = "hcaptcha"
 # secret = ""
 
