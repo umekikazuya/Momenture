@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Article\DeleteRequest;
 use App\Http\Requests\Article\IndexRequest;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\ArticleCollectionResource;
 use App\Http\Resources\ArticleResource;
+use App\UseCases\Article\DeleteAction;
 use App\UseCases\Article\IndexAction;
 use App\UseCases\Article\ShowAction;
 use App\UseCases\Article\StoreAction;
@@ -57,8 +59,15 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DeleteRequest $request, string $id, DeleteAction $action)
     {
-        //
+        $result = $action->handle($id, $request);
+
+        if ($result) {
+            return response()
+                ->json(['message' => 'Article deleted successfully.'], 200);
+        }
+
+        return response()->json(['message' => 'Failed to delete the article.'], 500);
     }
 }

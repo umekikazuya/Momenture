@@ -3,17 +3,22 @@
 namespace App\UseCases\Profile;
 
 use App\Models\Profile;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ShowAction
 {
     /**
-     * IDからProfileModelの取得.
+     * ProfileModelの取得.
      *
-     * @param string $id
-     * @return Profile
+     * @throws ModelNotFoundException
      */
-    public function handle(string $id): Profile
+    public function __invoke(): Profile
     {
-        return Profile::findOrFail($id);
+        $profile = Profile::query()->first();
+        if (! assert($profile->exists)) {
+            throw new ModelNotFoundException('プロフィールが登録されていません');
+        }
+
+        return $profile;
     }
 }

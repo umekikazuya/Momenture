@@ -5,7 +5,7 @@ namespace App\Http\Requests\Profile;
 use App\Models\Profile;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * {@inheritDoc}
@@ -43,5 +43,10 @@ class UpdateRequest extends FormRequest
             'skill.array' => 'Skillは配列形式で送信してください。',
             'likes.array' => 'Likesは配列形式で送信してください。',
         ];
+    }
+
+    public function makeProfile(): Profile
+    {
+        return new Profile($this->validated());
     }
 }
