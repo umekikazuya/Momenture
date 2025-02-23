@@ -15,19 +15,19 @@ class ProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->resource->id,
-            'github' => $this->resource->github,
-            'qiita' => $this->resource->qiita,
             'address' => $this->resource->address,
-            'zenn' => $this->resource->zenn,
-            'skill' => $this->resource->skill,
-            'displayName' => $this->resource->display_name,
-            'displayShortName' => $this->resource->display_short_name,
+            'display_name' => $this->resource->display_name,
+            'display_short_name' => $this->resource->display_short_name,
             'from' => $this->resource->from,
-            'likes' => $this->resource->likes,
-            'summaryIntroduction' => $this->resource->summary_introduction,
+            'github' => $this->resource->github,
+            'id' => $this->resource->id,
             'introduction' => $this->resource->introduction,
             'job' => $this->resource->job,
+            'likes' => $this->resource->likes,
+            'qiita' => $this->resource->qiita,
+            'skill' => $this->resource->skill,
+            'summary_introduction' => $this->resource->summary_introduction,
+            'zenn' => $this->resource->zenn,
         ];
     }
 }

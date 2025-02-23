@@ -15,10 +15,9 @@ class ShowAction
     public function __invoke(): Profile
     {
         $profile = Profile::query()->first();
-        if (! assert($profile->exists)) {
+        if (! $profile?->exists) {
             throw new ModelNotFoundException('プロフィールが登録されていません');
         }
-
         return $profile;
     }
 }

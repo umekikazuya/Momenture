@@ -35,7 +35,7 @@ class ProfileController extends Controller
         try {
             return new ProfileResource($action());
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'プロフィールが登録されていません'], 404);
+            return response()->json(['message' => $e->getMessage()], 404);
         }
     }
 
