@@ -96,4 +96,10 @@ class Article
         $this->link = $link;
         $this->updatedAt = new \DateTimeImmutable;
     }
+
+    public function updateArticleService(ArticleService $service): void
+    {
+        $this->service = $service;
+        $this->updatedAt = new \DateTimeImmutable;
+    }
 }
