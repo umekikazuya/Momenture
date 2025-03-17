@@ -22,8 +22,8 @@ class Article
         $this->status = $status;
         $this->service = $service;
         $this->link = $link;
-        $this->createdAt = new \DateTimeImmutable;
-        $this->updatedAt = new \DateTimeImmutable;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function id(): int
@@ -49,6 +49,11 @@ class Article
     public function updatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function status(): ArticleStatus
+    {
+        return $this->status;
     }
 
     public function isPublished(): bool
