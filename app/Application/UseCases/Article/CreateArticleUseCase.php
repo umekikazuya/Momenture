@@ -6,6 +6,7 @@ use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
 use App\Domain\Repositories\ArticleRepositoryInterface;
+use App\Domain\ValueObjects\ArticleLink;
 use App\Domain\ValueObjects\ArticleTitle;
 use DateTimeImmutable;
 
@@ -15,6 +16,7 @@ class CreateArticleUseCase implements CreateArticleUseCaseInterface
 
     public function execute(
         string $title,
+        ArticleLink $link,
         ArticleStatus $status,
         ArticleService $service
     ): Article {

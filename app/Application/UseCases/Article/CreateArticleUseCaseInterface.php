@@ -7,8 +7,9 @@ namespace App\Application\UseCases\Article;
 use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
+use App\Domain\ValueObjects\ArticleLink;
 
 interface CreateArticleUseCaseInterface
 {
-    public function execute(string $title, ArticleStatus $status, ArticleService $service): Article;
+    public function execute(string $title, ArticleLink $link, ArticleStatus $status, ArticleService $service): Article;
 }

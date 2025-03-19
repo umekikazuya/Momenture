@@ -102,4 +102,10 @@ class Article
         $this->service = $service;
         $this->updatedAt = new \DateTimeImmutable;
     }
+
+    public function updateStatus(ArticleStatus $status): void
+    {
+        $this->status = $status;
+        $this->updatedAt = new \DateTimeImmutable;
+    }
 }
