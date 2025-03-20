@@ -1,73 +1,106 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Article\DeleteRequest;
-use App\Http\Requests\Article\IndexRequest;
+use App\Application\UseCases\Article\ChangeArticleStatusUseCaseInterface;
+use App\Application\UseCases\Article\CreateArticleUseCaseInterface;
+use App\Application\UseCases\Article\DeleteArticleUseCaseInterface;
+use App\Application\UseCases\Article\FindArticleByIdUseCaseInterface;
+use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
+use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
+use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
+use App\Http\Requests\Article\ChangeStatusRequest;
+use App\Http\Requests\Article\ShowRequest;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
-use App\Http\Resources\ArticleCollectionResource;
+use App\Http\Requests\SearchRequest;
 use App\Http\Resources\ArticleResource;
-use App\UseCases\Article\DeleteAction;
-use App\UseCases\Article\IndexAction;
-use App\UseCases\Article\ShowAction;
-use App\UseCases\Article\StoreAction;
-use App\UseCases\Article\UpdateAction;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
 {
-    /**
-     * API - 一覧.
-     */
-    public function index(IndexRequest $request, IndexAction $action)
-    {
-        $collection = $action->handle($request);
+    public function __construct(
+        private CreateArticleUseCaseInterface $createArticle,
+        private UpdateArticleUseCaseInterface $updateArticle,
+        private DeleteArticleUseCaseInterface $deleteArticle,
+        private RestoreArticleUseCaseInterface $restoreArticle,
+        private FindArticleByIdUseCaseInterface $findArticleById,
+        private FindArticlesUseCaseInterface $findArticles,
+        private ChangeArticleStatusUseCaseInterface $changeArticleStatus,
+    ) {}
 
-        return new ArticleCollectionResource($collection);
-    }
-
-    /**
-     * API - 作成.
-     */
-    public function store(StoreRequest $request, StoreAction $action): ArticleResource
+    // 記事作成
+    public function store(StoreRequest $request): ArticleResource
     {
-        $article = $action->handle($request);
+        $article = $this->createArticle->execute(
+            $request->title,
+            $request->link,
+            $request->status,
+            $request->service
+        );
 
         return new ArticleResource($article);
     }
 
-    /**
-     * API - 取得.
-     */
-    public function show(string $id, ShowAction $action): ArticleResource
+    // 記事更新
+    public function update(UpdateRequest $request, int $id): ArticleResource
     {
-        $article = $action->handle($id);
+        $article = $this->updateArticle->execute(
+            $id,
+            $request->title,
+            $request->link,
+            $request->service
+        );
 
         return new ArticleResource($article);
     }
 
-    /**
-     * API - 更新.
-     */
-    public function update(UpdateRequest $request, string $id, UpdateAction $action)
+    // 記事削除（ソフトデリート／完全削除）
+    public function destroy(int $id, Request $request): Response
     {
-        $article = $action->handle($id, $request);
+        $force = $request->boolean('force', false);
+        $this->deleteArticle->execute($id, $force);
+
+        return response()->noContent();
+    }
+
+    // 記事復元
+    public function restore(int $id): Response
+    {
+        $this->restoreArticle->execute($id);
+
+        return response()->noContent();
+    }
+
+    // 記事詳細取得
+    public function show(ShowRequest $request, int $id): ArticleResource
+    {
+        $article = $this->findArticleById->execute($id);
 
         return new ArticleResource($article);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DeleteRequest $request, string $id, DeleteAction $action)
+    // 記事一覧・検索取得
+    public function index(SearchRequest $request)
     {
-        $result = $action->handle($id, $request);
+        $articles = $this->findArticles->execute(
+            $request->only(['status', 'service_id', 'tag_id']),
+            $request->get('sort', 'created_at_desc'),
+            (int) $request->get('page', 1),
+            (int) $request->get('per_page', 10)
+        );
 
-        if ($result) {
-            return response()
-                ->json(['message' => 'Article deleted successfully.'], 200);
-        }
+        return ArticleResource::collection($articles);
+    }
 
-        return response()->json(['message' => 'Failed to delete the article.'], 500);
+    // 公開状態変更
+    public function changeStatus(ChangeStatusRequest $request, int $id): Response
+    {
+        $this->changeArticleStatus->execute($id, $request->new_status);
+
+        return response()->noContent();
     }
 }

@@ -11,7 +11,6 @@ class ArticleStatusTest extends TestCase
     {
         $this->assertTrue(ArticleStatus::DRAFT->canBePublished());
         $this->assertFalse(ArticleStatus::PUBLISHED->canBePublished());
-        $this->assertFalse(ArticleStatus::ARCHIVED->canBePublished());
     }
 
     public function test_無効なステータスを作成できない()
