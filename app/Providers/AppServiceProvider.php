@@ -2,6 +2,20 @@
 
 namespace App\Providers;
 
+use App\Application\UseCases\Article\ChangeArticleStatusUseCase;
+use App\Application\UseCases\Article\ChangeArticleStatusUseCaseInterface;
+use App\Application\UseCases\Article\CreateArticleUseCase;
+use App\Application\UseCases\Article\CreateArticleUseCaseInterface;
+use App\Application\UseCases\Article\DeleteArticleUseCase;
+use App\Application\UseCases\Article\DeleteArticleUseCaseInterface;
+use App\Application\UseCases\Article\FindArticleByIdUseCase;
+use App\Application\UseCases\Article\FindArticleByIdUseCaseInterface;
+use App\Application\UseCases\Article\FindArticlesUseCase;
+use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
+use App\Application\UseCases\Article\RestoreArticleUseCase;
+use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
+use App\Application\UseCases\Article\UpdateArticleUseCase;
+use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
@@ -14,7 +28,11 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * アプリケーションの各種サービスを登録し、依存性注入の設定を行う。
+     *
+     * このメソッドは、フィードの取得およびパースサービス、DynamoDbClientのシングルトンインスタンス、
+     * 記事リポジトリ、そして記事管理に関連する各ユースケース（作成、更新、削除、復元、検索、状態変更）の
+     * インターフェースと実装のバインディングをコンテナに登録し、アプリケーション全体での依存性解決を可能にします。
      */
     public function register(): void
     {
@@ -32,6 +50,17 @@ class AppServiceProvider extends ServiceProvider
                 ],
             ]);
         });
+        $this->app->bind(
+            \App\Domain\Repositories\ArticleRepositoryInterface::class,
+            \App\Infrastructure\Repositories\EloquentArticleRepository::class
+        );
+        $this->app->bind(CreateArticleUseCaseInterface::class, CreateArticleUseCase::class);
+        $this->app->bind(UpdateArticleUseCaseInterface::class, UpdateArticleUseCase::class);
+        $this->app->bind(DeleteArticleUseCaseInterface::class, DeleteArticleUseCase::class);
+        $this->app->bind(RestoreArticleUseCaseInterface::class, RestoreArticleUseCase::class);
+        $this->app->bind(FindArticleByIdUseCaseInterface::class, FindArticleByIdUseCase::class);
+        $this->app->bind(FindArticlesUseCaseInterface::class, FindArticlesUseCase::class);
+        $this->app->bind(ChangeArticleStatusUseCaseInterface::class, ChangeArticleStatusUseCase::class);
     }
 
     /**
