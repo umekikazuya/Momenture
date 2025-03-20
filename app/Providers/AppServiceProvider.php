@@ -12,10 +12,20 @@ use App\Application\UseCases\Article\FindArticleByIdUseCase;
 use App\Application\UseCases\Article\FindArticleByIdUseCaseInterface;
 use App\Application\UseCases\Article\FindArticlesUseCase;
 use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
+use App\Application\UseCases\Article\FindByIdUseCase;
 use App\Application\UseCases\Article\RestoreArticleUseCase;
 use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
 use App\Application\UseCases\Article\UpdateArticleUseCase;
 use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
+use App\Application\UseCases\ArticleService\CreateUseCase;
+use App\Application\UseCases\ArticleService\CreateUseCaseInterface;
+use App\Application\UseCases\ArticleService\DeleteUseCase;
+use App\Application\UseCases\ArticleService\DeleteUseCaseInterface;
+use App\Application\UseCases\ArticleService\FindAllUseCase;
+use App\Application\UseCases\ArticleService\FindAllUseCaseInterface;
+use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
+use App\Application\UseCases\ArticleService\UpdateUseCase;
+use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
@@ -61,6 +71,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FindArticleByIdUseCaseInterface::class, FindArticleByIdUseCase::class);
         $this->app->bind(FindArticlesUseCaseInterface::class, FindArticlesUseCase::class);
         $this->app->bind(ChangeArticleStatusUseCaseInterface::class, ChangeArticleStatusUseCase::class);
+
+        $this->app->bind(CreateUseCaseInterface::class, CreateUseCase::class);
+        $this->app->bind(UpdateUseCaseInterface::class, UpdateUseCase::class);
+        $this->app->bind(FindByIdUseCaseInterface::class, FindByIdUseCase::class);
+        $this->app->bind(FindAllUseCaseInterface::class, FindAllUseCase::class);
+        $this->app->bind(DeleteUseCaseInterface::class, DeleteUseCase::class);
     }
 
     /**
