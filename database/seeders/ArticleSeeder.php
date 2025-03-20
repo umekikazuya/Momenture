@@ -9,6 +9,13 @@ use App\Models\Tag;
 
 class ArticleSeeder extends Seeder
 {
+    /**
+     * データベースにサンプル記事データを挿入するシーダーメソッドです。
+     *
+     * このメソッドは、最初の ArticleService レコードからサービスIDを取得し、そのIDを用いて
+     * 「シーディング記事サンプル」というタイトルの公開済み記事を作成します。作成した記事には
+     * リンクが設定され、全てのタグ（Tag レコード）が記事に関連付けられます。
+     */
     public function run()
     {
         // 最初のサービスを取得

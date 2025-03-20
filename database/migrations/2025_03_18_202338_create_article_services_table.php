@@ -7,7 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * article_servicesテーブルを作成するマイグレーションを実行します。
+     *
+     * このメソッドは、article_servicesテーブルを作成し、以下のカラムを定義します:
+     * - id: 自動インクリメントされる主キー
+     * - name: 100文字以内のユニークな文字列カラム
+     * - timestamps: 作成日時と更新日時を管理するカラム
+     * - softDeletes: 論理削除用のdeleted_atカラム
      */
     public function up(): void
     {
@@ -20,7 +26,9 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * マイグレーションの取り消し処理を実行する。
+     *
+     * このメソッドは、既存の `article_services` テーブルが存在する場合に、それをデータベースから削除し、マイグレーションをロールバックします。
      */
     public function down(): void
     {

@@ -28,7 +28,13 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * アプリケーションの各種サービスおよび記事ユースケースの依存性バインディングを登録する。
+     *
+     * このメソッドでは、フィード取得・解析サービス（FeedFetcherInterface、FeedParserInterface）や
+     * DynamoDB クライアント、記事リポジトリ（ArticleRepositoryInterface）に加え、記事の作成、更新、削除、復元、
+     * 検索、および状態変更といったユースケースのインターフェースと実装を、Laravel のサービスコンテナにバインディングする。
+     *
+     * @return void
      */
     public function register(): void
     {
