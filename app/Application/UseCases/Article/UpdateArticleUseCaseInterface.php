@@ -9,6 +9,15 @@ use App\Domain\Entities\Article;
 
 interface UpdateArticleUseCaseInterface
 {
+    /**
+     * 入力された更新情報に基づいて記事を更新し、更新後の記事オブジェクトを返します。
+     *
+     * 渡されたデータを使用して記事の更新処理を実行します。
+     *
+     * @param UpdateArticleInput $input 更新操作に必要な入力データを含むオブジェクト。
+     *
+     * @return Article 更新された記事オブジェクト。
+     */
     public function execute(
         UpdateArticleInput $input,
     ): Article;

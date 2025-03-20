@@ -9,9 +9,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ArticleResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Article リソースを JSON レスポンス用の連想配列に変換する。
      *
-     * @return array<string, mixed>
+     * 渡されたリソースが Article インスタンスでない場合は空の配列を返します。
+     * 有効な Article インスタンスの場合、記事の ID、タイトル、リンク、公開状況（公開または下書き）、
+     * 関連するサービス情報（ID と名前）、および formatted な作成・更新日時を含む配列に変換します。
+     *
+     * @return array<string, mixed> 変換された記事情報の連想配列
      */
     public function toArray(Request $request): array
     {

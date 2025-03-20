@@ -28,7 +28,11 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * アプリケーションの各種サービスを登録し、依存性注入の設定を行う。
+     *
+     * このメソッドは、フィードの取得およびパースサービス、DynamoDbClientのシングルトンインスタンス、
+     * 記事リポジトリ、そして記事管理に関連する各ユースケース（作成、更新、削除、復元、検索、状態変更）の
+     * インターフェースと実装のバインディングをコンテナに登録し、アプリケーション全体での依存性解決を可能にします。
      */
     public function register(): void
     {
