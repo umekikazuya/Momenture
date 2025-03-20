@@ -32,7 +32,8 @@ class ArticleController extends Controller
         private FindArticleByIdUseCaseInterface $findArticleById,
         private FindArticlesUseCaseInterface $findArticles,
         private ChangeArticleStatusUseCaseInterface $changeArticleStatus,
-    ) {}
+    ) {
+    }
 
     // 記事作成
     public function store(StoreRequest $request): ArticleResource

@@ -82,30 +82,30 @@ class Article
             throw new \DomainException('記事を公開できません。');
         }
         $this->status = ArticleStatus::PUBLISHED;
-        $this->updatedAt = new \DateTimeImmutable;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function updateTitle(ArticleTitle $title): void
     {
         $this->title = $title;
-        $this->updatedAt = new \DateTimeImmutable;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function updateLink(?ArticleLink $link): void
     {
         $this->link = $link;
-        $this->updatedAt = new \DateTimeImmutable;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function updateArticleService(ArticleService $service): void
     {
         $this->service = $service;
-        $this->updatedAt = new \DateTimeImmutable;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function updateStatus(ArticleStatus $status): void
     {
         $this->status = $status;
-        $this->updatedAt = new \DateTimeImmutable;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

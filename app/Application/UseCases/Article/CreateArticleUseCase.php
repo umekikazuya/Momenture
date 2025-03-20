@@ -5,11 +5,13 @@ namespace App\Application\UseCases\Article;
 use App\Application\DTOs\CreateArticleInput;
 use App\Domain\Entities\Article;
 use App\Domain\Repositories\ArticleRepositoryInterface;
-use DateTimeImmutable;
 
 class CreateArticleUseCase implements CreateArticleUseCaseInterface
 {
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {}
+    public function __construct(
+        private ArticleRepositoryInterface $articleRepository
+    ) {
+    }
 
     public function execute(
         CreateArticleInput $dto
@@ -20,12 +22,10 @@ class CreateArticleUseCase implements CreateArticleUseCaseInterface
             link: $dto->link,
             status: $dto->status,
             service: $dto->service,
-            createdAt: new DateTimeImmutable,
-            updatedAt: new DateTimeImmutable
+            createdAt: new \DateTimeImmutable(),
+            updatedAt: new \DateTimeImmutable(),
         );
-
         $this->articleRepository->save($article);
-
         return $article;
     }
 }

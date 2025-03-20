@@ -7,7 +7,9 @@ use DomainException;
 
 class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
 {
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {}
+    public function __construct(private ArticleRepositoryInterface $articleRepository)
+    {
+    }
 
     public function execute(int $id, bool $force = false): void
     {

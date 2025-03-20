@@ -7,7 +7,9 @@ use App\Domain\Repositories\ArticleRepositoryInterface;
 
 class FindArticleByIdUseCase implements FindArticleByIdUseCaseInterface
 {
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {}
+    public function __construct(private ArticleRepositoryInterface $articleRepository)
+    {
+    }
 
     public function execute(int $articleId): ?Article
     {

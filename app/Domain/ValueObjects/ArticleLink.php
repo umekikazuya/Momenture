@@ -9,7 +9,7 @@ class ArticleLink
     public function __construct(string $url)
     {
         if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new \DomainException('無効なURLです: '.$url);
+            throw new \DomainException('無効なURLです: ' . $url);
         }
         $this->url = $url;
     }

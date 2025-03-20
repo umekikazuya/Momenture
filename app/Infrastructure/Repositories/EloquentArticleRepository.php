@@ -67,7 +67,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function save(Article $article): void
     {
         /** @var ArticleModel $model */
-        $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel;
+        $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
 
         $model->title = $article->title()->value();
         $model->status = $article->isPublished() ? ArticleStatus::PUBLISHED->value : ArticleStatus::DRAFT->value;

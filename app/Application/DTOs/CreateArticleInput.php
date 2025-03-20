@@ -15,7 +15,8 @@ final class CreateArticleInput
         public readonly ArticleLink $link,
         public readonly ArticleStatus $status,
         public readonly ArticleService $service
-    ) {}
+    ) {
+    }
 
     public static function fromRequest(StoreRequest $request): self
     {

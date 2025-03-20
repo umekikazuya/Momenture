@@ -2,10 +2,10 @@
 
 namespace App\Application\Dtos;
 
-use App\Domain\ValueObjects\ArticleLink;
-use App\Domain\ValueObjects\ArticleTitle;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
+use App\Domain\ValueObjects\ArticleLink;
+use App\Domain\ValueObjects\ArticleTitle;
 use App\Http\Requests\Article\UpdateRequest;
 
 class UpdateArticleInput
@@ -16,7 +16,8 @@ class UpdateArticleInput
         public ?ArticleLink $link = null,
         public ?ArticleStatus $status = null,
         public ?ArticleService $service = null,
-    ) {}
+    ) {
+    }
 
     public static function fromRequest(int $id, UpdateRequest $request): self
     {

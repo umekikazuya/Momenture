@@ -8,7 +8,9 @@ use DomainException;
 
 class ChangeArticleStatusUseCase implements ChangeArticleStatusUseCaseInterface
 {
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {}
+    public function __construct(private ArticleRepositoryInterface $articleRepository)
+    {
+    }
 
     public function execute(int $articleId, string $newStatus): void
     {

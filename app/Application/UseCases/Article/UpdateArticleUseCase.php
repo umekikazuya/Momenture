@@ -11,7 +11,9 @@ use App\Domain\ValueObjects\ArticleTitle;
 
 class UpdateArticleUseCase implements UpdateArticleUseCaseInterface
 {
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {}
+    public function __construct(private ArticleRepositoryInterface $articleRepository)
+    {
+    }
 
     public function execute(
         UpdateArticleInput $input,

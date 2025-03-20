@@ -18,7 +18,7 @@ class FeaturedArticle
 
     public function isActive(): bool
     {
-        return $this->endDate === null || $this->endDate > new \DateTimeImmutable;
+        return $this->endDate === null || $this->endDate > new \DateTimeImmutable();
     }
 
     public function id(): int
@@ -31,7 +31,7 @@ class FeaturedArticle
         return $this->article;
     }
 
-    public function startDate(): \DateTimeImmutable
+    public function startArticleDate(): \DateTimeImmutable
     {
         return $this->startDate;
     }
