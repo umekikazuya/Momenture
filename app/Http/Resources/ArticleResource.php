@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ArticleResource extends JsonResource
 {
     /**
-     * Article リソースを JSON レスポンス用の連想配列に変換する。
+     * Article リソースを JSON レスポンス用の連想配列に変換します。
      *
      * 渡されたリソースが Article インスタンスでない場合は空の配列を返します。
      * 有効な Article インスタンスの場合、記事の ID、タイトル、リンク、公開状況（公開または下書き）、
@@ -19,20 +19,21 @@ class ArticleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if (!$this->resource instanceof Article) {
+        if (! $this->resource instanceof Article) {
             return [];
         }
+
         return [
             'id' => $this->resource->id(),
             'title' => $this->resource->title()->value(),
             'link' => $this->resource->link()->value(),
-            'status' => $this->isPublished() ? 'published' : 'draft',
+            'status' => $this->resource->isPublished() ? 'published' : 'draft',
             'service' => [
-                'id' => $this->service()->id(),
-                'name' => $this->service()->name(),
+                'id' => $this->resource->service()->id(),
+                'name' => $this->resource->service()->name(),
             ],
-            'created_at' => $this->createdAt()->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updatedAt()->format('Y-m-d H:i:s'),
+            'created_at' => $this->resource->createdAt()->format('Y-m-d H:i:s'),
+            'updated_at' => $this->resource->updatedAt()->format('Y-m-d H:i:s'),
         ];
     }
 }
