@@ -17,6 +17,13 @@ class ArticleService extends Model
         'name',
     ];
 
+    /**
+     * 関連する記事との1対多リレーションシップを定義する。
+     *
+     * このメソッドは、ArticleServiceに紐づくArticleモデルのコレクションを取得するためのEloquentリレーションシップを返します。
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany Articleモデルとのリレーションシップインスタンス
+     */
     public function articles()
     {
         return $this->hasMany(Article::class);

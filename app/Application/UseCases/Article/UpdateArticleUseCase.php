@@ -10,8 +10,25 @@ use App\Domain\Repositories\ArticleRepositoryInterface;
 
 class UpdateArticleUseCase implements UpdateArticleUseCaseInterface
 {
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {}
+    /**
+ * UpdateArticleUseCase の新しいインスタンスを生成するコンストラクタ。
+ *
+ * 記事更新に必要な ArticleRepositoryInterface を受け取り、ユースケース内で利用します。
+ */
+public function __construct(private ArticleRepositoryInterface $articleRepository) {}
 
+    /**
+     * 記事を更新し、更新後のArticleオブジェクトを返します。
+     *
+     * このメソッドは、与えられたUpdateArticleInputオブジェクトを用いて記事を取得し、存在しない場合はDomainExceptionをスローします。
+     * 入力されたタイトル、リンク、またはサービスが非nullの場合、それぞれの記事の属性を更新します。
+     * 更新後、記事はリポジトリに保存され、更新済みの記事オブジェクトが返されます。
+     *
+     * @param UpdateArticleInput $input 更新対象記事の情報を含む入力オブジェクト。記事IDと更新する可能性のあるフィールドが含まれます。
+     * @return Article 更新されたArticleオブジェクト。
+     *
+     * @throws DomainException 指定されたIDのArticleが存在しない場合にスローされます。
+     */
     public function execute(
         UpdateArticleInput $input,
     ): Article {
