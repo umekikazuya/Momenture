@@ -6,24 +6,16 @@ use App\Domain\Entities\ArticleService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Article extends Model
+class Tag extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'title',
-        'status',
-        'service_id',
-        'link',
+        'name',
     ];
 
-    public function articleService()
+    public function service()
     {
         return $this->belongsTo(ArticleService::class);
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
     }
 }
