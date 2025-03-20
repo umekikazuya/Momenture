@@ -8,7 +8,10 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * アプリケーションのデータベースを初期化します。
+     *
+     * このメソッドは、ArticleServiceSeeder、TagSeeder、および ArticleSeeder を順次実行し、
+     * 必要な初期データを登録します。
      */
     public function run(): void
     {

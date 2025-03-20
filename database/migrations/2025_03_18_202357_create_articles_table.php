@@ -7,7 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * 記事テーブルを作成するマイグレーションを実行します。
+     *
+     * このメソッドは、'articles' テーブルを以下のカラムで作成します:
+     *   - id: 自動インクリメントによるプライマリーキー
+     *   - title: 最大255文字の文字列
+     *   - status: 'draft'または'published'の値を持つ列
+     *   - article_service_id: 'article_services' テーブルのidを参照する外部キー（削除時にカスケード）
+     *   - link: 最大255文字の文字列（NULL許容）
+     *   - timestamps: 作成日時および更新日時
+     *   - softDeletes: ソフトデリート用のdeleted_at列
      */
     public function up(): void
     {
@@ -23,7 +32,9 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * マイグレーションの反転処理を実行する。
+     *
+     * このメソッドは、articles テーブルが存在する場合に削除します。
      */
     public function down(): void
     {

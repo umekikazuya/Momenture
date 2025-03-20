@@ -7,7 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * データベースマイグレーションを実行し、article_servicesテーブルを作成する。
+     *
+     * このテーブルは以下のカラムを含みます:
+     * - id: 自動インクリメントする主キー
+     * - name: 最大100文字の一意な文字列
+     * - created_at, updated_at: レコードの作成時および更新時のタイムスタンプ
+     * - deleted_at: ソフトデリート用のタイムスタンプ
      */
     public function up(): void
     {
@@ -20,7 +26,10 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * マイグレーションのロールバック処理を実行する。
+     *
+     * このメソッドは、'article_services' テーブルが存在する場合に削除して、
+     * データベースをマイグレーション適用前の状態に戻します。
      */
     public function down(): void
     {

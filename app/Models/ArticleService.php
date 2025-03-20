@@ -17,6 +17,13 @@ class ArticleService extends Model
         'name',
     ];
 
+    /**
+     * 記事モデルとの1対多リレーションを返します。
+     *
+     * このメソッドは、ArticleServiceに関連付けられた複数の記事（Articleモデル）を取得するためのリレーションを定義します。
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function articles()
     {
         return $this->hasMany(Article::class);

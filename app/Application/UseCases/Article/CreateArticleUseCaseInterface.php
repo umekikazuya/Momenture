@@ -9,5 +9,11 @@ use App\Domain\Entities\Article;
 
 interface CreateArticleUseCaseInterface
 {
-    public function execute(CreateArticleInput $dto): Article;
+    /**
+ * 指定されたDTOの内容に基づき記事を作成し、生成されたArticleエンティティを返します。
+ *
+ * @param CreateArticleInput $dto 記事作成に必要なデータを含むDTO
+ * @return Article 作成された記事のエンティティ
+ */
+public function execute(CreateArticleInput $dto): Article;
 }

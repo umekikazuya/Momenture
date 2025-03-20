@@ -28,7 +28,10 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * アプリケーションで利用する各サービスの依存性バインディングを登録する。
+     *
+     * このメソッドは、Feedサービス（FeedFetcherおよびFeedParser）のバインディング、AWS DynamoDBクライアントのシングルトン登録、
+     * 記事リポジトリのバインディング、そして記事作成、更新、削除、復元、検索、状態変更の各ユースケースインターフェースと実装クラスの登録を行います。
      */
     public function register(): void
     {

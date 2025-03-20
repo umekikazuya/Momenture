@@ -7,7 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * タグテーブルを作成するマイグレーションを実行する。
+     *
+     * このマイグレーションでは、'tags' テーブルを作成し、以下のカラムを定義します:
+     * - id: 自動増分の主キー
+     * - name: 最大100文字の一意な文字列
+     * - timestamps: 作成および更新のタイムスタンプ
+     * - softDeletes: ソフトデリート用の日時カラム
      */
     public function up(): void
     {
@@ -20,7 +26,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * マイグレーションのロールバック処理を実行し、存在する場合は `tags` テーブルを削除します。
      */
     public function down(): void
     {

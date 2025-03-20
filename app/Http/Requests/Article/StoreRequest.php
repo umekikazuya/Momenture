@@ -6,11 +6,27 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
+    /**
+     * リクエストが許可されているかを判定する。
+     *
+     * このメソッドは常に true を返すため、すべてのユーザーがリクエストを実行できることを示します。
+     *
+     * @return bool 常に true。
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * リクエストデータのバリデーションルールを返します。
+     *
+     * このメソッドは、記事作成・更新リクエストに対する各フィールドのバリデーションルールを定義した連想配列を返します。
+     * ルールには必須のタイトル（文字列、最大255文字）、必須のステータス（"draft"または"published"のいずれか）、
+     * 必須のサービスID（整数、存在確認付き）、および任意のリンク（有効なURL）が含まれます。
+     *
+     * @return array バリデーションルールの連想配列
+     */
     public function rules(): array
     {
         return [
@@ -21,6 +37,13 @@ class StoreRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラーのカスタムメッセージを返します。
+     *
+     * 各バリデーションルールに対して適用されるエラーメッセージを定義した連想配列を返します。
+     *
+     * @return array 各ルールに対応するエラーメッセージの連想配列
+     */
     public function messages(): array
     {
         return [

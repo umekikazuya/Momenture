@@ -9,6 +9,12 @@ use App\Models\Tag;
 
 class ArticleSeeder extends Seeder
 {
+    /**
+     * シーディング用のサンプル記事を作成し、全てのタグを関連付けます。
+     *
+     * ArticleService から取得した最初のサービスIDを使用して記事を生成し、
+     * Tag モデルから全タグのIDを取得して記事に紐付けます。
+     */
     public function run()
     {
         // 最初のサービスを取得
