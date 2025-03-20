@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Application\UseCases;
+namespace Tests\Unit\Application\UseCases\Article;
 
 use App\Application\UseCases\Article\FindArticleByIdUseCase;
 use App\Domain\Entities\Article;

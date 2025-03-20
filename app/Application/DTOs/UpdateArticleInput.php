@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Application\Dtos;
+declare(strict_types=1);
+
+namespace App\Application\DTOs;
 
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;

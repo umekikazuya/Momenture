@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\DTOs;
 
 use App\Domain\Entities\ArticleService;
@@ -12,7 +14,7 @@ final class CreateArticleInput
 {
     public function __construct(
         public readonly ArticleTitle $title,
-        public readonly ArticleLink $link,
+        public readonly ?ArticleLink $link,
         public readonly ArticleStatus $status,
         public readonly ArticleService $service
     ) {
@@ -22,7 +24,7 @@ final class CreateArticleInput
     {
         return new self(
             new ArticleTitle($request->title),
-            new ArticleLink($request->link),
+            new ArticleLink($request->link) ?? null,
             ArticleStatus::from($request->status),
             new ArticleService($request->service, '')
         );

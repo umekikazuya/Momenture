@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Application\DTOs\CreateArticleInput;
-use App\Application\Dtos\UpdateArticleInput;
+use App\Application\DTOs\UpdateArticleInput;
 use App\Application\UseCases\Article\ChangeArticleStatusUseCaseInterface;
 use App\Application\UseCases\Article\CreateArticleUseCaseInterface;
 use App\Application\UseCases\Article\DeleteArticleUseCaseInterface;
@@ -41,7 +41,7 @@ class ArticleController extends Controller
         $input = CreateArticleInput::fromRequest($request);
         $article = $this->createArticle->execute($input);
 
-        return new ArticleResource($article);
+        return (new ArticleResource($article));
     }
 
     // 記事更新

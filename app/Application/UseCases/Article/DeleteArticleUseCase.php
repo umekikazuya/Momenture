@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\UseCases\Article;
 
 use App\Domain\Repositories\ArticleRepositoryInterface;
@@ -16,7 +18,7 @@ class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
         $article = $this->articleRepository->findById($id);
 
         if (! $article) {
-            throw new DomainException('記事が見つかりません。');
+            throw new DomainException("ID: {$id} の記事が見つかりません。");
         }
 
         if ($force) {

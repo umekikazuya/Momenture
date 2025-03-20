@@ -6,7 +6,7 @@ namespace App\Domain\Repositories;
 
 use App\Domain\Entities\ArticleService;
 
-interface ServiceRepositoryInterface
+interface ArticleServiceRepositoryInterface
 {
     public function findById(int $id): ?ArticleService;
 

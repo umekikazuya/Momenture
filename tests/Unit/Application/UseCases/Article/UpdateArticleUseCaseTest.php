@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit\Application\UseCases;
+namespace Tests\Unit\Application\UseCases\Article;
 
+use App\Application\Dtos\UpdateArticleInput;
 use App\Application\UseCases\Article\UpdateArticleUseCase;
 use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
@@ -49,7 +50,8 @@ class UpdateArticleUseCaseTest extends TestCase
             ->shouldReceive('save')
             ->once();
 
-        $updatedArticle = $this->useCase->execute(1, $newTitle, $newLink, null);
+        $input = new UpdateArticleInput(1, $newTitle, $newLink, null);
+        $updatedArticle = $this->useCase->execute($input);
 
         $this->assertEquals('変更後のタイトル', $updatedArticle->title()->value());
         $this->assertEquals('https://updated.com', $updatedArticle->link()->value());

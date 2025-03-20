@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Application\UseCases\Article;
 
+use App\Application\DTOs\CreateArticleInput;
 use App\Application\UseCases\Article\CreateArticleUseCase;
+use App\Application\UseCases\Article\CreateArticleUseCaseInterface;
 use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
@@ -15,7 +17,7 @@ class CreateArticleUseCaseTest extends TestCase
 {
     private $repository;
 
-    private $useCase;
+    private CreateArticleUseCaseInterface $useCase;
 
     protected function setUp(): void
     {
@@ -34,7 +36,8 @@ class CreateArticleUseCaseTest extends TestCase
             ->once()
             ->with(Mockery::type(Article::class));
 
-        $article = $this->useCase->execute($title->value(), $status, $service);
+         $dto = new CreateArticleInput($title, null, $status, $service);
+         $article = $this->useCase->execute($dto);
 
         $this->assertInstanceOf(Article::class, $article);
         $this->assertEquals('テスト記事', $article->title()->value());

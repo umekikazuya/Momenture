@@ -68,12 +68,13 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     {
         /** @var ArticleModel $model */
         $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
-
+        if ($article->id() && !$model) {
+            throw new \DomainException('該当IDの記事が見つかりません。');
+        }
         $model->title = $article->title()->value();
         $model->status = $article->isPublished() ? ArticleStatus::PUBLISHED->value : ArticleStatus::DRAFT->value;
         $model->article_service_id = $article->service()->id();
         $model->link = $article->hasLink() ? $article->link()->value() : null;
-
         $model->save();
     }
 

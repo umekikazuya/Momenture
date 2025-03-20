@@ -57,7 +57,7 @@ DDD の原則に基づき、以下のレイヤーに分割する
 - アプリケーションエラー（ApplicationException）
 - インフラエラー（InfrastructureException）
 - 統一したエラーレスポンスの設計
-```
+```json
 {
   "status": "error",
   "message": "対象のデータが見つかりません",

@@ -12,7 +12,7 @@ class SearchRequest extends FormRequest
     {
         return [
             'status' => 'nullable|in:draft,published',
-            'service_id' => 'nullable|integer|exists:services,id',
+            'service_id' => 'nullable|integer|exists:article_services,id',
             'tag_id' => 'nullable|integer|exists:tags,id',
             'sort' => 'nullable|string',
             'page' => 'nullable|integer|min:1',

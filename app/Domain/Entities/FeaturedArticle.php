@@ -31,7 +31,7 @@ class FeaturedArticle
         return $this->article;
     }
 
-    public function startArticleDate(): \DateTimeImmutable
+    public function startDate(): \DateTimeImmutable
     {
         return $this->startDate;
     }

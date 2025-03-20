@@ -7,15 +7,18 @@ namespace Tests\Unit\Domain\Entities;
 use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
-use App\Domain\ValueObjects\ArticleTitle;
 use App\Domain\ValueObjects\ArticleLink;
+use App\Domain\ValueObjects\ArticleTitle;
 use PHPUnit\Framework\TestCase;
 
 class ArticleTest extends TestCase
 {
     private Article $article;
+
     private ArticleService $service;
+
     private \DateTimeImmutable $createdAt;
+
     private \DateTimeImmutable $updatedAt;
 
     protected function setUp(): void
@@ -43,16 +46,20 @@ class ArticleTest extends TestCase
         $this->assertSame(ArticleStatus::DRAFT, $this->article->status());
         $this->assertSame('Qiita', $this->article->service()->name());
         $this->assertSame('https://example.com', $this->article->link()->value());
-        $this->assertSame($this->createdAt->format('Y-m-d H:i:s'), $this->article->createdAt()->format('Y-m-d H:i:s'));
-        $this->assertSame($this->updatedAt->format('Y-m-d H:i:s'), $this->article->updatedAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals($this->createdAt, $this->article->createdAt());
+        $this->assertEquals($this->updatedAt, $this->article->updatedAt());
     }
 
     public function test_タイトルを更新できる()
     {
+        $oldUpdatedAt = $this->article->updatedAt();
+        // 時間の経過を確実にするため少し待機
+        usleep(1000);
         $newTitle = new ArticleTitle('更新後のタイトル');
         $this->article->updateTitle($newTitle);
 
         $this->assertSame('更新後のタイトル', $this->article->title()->value());
+        $this->assertGreaterThan($oldUpdatedAt, $this->article->updatedAt(), '更新日時が正しく更新されていません');
     }
 
     public function test_リンクを更新できる()

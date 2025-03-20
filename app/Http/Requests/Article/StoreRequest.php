@@ -6,6 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function rules(): array
     {
         return [
@@ -14,10 +19,5 @@ class StoreRequest extends FormRequest
             'service' => 'required|integer|exists:article_services,id',
             'link' => 'nullable|url',
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 }
