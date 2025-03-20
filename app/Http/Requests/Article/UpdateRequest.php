@@ -11,7 +11,7 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'nullable|string|max:255',
             'link' => 'nullable|url',
-            'service' => 'nullable|integer|exists:services,id',
+            'service' => 'nullable|integer|exists:article_services,id',
         ];
     }
 

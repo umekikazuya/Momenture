@@ -11,7 +11,6 @@ use App\Domain\Repositories\ArticleRepositoryInterface;
 use App\Domain\ValueObjects\ArticleLink;
 use App\Domain\ValueObjects\ArticleTitle;
 use App\Models\Article as ArticleModel;
-use DateTimeImmutable;
 
 class EloquentArticleRepository implements ArticleRepositoryInterface
 {
@@ -39,8 +38,9 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
 
         $query->orderBy('created_at', $sort === 'created_at_desc' ? 'desc' : 'asc');
 
-        $query->paginate($perPage, ['*'], 'page', $page);
-        return $query
+        $paginator = $query->paginate($perPage, ['*'], 'page', $page);
+
+        return collect($paginator->items())
             ->map(fn ($model) => $this->toEntity($model))
             ->all();
     }
@@ -71,7 +71,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
 
         $model->title = $article->title()->value();
         $model->status = $article->isPublished() ? ArticleStatus::PUBLISHED->value : ArticleStatus::DRAFT->value;
-        $model->service_id = $article->service()->id();
+        $model->article_service_id = $article->service()->id();
         $model->link = $article->hasLink() ? $article->link()->value() : null;
 
         $model->save();
@@ -98,10 +98,10 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
             id: $model->id,
             title: new ArticleTitle($model->title),
             status: ArticleStatus::from($model->status),
-            service: new ArticleService($model->service_id, $model->service->name ?? 'Unknown'),
+            service: new ArticleService($model->article_service_id, $model->articleService?->name ?? ''),
             link: $model->link ? new ArticleLink($model->link) : null,
-            createdAt: new DateTimeImmutable($model->created_at),
-            updatedAt: new DateTimeImmutable($model->updated_at)
+            createdAt: \DateTimeImmutable::createFromMutable($model->created_at),
+            updatedAt: \DateTimeImmutable::createFromMutable($model->updated_at),
         );
     }
 }

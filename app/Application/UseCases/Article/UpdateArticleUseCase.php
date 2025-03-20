@@ -2,6 +2,7 @@
 
 namespace App\Application\UseCases\Article;
 
+use App\Application\Dtos\UpdateArticleInput;
 use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Repositories\ArticleRepositoryInterface;
@@ -13,27 +14,24 @@ class UpdateArticleUseCase implements UpdateArticleUseCaseInterface
     public function __construct(private ArticleRepositoryInterface $articleRepository) {}
 
     public function execute(
-        int $articleId,
-        ?ArticleTitle $title,
-        ?ArticleLink $link,
-        ?ArticleService $service
+        UpdateArticleInput $input,
     ): Article {
-        $article = $this->articleRepository->findById($articleId);
+        $article = $this->articleRepository->findById($input->id);
 
         if (! $article) {
             throw new \DomainException('記事が見つかりません。');
         }
 
-        if ($title !== null) {
-            $article->updateTitle($title);
+        if ($input->title !== null) {
+            $article->updateTitle($input->title);
         }
 
-        if ($link !== null) {
-            $article->updateLink($link);
+        if ($input->link !== null) {
+            $article->updateLink($input->link);
         }
 
-        if ($service !== null) {
-            $article->updateArticleService($service);
+        if ($input->service !== null) {
+            $article->updateArticleService($input->service);
         }
 
         $this->articleRepository->save($article);

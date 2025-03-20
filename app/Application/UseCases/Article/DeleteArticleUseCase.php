@@ -9,15 +9,15 @@ class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
 {
     public function __construct(private ArticleRepositoryInterface $articleRepository) {}
 
-    public function execute(int $articleId, bool $forceDelete = false): void
+    public function execute(int $id, bool $force = false): void
     {
-        $article = $this->articleRepository->findById($articleId);
+        $article = $this->articleRepository->findById($id);
 
         if (! $article) {
             throw new DomainException('記事が見つかりません。');
         }
 
-        if ($forceDelete) {
+        if ($force) {
             $this->articleRepository->forceDelete($article);
         } else {
             $this->articleRepository->delete($article);

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Domain\Entities\ArticleService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,11 +9,15 @@ class Article extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'articles';
+
     protected $fillable = [
         'title',
         'status',
-        'service_id',
+        'article_service_id',
         'link',
+        'created_at',
+        'updated_at',
     ];
 
     public function articleService()

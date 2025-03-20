@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Application\DTOs\CreateArticleInput;
+use App\Application\Dtos\UpdateArticleInput;
 use App\Application\UseCases\Article\ChangeArticleStatusUseCaseInterface;
 use App\Application\UseCases\Article\CreateArticleUseCaseInterface;
 use App\Application\UseCases\Article\DeleteArticleUseCaseInterface;
@@ -12,10 +14,10 @@ use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
 use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
 use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
 use App\Http\Requests\Article\ChangeStatusRequest;
+use App\Http\Requests\Article\SearchRequest;
 use App\Http\Requests\Article\ShowRequest;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
-use App\Http\Requests\SearchRequest;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,25 +37,17 @@ class ArticleController extends Controller
     // 記事作成
     public function store(StoreRequest $request): ArticleResource
     {
-        $article = $this->createArticle->execute(
-            $request->title,
-            $request->link,
-            $request->status,
-            $request->service
-        );
+        $input = CreateArticleInput::fromRequest($request);
+        $article = $this->createArticle->execute($input);
 
         return new ArticleResource($article);
     }
 
     // 記事更新
-    public function update(UpdateRequest $request, int $id): ArticleResource
+    public function update(int $id, UpdateRequest $request): ArticleResource
     {
-        $article = $this->updateArticle->execute(
-            $id,
-            $request->title,
-            $request->link,
-            $request->service
-        );
+        $input = UpdateArticleInput::fromRequest($id, $request);
+        $article = $this->updateArticle->execute($input);
 
         return new ArticleResource($article);
     }

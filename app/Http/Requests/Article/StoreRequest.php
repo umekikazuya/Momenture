@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'status' => 'required|in:draft,published',
-            'service' => 'required|integer|exists:services,id',
+            'service' => 'required|integer|exists:article_services,id',
             'link' => 'nullable|url',
         ];
     }

@@ -4,5 +4,5 @@ namespace App\Application\UseCases\Article;
 
 interface DeleteArticleUseCaseInterface
 {
-    public function execute(int $articleId, bool $forceDelete = false): void;
+    public function execute(int $id, bool $force = false): void;
 }
