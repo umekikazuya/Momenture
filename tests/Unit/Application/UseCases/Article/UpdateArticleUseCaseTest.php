@@ -57,6 +57,19 @@ class UpdateArticleUseCaseTest extends TestCase
         $this->assertEquals('https://updated.com', $updatedArticle->link()->value());
     }
 
+    public function test_存在しない記事の編集で例外が発生する()
+    {
+        $this->repository
+            ->shouldReceive('findById')
+            ->with(999)
+            ->andReturn(null);
+
+        $this->expectException(\DomainException::class);
+
+        $input = new UpdateArticleInput(999, new ArticleTitle('テスト'));
+        $this->useCase->execute($input);
+    }
+
     protected function tearDown(): void
     {
         Mockery::close();

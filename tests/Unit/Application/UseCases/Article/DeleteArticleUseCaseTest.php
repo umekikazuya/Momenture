@@ -38,9 +38,6 @@ class DeleteArticleUseCaseTest extends TestCase
 
         $this->useCase->execute(1, false);
 
-        // 明示的にアサーションを追加
-        $this->assertTrue(true, 'リポジトリのdeleteメソッドが呼び出されました');
-
         $this->repository->shouldHaveReceived('delete')->once();
     }
 
@@ -57,9 +54,6 @@ class DeleteArticleUseCaseTest extends TestCase
             ->once();
 
         $this->useCase->execute(1, true);
-
-        // 明示的にアサーションを追加
-        $this->assertTrue(true, 'リポジトリのforceDeleteメソッドが呼び出されました');
 
         $this->repository->shouldHaveReceived('forceDelete')->once();
     }
