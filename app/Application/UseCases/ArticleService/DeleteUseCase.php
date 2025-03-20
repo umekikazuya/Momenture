@@ -8,7 +8,9 @@ use App\Domain\Repositories\ArticleServiceRepositoryInterface;
 
 class DeleteUseCase implements DeleteUseCaseInterface
 {
-    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository) {}
+    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository)
+    {
+    }
 
     public function execute(int $id, bool $force = false): void
     {

@@ -16,7 +16,8 @@ class CreateUseCase implements CreateUseCaseInterface
     ) {
     }
 
-    public function execute(string $name): ArticleService {
+    public function execute(string $name): ArticleService
+    {
         $article = new ArticleService(
             id: new ArticleServiceId(0),
             name: new ArticleServiceName($name),

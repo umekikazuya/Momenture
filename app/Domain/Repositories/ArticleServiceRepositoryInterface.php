@@ -10,13 +10,13 @@ interface ArticleServiceRepositoryInterface
 {
     public function findAll(): array;
 
-    public function findById(int $id): ?ArticleService;
+    public function findById(int $articleServiceId): ?ArticleService;
 
-    public function create(ArticleService $article): ArticleService;
+    public function create(ArticleService $articleService): ArticleService;
 
-    public function update(ArticleService $article): ArticleService;
+    public function update(ArticleService $articleService): ArticleService;
 
-    public function delete(ArticleService $article): void;
+    public function delete(ArticleService $articleService): void;
 
-    public function forceDelete(ArticleService $article): void;
+    public function forceDelete(ArticleService $articleService): void;
 }

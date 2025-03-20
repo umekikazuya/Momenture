@@ -6,6 +6,8 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entities\ArticleService;
 use App\Domain\Repositories\ArticleServiceRepositoryInterface;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 use App\Models\ArticleService as ArticleServiceModel;
 
 class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterface
@@ -28,37 +30,37 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
         return $entities;
     }
 
-    public function create(ArticleService $article): ArticleService
+    public function create(ArticleService $articleService): ArticleService
     {
-        $model = ArticleServiceModel::create(['name' => $article->name()->value()]);
+        $model = ArticleServiceModel::create(['name' => $articleService->name()->value()]);
 
         return $this->toEntity($model);
     }
 
-    public function update(ArticleService $article): ArticleService
+    public function update(ArticleService $articleService): ArticleService
     {
-        $model = ArticleServiceModel::find($article->id());
-        $model->name = $article->name();
+        $model = ArticleServiceModel::find($articleService->id()->value());
+        $model->name = $articleService->name()->value();
         $model->save();
 
         return $this->toEntity($model);
     }
 
-    public function delete(ArticleService $article): void
+    public function delete(ArticleService $articleService): void
     {
-        ArticleServiceModel::destroy($article->id()->value());
+        ArticleServiceModel::destroy($articleService->id()->value());
     }
 
-    public function forceDelete(ArticleService $article): void
+    public function forceDelete(ArticleService $articleService): void
     {
-        ArticleServiceModel::withTrashed()->find($article->id()->value())->forceDelete();
+        ArticleServiceModel::withTrashed()->find($articleService->id()->value())->forceDelete();
     }
 
     private function toEntity(ArticleServiceModel $model): ArticleService
     {
         return new ArticleService(
-            $model->id,
-            $model->name
+            new ArticleServiceId($model->id),
+            new ArticleServiceName($model->name)
         );
     }
 }

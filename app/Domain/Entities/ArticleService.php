@@ -10,7 +10,8 @@ class ArticleService
     public function __construct(
         protected ArticleServiceId $id,
         protected ArticleServiceName $name,
-    ) {}
+    ) {
+    }
 
     public function id(): ArticleServiceId
     {

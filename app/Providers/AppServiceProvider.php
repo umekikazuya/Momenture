@@ -12,7 +12,6 @@ use App\Application\UseCases\Article\FindArticleByIdUseCase;
 use App\Application\UseCases\Article\FindArticleByIdUseCaseInterface;
 use App\Application\UseCases\Article\FindArticlesUseCase;
 use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
-use App\Application\UseCases\Article\FindByIdUseCase;
 use App\Application\UseCases\Article\RestoreArticleUseCase;
 use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
 use App\Application\UseCases\Article\UpdateArticleUseCase;
@@ -23,6 +22,7 @@ use App\Application\UseCases\ArticleService\DeleteUseCase;
 use App\Application\UseCases\ArticleService\DeleteUseCaseInterface;
 use App\Application\UseCases\ArticleService\FindAllUseCase;
 use App\Application\UseCases\ArticleService\FindAllUseCaseInterface;
+use App\Application\UseCases\ArticleService\FindByIdUseCase;
 use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Application\UseCases\ArticleService\UpdateUseCase;
 use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
@@ -63,6 +63,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
+        );
+        $this->app->bind(
+            \App\Domain\Repositories\ArticleServiceRepositoryInterface::class,
+            \App\Infrastructure\Repositories\EloquentArticleServiceRepository::class
         );
         $this->app->bind(CreateArticleUseCaseInterface::class, CreateArticleUseCase::class);
         $this->app->bind(UpdateArticleUseCaseInterface::class, UpdateArticleUseCase::class);

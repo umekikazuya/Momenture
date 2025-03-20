@@ -9,7 +9,9 @@ use App\Domain\Repositories\ArticleServiceRepositoryInterface;
 
 class UpdateUseCase implements UpdateUseCaseInterface
 {
-    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository) {}
+    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository)
+    {
+    }
 
     public function execute(
         ArticleService $articleService,
