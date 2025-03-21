@@ -13,14 +13,14 @@ class FeaturedArticle
      * 指定された一意のID、記事、開始日時、および（任意で）終了日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
      *
      * @param  FeaturedArticleId  $id  FeaturedArticleの識別子
-     * @param  int  $articleId  記事ID
+     * @param  Article  $article  記事
      * @param  FeaturedPriority  $priority  優先度
      * @param  bool  $isActive  有効かどうか
      * @param  \DateTimeImmutable  $createdAt  作成日時
      */
     public function __construct(
         private FeaturedArticleId $id,
-        private int $articleId,
+        private Article $article,
         private FeaturedPriority $priority,
         private bool $isActive,
         private \DateTimeImmutable $createdAt
@@ -35,6 +35,14 @@ class FeaturedArticle
     public function id(): FeaturedArticleId
     {
         return $this->id;
+    }
+
+    /**
+     * 記事を取得します。
+     */
+    public function article(): Article
+    {
+        return $this->article;
     }
 
     /**

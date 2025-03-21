@@ -26,6 +26,8 @@ use App\Application\UseCases\ArticleService\FindByIdUseCase;
 use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Application\UseCases\ArticleService\UpdateUseCase;
 use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
+use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
+use App\Infrastructure\Repositories\EloquentFeaturedArticleRepository;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
@@ -83,6 +85,29 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FindByIdUseCaseInterface::class, FindByIdUseCase::class);
         $this->app->bind(FindAllUseCaseInterface::class, FindAllUseCase::class);
         $this->app->bind(DeleteUseCaseInterface::class, DeleteUseCase::class);
+
+        $this->app->bind(FeaturedArticleRepositoryInterface::class, EloquentFeaturedArticleRepository::class);
+
+        // $this->app->bind(
+        //     \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
+        //     FindAllUseCase::class
+        // );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\AssignArticleUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\AssignArticleUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\DeactivateUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\DeactivateUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\ChangePriorityUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\ChangePriorityUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\FindAllUseCase::class
+        );
     }
 
     /**

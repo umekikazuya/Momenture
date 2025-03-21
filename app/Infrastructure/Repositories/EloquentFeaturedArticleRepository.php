@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entities\FeaturedArticle;
+use App\Domain\Repositories\ArticleRepositoryInterface;
 use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
 use App\Domain\ValueObjects\FeaturedArticleId;
 use App\Domain\ValueObjects\FeaturedPriority;
@@ -10,6 +11,12 @@ use App\Models\FeaturedArticle as FeaturedArticleModel;
 
 class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInterface
 {
+    public function __construct(
+        protected ArticleRepositoryInterface $articleRepository
+    )
+    {
+    }
+
     public function findAll(): array
     {
         return FeaturedArticleModel::where('is_active', true)
@@ -54,9 +61,10 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
 
     private function toEntity(FeaturedArticleModel $model): FeaturedArticle
     {
+        $article = $this->articleRepository->findById($model->article_id);
         return new FeaturedArticle(
             new FeaturedArticleId($model->id),
-            $model->article_id,
+            $article,
             new FeaturedPriority($model->priority),
             $model->is_active,
             new \DateTimeImmutable($model->created_at)

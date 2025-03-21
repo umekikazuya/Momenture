@@ -21,6 +21,9 @@ class DeactivateUseCase implements DeactivateUseCaseInterface
         if ($featured === null) {
             throw new \DomainException('注目記事が見つかりません。');
         }
+        if (!$featured->isActive()) {
+            throw new \DomainException('注目記事は既に無効です。');
+        }
 
         $this->repository->deactivate($id);
     }

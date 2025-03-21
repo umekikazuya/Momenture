@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\UseCases\FeaturedArticle;
 
 use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
+use App\Domain\ValueObjects\FeaturedArticleId;
 use App\Domain\ValueObjects\FeaturedPriority;
 
 class AssignArticleUseCase implements AssignArticleUseCaseInterface
@@ -14,16 +15,15 @@ class AssignArticleUseCase implements AssignArticleUseCaseInterface
     public function __construct(
         private FeaturedArticleRepositoryInterface $repository,
         private int $maxFeaturedCount = self::DEFAULT_MAX_FEATURED_COUNT
-    ) {
-    }
+    ) {}
 
-    public function handle(int $articleId, FeaturedPriority $priority): void
+    public function handle(FeaturedArticleId $articleId, FeaturedPriority $priority): void
     {
         // 上限チェック
         if ($this->repository->countActive() >= $this->maxFeaturedCount) {
             throw new \DomainException('注目記事の上限に達しています。');
         }
 
-        $this->repository->add($articleId, $priority);
+        $this->repository->add($articleId->value(), $priority);
     }
 }

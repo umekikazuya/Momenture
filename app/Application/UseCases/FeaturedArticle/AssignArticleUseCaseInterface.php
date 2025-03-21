@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCases\FeaturedArticle;
 
+use App\Domain\ValueObjects\FeaturedArticleId;
 use App\Domain\ValueObjects\FeaturedPriority;
 
 interface AssignArticleUseCaseInterface
@@ -13,5 +14,5 @@ interface AssignArticleUseCaseInterface
      *
      * @throws \DomainException 上限超過・登録不可時
      */
-    public function handle(int $articleId, FeaturedPriority $priority): void;
+    public function handle(FeaturedArticleId $articleId, FeaturedPriority $priority): void;
 }
