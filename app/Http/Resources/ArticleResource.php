@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Domain\Entities\Article;
@@ -29,8 +31,8 @@ class ArticleResource extends JsonResource
             'link' => $this->resource->link()->value(),
             'status' => $this->resource->isPublished() ? 'published' : 'draft',
             'service' => [
-                'id' => $this->resource->service()->id(),
-                'name' => $this->resource->service()->name(),
+                'id' => $this->resource->service()->id()->value(),
+                'name' => $this->resource->service()->name()->value(),
             ],
             'created_at' => $this->resource->createdAt()->format('Y-m-d H:i:s'),
             'updated_at' => $this->resource->updatedAt()->format('Y-m-d H:i:s'),

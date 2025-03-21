@@ -24,9 +24,9 @@ class DeleteUseCase implements DeleteUseCaseInterface
                 $this->articleServiceRepository->delete($article);
             }
         } catch (\DomainException $e) {
+            throw new \RuntimeException("ID: {$id} の記事サービスは存在しません", 0, $e);
         } catch (\Exception $e) {
             throw new \RuntimeException("ID: {$id} の記事サービスの削除中にエラーが発生しました", 0, $e);
         }
-
     }
 }
