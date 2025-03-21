@@ -7,7 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class ShowRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * ユーザーがこのリクエストを実行する権限があるかを判定する。
+     *
+     * 本メソッドは常に true を返すため、すべてのユーザーがリクエストを実行できます。
+     *
+     * @return bool 常に true
      */
     public function authorize(): bool
     {
