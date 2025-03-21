@@ -23,7 +23,7 @@ class UpdateUseCase implements UpdateUseCaseInterface
      *
      * 内部のリポジトリを介してArticleServiceの状態を永続化します。
      *
-     * @param ArticleService $articleService 更新対象のArticleServiceオブジェクト
+     * @param  ArticleService $articleService 更新対象のArticleServiceオブジェクト
      * @return ArticleService 更新後のArticleServiceオブジェクト
      */
     public function execute(
