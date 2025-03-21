@@ -9,13 +9,26 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class FeaturedArticleResource extends JsonResource
 {
     /**
-     * リソースを連想配列に変換する。
+     * リソースから FeaturedArticle の情報を連想配列に変換します。
      *
-     * リソースが FeaturedArticle のインスタンスの場合は、その id および name を抽出し、
-     * 'id' および 'name' キーを持つ配列として返します。
-     * それ以外の場合は、空の配列を返します。
+     * リソースが FeaturedArticle のインスタンスの場合、返却される配列には以下の情報が含まれます:
+     * - 'id': FeaturedArticle の識別子
+     * - 'article': 関連する記事の詳細情報を含む連想配列
+     *   - 'id': 記事の識別子
+     *   - 'title': 記事のタイトル
+     *   - 'link': 記事のリンク
+     *   - 'status': 記事の公開状態（'published' または 'draft'）
+     *   - 'service': 記事に関連するサービス情報を含む連想配列
+     *     - 'id': サービスの識別子
+     *     - 'name': サービス名
+     *   - 'created_at': 記事の作成日時（'Y-m-d H:i:s' フォーマット）
+     *   - 'updated_at': 記事の最終更新日時（'Y-m-d H:i:s' フォーマット）
+     * - 'priority': FeaturedArticle の優先度
+     * - 'is_active': FeaturedArticle のアクティブ状態
      *
-     * @return array<string, mixed> FeaturedArticle の情報を表す連想配列
+     * リソースが FeaturedArticle のインスタンスでない場合は、空の配列を返します。
+     *
+     * @return array<string, mixed> 変換された FeaturedArticle の情報を含む連想配列
      */
     public function toArray(Request $request): array
     {
