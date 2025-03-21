@@ -9,6 +9,11 @@ use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
 
 class FindAllUseCase implements FindAllUseCaseInterface
 {
+    /**
+     * コンストラクタ。
+     *
+     * 指定された FeaturedArticleRepositoryInterface の実装を内部プロパティに保持します。
+     */
     public function __construct(
         private FeaturedArticleRepositoryInterface $repository
     ) {

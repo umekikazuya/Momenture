@@ -10,13 +10,13 @@ class FeaturedArticle
     /**
      * FeaturedArticleクラスのインスタンスを初期化するコンストラクタ。
      *
-     * 指定された一意のID、記事、開始日時、および（任意で）終了日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
+     * 指定された一意の識別子、記事ID、優先度、有効状態、および作成日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
      *
-     * @param  FeaturedArticleId  $id  FeaturedArticleの識別子
-     * @param  Article  $article  記事
-     * @param  FeaturedPriority  $priority  優先度
-     * @param  bool  $isActive  有効かどうか
-     * @param  \DateTimeImmutable  $createdAt  作成日時
+     * @param FeaturedArticleId $id        FeaturedArticleの識別子
+     * @param int               $articleId 記事の識別ID
+     * @param FeaturedPriority  $priority  記事の優先度
+     * @param bool              $isActive  記事が有効かどうかのフラグ
+     * @param \DateTimeImmutable $createdAt 作成日時
      */
     public function __construct(
         private FeaturedArticleId $id,
@@ -38,7 +38,9 @@ class FeaturedArticle
     }
 
     /**
-     * 記事を取得します。
+     * FeaturedArticleに紐づくArticleオブジェクトを取得します。
+     *
+     * @return Article 関連する記事の詳細情報を保持するArticleオブジェクト
      */
     public function article(): Article
     {
@@ -46,7 +48,11 @@ class FeaturedArticle
     }
 
     /**
-     * 優先度を取得します。
+     * 記事の優先度を返します。
+     *
+     * このメソッドは、記事に設定された優先度を示す FeaturedPriority オブジェクトを取得します。
+     *
+     * @return FeaturedPriority 記事の優先度
      */
     public function priority(): FeaturedPriority
     {
@@ -54,7 +60,11 @@ class FeaturedArticle
     }
 
     /**
-     * 有効かどうかを取得します。
+     * フィーチャード記事がアクティブな状態かどうかを返します。
+     *
+     * このメソッドは、記事が現在有効（アクティブ）であるかを示すブール値を返します。
+     *
+     * @return bool 有効な場合は true、そうでない場合は false を返します。
      */
     public function isActive(): bool
     {

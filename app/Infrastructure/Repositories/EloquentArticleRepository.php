@@ -79,7 +79,12 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * 指定された Article エンティティを保存または更新する。
+     *
+     * Article に ID がある場合は、対応する記事モデルを取得して更新し、存在しない場合は新規作成します。
+     * 指定された ID の記事が見つからない場合は DomainException を発生させます。
+     *
+     * @throws \DomainException 指定された ID の記事が存在しない場合
      */
     public function save(Article $article): void
     {
@@ -120,7 +125,12 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * ArticleModelのデータをArticleエンティティに変換する。
+     *
+     * Eloquentモデルの各プロパティを対応する値オブジェクトに変換し、新たなArticleエンティティを生成します。
+     *
+     * @param ArticleModel $model 変換対象のEloquent記事モデル
+     * @return Article 変換されたArticleエンティティ
      */
     private function toEntity(ArticleModel $model): Article
     {

@@ -11,8 +11,20 @@ use App\Models\FeaturedArticle as FeaturedArticleModel;
 
 class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInterface
 {
-    public function __construct(protected ArticleRepositoryInterface $articleRepository) {}
+    /**
+ * コンストラクタ
+ *
+ * 記事リポジトリの依存性注入により、記事データ管理に必要なリポジトリインスタンスを保持します。
+ */
+public function __construct(protected ArticleRepositoryInterface $articleRepository) {}
 
+    /**
+     * 有効なフィーチャー記事を全件取得し、優先度順に並べ替えてエンティティ化した配列を返します。
+     *
+     * データベースから is_active が true のフィーチャー記事を取得し、優先度に従って並べ替えた後、各モデルをドメインエンティティに変換します。
+     *
+     * @return FeaturedArticle[] 有効なフィーチャー記事のエンティティ配列
+     */
     public function findAll(): array
     {
         return FeaturedArticleModel::query()
@@ -23,6 +35,15 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
             ->toArray();
     }
 
+    /**
+     * 指定された記事IDと優先度に基づいて、新しいフィーチャー記事レコードを作成する。
+     *
+     * このメソッドは、提供された記事の識別子とフィーチャー記事の優先度に応じて、
+     * データベースにアクティブなフィーチャー記事レコードを追加します。
+     *
+     * @param int $articleId 追加する記事の識別子。
+     * @param FeaturedPriority $priority フィーチャー記事の優先度を示すオブジェクト。
+     */
     public function add(int $articleId, FeaturedPriority $priority): void
     {
         FeaturedArticleModel::query()
@@ -33,6 +54,16 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
             ]);
     }
 
+    /**
+     * 指定されたフィーチャード記事の識別子に基づいて、優先度を更新する。
+     *
+     * 対象のレコードが見つからない場合には、RuntimeException をスローする。
+     *
+     * @param FeaturedArticleId $id 更新対象のフィーチャード記事の識別子。
+     * @param FeaturedPriority  $priority 新しく設定する優先度。
+     *
+     * @throws \RuntimeException 指定されたIDで該当するレコードが見つからなかった場合にスローされる。
+     */
     public function updatePriority(FeaturedArticleId $id, FeaturedPriority $priority): void
     {
         $rows = FeaturedArticleModel::query()
@@ -47,7 +78,13 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
     }
 
     /**
-     * {@inheritDoc}
+     * 指定された特集記事のIDに基づいて、その記事を非アクティブ状態に更新します。
+     *
+     * レコードが存在しない場合は、指定されたIDに該当するレコードが更新されなかった旨のRuntimeExceptionをスローします。
+     *
+     * @param FeaturedArticleId $id 特集記事の識別子
+     *
+     * @throws \RuntimeException 指定されたIDのレコードが存在しない場合
      */
     public function deactivate(FeaturedArticleId $id): void
     {
@@ -62,7 +99,15 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
     }
 
     /**
-     * {@inheritDoc}
+     * 指定されたIDに対応する注目記事エンティティを取得します。
+     *
+     * 指定されたFeaturedArticleIdを用いてデータベースから注目記事のレコードを検索し、
+     * 該当レコードが存在する場合は該当モデルをFeaturedArticleエンティティに変換して返します。
+     * レコードが存在しない場合はnullを返します。
+     *
+     * @param FeaturedArticleId $id 検索対象の注目記事の識別子
+     *
+     * @return FeaturedArticle|null 指定IDに対応する注目記事エンティティ、存在しない場合はnull
      */
     public function findById(FeaturedArticleId $id): ?FeaturedArticle
     {
@@ -72,7 +117,11 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
     }
 
     /**
-     * {@inheritDoc}
+     * アクティブなフィーチャー記事の件数を取得します。
+     *
+     * データベースから「is_active」が true のフィーチャー記事レコードをカウントし、その件数を返します。
+     *
+     * @return int アクティブなフィーチャー記事の総件数。
      */
     public function countActive(): int
     {
@@ -80,7 +129,13 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
     }
 
     /**
-     * モデルからエンティティに変換
+     * 指定されたFeaturedArticleModelから対応するFeaturedArticleエンティティを生成する。
+     *
+     * モデルに含まれるID、優先度、状態、作成日時の情報を基に、articleRepositoryから関連する記事情報を取得した上で
+     * 新たなFeaturedArticleエンティティを構築して返します。
+     *
+     * @param FeaturedArticleModel $model 変換対象のモデルインスタンス
+     * @return FeaturedArticle 生成されたエンティティ
      */
     private function toEntity(FeaturedArticleModel $model): FeaturedArticle
     {

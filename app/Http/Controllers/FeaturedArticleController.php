@@ -18,6 +18,12 @@ use Illuminate\Http\Response;
 
 class FeaturedArticleController extends Controller
 {
+    /**
+     * コンストラクタ
+     *
+     * このコンストラクタは、フィーチャード記事の全件取得、記事の割り当て、非活性化、優先度変更に対応するユースケースを注入し、
+     * コントローラーの機能を提供するための依存性を初期化します。
+     */
     public function __construct(
         private FindAllUseCaseInterface $findAllUseCase,
         private AssignArticleUseCaseInterface $assignArticleUseCase,
@@ -27,6 +33,14 @@ class FeaturedArticleController extends Controller
     {
     }
 
+    /**
+     * 全ての注目記事を取得し、リソースコレクションとして返却する。
+     *
+     * このメソッドは、依存性注入された use case を用いて全ての注目記事を取得し、
+     * その結果を FeaturedArticleResource インスタンスのコレクションに変換して返します。
+     *
+     * @return AnonymousResourceCollection 変換された注目記事リソースのコレクション
+     */
     public function index(): AnonymousResourceCollection
     {
         $entities = $this->findAllUseCase->handle();
@@ -34,6 +48,17 @@ class FeaturedArticleController extends Controller
         return FeaturedArticleResource::collection($entities);
     }
 
+    /**
+     * リクエストから注目記事の情報を取得し、新規に注目記事を作成・割り当てします。
+     *
+     * HTTPリクエストから取得した記事IDと優先度を用いて、注目記事作成のユースケースを実行し、
+     * 作成された注目記事をリソースとして返します。なお、DomainException発生時はHTTP 409で、
+     * その他の例外発生時はHTTP 200で中断します。
+     *
+     * @param StoreRequest $request 記事の割り当てに必要な入力（記事IDと優先度）を含むHTTPリクエスト。
+     *
+     * @return FeaturedArticleResource 作成された注目記事リソースを返します。
+     */
     public function store(StoreRequest $request): FeaturedArticleResource
     {
         try {
@@ -49,6 +74,17 @@ class FeaturedArticleController extends Controller
         }
     }
 
+    /**
+     * 指定されたフィーチャード記事の優先度を変更する。
+     *
+     * リクエストから取得した優先度に基づき、指定されたIDのフィーチャード記事の優先度を更新します。
+     * 正常に処理が完了した場合はコンテンツなしのレスポンス（HTTP 204）を返し、
+     * ドメイン制約に違反した場合は HTTP 409 エラーで処理を中断します。
+     *
+     * @param ChangePriorityRequest $request 優先度変更情報を含むリクエスト
+     * @param int $id 変更対象のフィーチャード記事の識別子
+     * @return Response コンテンツなしのレスポンス（HTTP 204）
+     */
     public function changePriority(ChangePriorityRequest $request, int $id): Response
     {
         try {
@@ -63,6 +99,15 @@ class FeaturedArticleController extends Controller
         }
     }
 
+    /**
+     * 指定されたIDのフィーチャード記事を非アクティブ化する。
+     *
+     * 指定された記事IDに基づき、フィーチャード記事の非アクティブ化処理を実行します。
+     * 成功時にはコンテンツなしのレスポンスを返し、ドメイン例外が発生した場合はHTTP 409ステータスで中断されます。
+     *
+     * @param int $id 非アクティブ化するフィーチャード記事のID。
+     * @return Response コンテンツなしのレスポンス。
+     */
     public function deactivate(int $id): Response
     {
         try {
