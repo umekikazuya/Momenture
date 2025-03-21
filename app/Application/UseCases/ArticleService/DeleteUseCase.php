@@ -27,6 +27,7 @@ class DeleteUseCase implements DeleteUseCaseInterface
      * @param int  $id    削除対象の記事サービスの識別子。
      * @param bool $force 強制削除を行う場合はtrue（デフォルトはfalse）。
      *
+     * @throws \DomainException 指定された記事サービスが見つからない場合にスローされる。
      * @throws \RuntimeException 削除処理中に予期しないエラーが発生した場合にスローされる。
      */
     public function execute(int $id, bool $force = false): void
@@ -42,7 +43,7 @@ class DeleteUseCase implements DeleteUseCaseInterface
                 $this->articleServiceRepository->delete($article);
             }
         } catch (\DomainException $e) {
-            throw new \RuntimeException("ID: {$id} の記事サービスは存在しません", 0, $e);
+            throw new \DomainException("ID: {$id} の記事サービスは存在しません", 0, $e);
         } catch (\Exception $e) {
             throw new \RuntimeException("ID: {$id} の記事サービスの削除中にエラーが発生しました", 0, $e);
         }

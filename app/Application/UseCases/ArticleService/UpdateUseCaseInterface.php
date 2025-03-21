@@ -15,6 +15,8 @@ interface UpdateUseCaseInterface
      *
      * @param  ArticleService $articleService 更新対象の記事サービスインスタンス
      * @return ArticleService 更新後の記事サービスインスタンス
+     *
+     * @throws \DomainException 更新処理に失敗した場合にスローされます
      */
     public function execute(
         ArticleService $articleService,

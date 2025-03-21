@@ -33,8 +33,7 @@ class ArticleServiceController extends Controller
         private DeleteUseCaseInterface $delete,
         private FindByIdUseCaseInterface $findById,
         private FindAllUseCaseInterface $findAll,
-    ) {
-    }
+    ) {}
 
     /**
      * 記事サービスを新規作成し、そのリソースを返却します。
@@ -46,9 +45,9 @@ class ArticleServiceController extends Controller
      */
     public function store(StoreRequest $request): ArticleServiceResource
     {
-        $articleService = $this->create->execute($request->name);
+        $entity = $this->create->execute($request->name);
 
-        return new ArticleServiceResource($articleService);
+        return new ArticleServiceResource($entity);
     }
 
     /**
@@ -63,14 +62,18 @@ class ArticleServiceController extends Controller
      */
     public function update(int $id, UpdateRequest $request): ArticleServiceResource
     {
-        $articleService = $this->update->execute(
-            new ArticleService(
-                id: new ArticleServiceId($id),
-                name: new ArticleServiceName($request->name),
-            )
-        );
+        try {
+            $entity = $this->update->execute(
+                new ArticleService(
+                    id: new ArticleServiceId($id),
+                    name: new ArticleServiceName($request->name),
+                )
+            );
+            return new ArticleServiceResource($entity);
+        } catch (\DomainException $e) {
+            abort(Response::HTTP_NO_CONTENT, $e->getMessage());
+        }
 
-        return new ArticleServiceResource($articleService);
     }
 
     /**
@@ -82,13 +85,22 @@ class ArticleServiceController extends Controller
      * @param  int  $id  削除対象の記事サービスのID
      * @param  DeleteRequest  $request  削除リクエスト。'force' フラグで削除方法を指定
      * @return Response HTTP 204 No Content レスポンス
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException 記事サービスの削除中にエラーが発生した場合
      */
     public function destroy(int $id, DeleteRequest $request): Response
     {
         $force = $request->boolean('force', false);
-        $this->delete->execute($id, $force);
+        try {
+            $this->delete->execute($id, $force);
 
-        return response()->noContent();
+            return response()->noContent();
+        } catch (\DomainException $e) {
+            abort(Response::HTTP_NO_CONTENT, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+
     }
 
     /**
@@ -96,18 +108,18 @@ class ArticleServiceController extends Controller
      *
      * 指定のIDで記事サービスを検索し、存在しない場合はHTTP 404エラーで中断します。存在する場合は、その詳細情報を含むリソースを返却します。
      *
-     * @param  int  $articleServiceId  取得対象のサービスID
+     * @param  int  $entityId  取得対象のサービスID
      * @return ArticleServiceResource 記事サービスの詳細情報を含むリソース
      */
-    public function show(ShowRequest $request, int $articleServiceId): ArticleServiceResource
+    public function show(ShowRequest $request, int $entityId): ArticleServiceResource
     {
-        $articleService = $this->findById->execute($articleServiceId);
+        $entity = $this->findById->execute($entityId);
 
-        if ($articleService === null) {
+        if ($entity === null) {
             abort(Response::HTTP_NOT_FOUND, 'サービスが見つかりませんでした。');
         }
 
-        return new ArticleServiceResource($articleService);
+        return new ArticleServiceResource($entity);
     }
 
     /**
@@ -119,8 +131,8 @@ class ArticleServiceController extends Controller
      */
     public function index(FormRequest $request)
     {
-        $articleServices = $this->findAll->execute();
+        $entities = $this->findAll->execute();
 
-        return ArticleServiceResource::collection($articleServices);
+        return ArticleServiceResource::collection($entities);
     }
 }

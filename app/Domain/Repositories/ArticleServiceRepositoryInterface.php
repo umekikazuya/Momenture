@@ -41,6 +41,8 @@ interface ArticleServiceRepositoryInterface
      *
      * @param  ArticleService  $articleService  更新対象の ArticleService エンティティ。
      * @return ArticleService 更新後の ArticleService エンティティ。
+     *
+     * @throws \DomainException 指定された記事サービスが見つからない場合にスローされます
      */
     public function update(ArticleService $articleService): ArticleService;
 
@@ -48,6 +50,8 @@ interface ArticleServiceRepositoryInterface
      * 指定された ArticleService エンティティを削除する。
      *
      * @param  ArticleService  $articleService  削除対象の ArticleService エンティティ
+     *
+     * @throws \DomainException 指定された記事サービスが見つからない場合にスローされます
      */
     public function delete(ArticleService $articleService): void;
 
@@ -57,6 +61,8 @@ interface ArticleServiceRepositoryInterface
      * このメソッドは、ArticleService エンティティに対して論理削除ではなく、強制的な物理削除を実行します。
      *
      * @param  ArticleService  $articleService  削除対象の ArticleService エンティティ
+     *
+     * @throws \DomainException 指定された ID の記事サービスが見つからない場合にスローされます
      */
     public function forceDelete(ArticleService $articleService): void;
 }

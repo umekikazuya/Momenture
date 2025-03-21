@@ -45,7 +45,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name.required' => 'サービス名は必須です。',
-            'name.max' => 'サービス名は255文字以内で入力してください。',
+            'name.max' => 'サービス名は100文字以内で入力してください。',
         ];
     }
 }

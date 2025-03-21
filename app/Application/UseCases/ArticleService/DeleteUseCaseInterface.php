@@ -13,6 +13,9 @@ interface DeleteUseCaseInterface
      *
      * @param int  $id    削除対象の記事の識別子
      * @param bool $force 強制削除を実行する場合は true（省略時は false）
+     *
+     * @throws \DomainException 指定された記事が見つからない場合にスローされます
+     * @throws \RuntimeException 削除処理中に予期しないエラーが発生した場合にスローされます
      */
     public function execute(int $id, bool $force = false): void;
 }

@@ -48,8 +48,6 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
 
     /**
      * {@inheritDoc}
-     *
-     * @throws DomainException 指定された記事サービスが見つからない場合にスローされます
      */
     public function update(ArticleService $articleService): ArticleService
     {
@@ -70,13 +68,16 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
      */
     public function delete(ArticleService $articleService): void
     {
+        $model = ArticleServiceModel::find($articleService->id()->value());
+
+        if (! $model) {
+            throw new \DomainException("ID: {$articleService->id()->value()} の記事サービスが見つかりません。");
+        }
         ArticleServiceModel::destroy($articleService->id()->value());
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \DomainException 指定された ID の記事サービスが見つからない場合
      */
     public function forceDelete(ArticleService $articleService): void
     {
