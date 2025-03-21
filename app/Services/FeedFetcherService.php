@@ -23,7 +23,7 @@ final class FeedFetcherService implements FeedFetcherInterface
      *
      * Initializes the feed fetcher service with a Guzzle HTTP client.
      *
-     * @param  \GuzzleHttp\Client  $httpClient  The Guzzle HTTP client instance.
+     * @param \GuzzleHttp\Client $httpClient The Guzzle HTTP client instance.
      */
     public function __construct(
         private Client $httpClient,

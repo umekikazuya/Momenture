@@ -11,7 +11,7 @@ class ArticleLink
      *
      * 渡された URL が有効な形式かどうか検証し、無効な場合は DomainException をスローします。
      *
-     * @param string $url URL 文字列
+     * @param  string $url URL 文字列
      * @throws \DomainException 無効な URL が指定された場合
      */
     public function __construct(string $url)

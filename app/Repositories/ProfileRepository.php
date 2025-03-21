@@ -20,10 +20,12 @@ class ProfileRepository implements ProfileRepositoryInterface
 
     public function findById(string $id): ?Profile
     {
-        $result = $this->client->getItem([
+        $result = $this->client->getItem(
+            [
             'TableName' => $this->tableName,
             'Key' => ['PK' => ['S' => $id]],
-        ]);
+            ]
+        );
 
         $data = $result['Item'] ?? null;
 
@@ -33,7 +35,8 @@ class ProfileRepository implements ProfileRepositoryInterface
 
         $attributes = $this->fromDynamoDbFormat($data);
 
-        return new Profile([
+        return new Profile(
+            [
             'id' => $attributes['PK'],
             'displayName' => $attributes['display_name'],
             'displayShortName' => $attributes['display_short_name'] ?? null,
@@ -48,12 +51,14 @@ class ProfileRepository implements ProfileRepositoryInterface
             'summaryIntroduction' => $attributes['summary_introduction'] ?? null,
             'zenn' => $attributes['zenn'] ?? null,
             'updatedAt' => $attributes['updated_at'] ?? null,
-        ]);
+            ]
+        );
     }
 
     public function save(Profile $profile): void
     {
-        $item = $this->toDynamoDbFormat([
+        $item = $this->toDynamoDbFormat(
+            [
             'PK' => $profile->id,
             'display_name' => $profile->displayName,
             'display_short_name' => $profile->displayShortName,
@@ -68,20 +73,25 @@ class ProfileRepository implements ProfileRepositoryInterface
             'summary_introduction' => $profile->summaryIntroduction,
             'zenn' => $profile->zenn,
             'updated_at' => $profile->updatedAt,
-        ]);
+            ]
+        );
 
-        $this->client->putItem([
+        $this->client->putItem(
+            [
             'TableName' => $this->tableName,
             'Item' => $item,
-        ]);
+            ]
+        );
     }
 
     public function delete(string $id): void
     {
-        $this->client->deleteItem([
+        $this->client->deleteItem(
+            [
             'TableName' => $this->tableName,
             'Key' => ['PK' => ['S' => $id]],
-        ]);
+            ]
+        );
     }
 
     /**
@@ -89,30 +99,34 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     private function fromDynamoDbFormat(array $data): array
     {
-        return array_map(function ($value) {
-            if (isset($value['S'])) {
-                return $value['S'];
-            } elseif (isset($value['N'])) {
-                return (float) $value['N'];
-            } elseif (isset($value['L'])) {
-                // リストの場合、要素を個別に変換
-                return array_map(function ($v) {
-                    if (isset($v['S'])) {
-                        return $v['S'];
-                    } elseif (isset($v['N'])) {
-                        return (float) $v['N'];
-                    } elseif (isset($v['NULL'])) {
-                        return null;
-                    }
+        return array_map(
+            function ($value) {
+                if (isset($value['S'])) {
+                    return $value['S'];
+                } elseif (isset($value['N'])) {
+                    return (float) $value['N'];
+                } elseif (isset($value['L'])) {
+                    // リストの場合、要素を個別に変換
+                    return array_map(
+                        function ($v) {
+                            if (isset($v['S'])) {
+                                return $v['S'];
+                            } elseif (isset($v['N'])) {
+                                return (float) $v['N'];
+                            } elseif (isset($v['NULL'])) {
+                                return null;
+                            }
 
-                    throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: ' . json_encode($v));
-                }, $value['L']);
-            } elseif (isset($value['NULL'])) {
-                return null;
-            }
+                            throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: ' . json_encode($v));
+                        }, $value['L']
+                    );
+                } elseif (isset($value['NULL'])) {
+                    return null;
+                }
 
-            throw new \InvalidArgumentException('Unsupported DynamoDB data type: ' . json_encode($value));
-        }, $data);
+                throw new \InvalidArgumentException('Unsupported DynamoDB data type: ' . json_encode($value));
+            }, $data
+        );
     }
 
     /**
@@ -120,28 +134,32 @@ class ProfileRepository implements ProfileRepositoryInterface
      */
     private function toDynamoDbFormat(array $data): array
     {
-        return array_map(function ($value) {
-            if (is_null($value)) {
-                return ['NULL' => true];
-            } elseif (is_string($value)) {
-                return ['S' => $value];
-            } elseif (is_numeric($value)) {
-                return ['N' => (string) $value];
-            } elseif (is_array($value)) {
-                // 配列の場合はスカラ値を判定して変換
-                return ['L' => array_map(function ($v) {
-                    if (is_null($v)) {
-                        return ['NULL' => true];
-                    } elseif (is_string($v)) {
-                        return ['S' => $v];
-                    } elseif (is_numeric($v)) {
-                        return ['N' => (string) $v];
-                    }
-                    throw new \InvalidArgumentException('Unsupported array element type');
-                }, $value)];
-            }
+        return array_map(
+            function ($value) {
+                if (is_null($value)) {
+                    return ['NULL' => true];
+                } elseif (is_string($value)) {
+                    return ['S' => $value];
+                } elseif (is_numeric($value)) {
+                    return ['N' => (string) $value];
+                } elseif (is_array($value)) {
+                    // 配列の場合はスカラ値を判定して変換
+                    return ['L' => array_map(
+                        function ($v) {
+                            if (is_null($v)) {
+                                return ['NULL' => true];
+                            } elseif (is_string($v)) {
+                                return ['S' => $v];
+                            } elseif (is_numeric($v)) {
+                                return ['N' => (string) $v];
+                            }
+                            throw new \InvalidArgumentException('Unsupported array element type');
+                        }, $value
+                    )];
+                }
 
-            throw new \InvalidArgumentException('Unsupported data type');
-        }, $data);
+                throw new \InvalidArgumentException('Unsupported data type');
+            }, $data
+        );
     }
 }

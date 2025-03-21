@@ -88,7 +88,9 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      */
     public function save(Article $article): void
     {
-        /** @var ArticleModel $model */
+        /**
+ * @var ArticleModel $model 
+*/
         $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
         if ($article->id() && ! $model) {
             throw new \DomainException('該当IDの記事が見つかりません。');
@@ -129,7 +131,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      *
      * Eloquentモデルの各プロパティを対応する値オブジェクトに変換し、新たなArticleエンティティを生成します。
      *
-     * @param ArticleModel $model 変換対象のEloquent記事モデル
+     * @param  ArticleModel $model 変換対象のEloquent記事モデル
      * @return Article 変換されたArticleエンティティ
      */
     private function toEntity(ArticleModel $model): Article

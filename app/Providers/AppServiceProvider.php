@@ -52,17 +52,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FeedFetcherInterface::class, FeedFetcherService::class);
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
-        $this->app->singleton(DynamoDbClient::class, function ($app) {
-            return new DynamoDbClient([
-                'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
-                'version' => 'latest',
-                'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
-                'credentials' => [
+        $this->app->singleton(
+            DynamoDbClient::class, function ($app) {
+                return new DynamoDbClient(
+                    [
+                    'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
+                    'version' => 'latest',
+                    'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
+                    'credentials' => [
                     'key' => env('AWS_ACCESS_KEY_ID'),
                     'secret' => env('AWS_SECRET_ACCESS_KEY'),
-                ],
-            ]);
-        });
+                    ],
+                    ]
+                );
+            }
+        );
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class

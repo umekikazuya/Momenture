@@ -29,8 +29,7 @@ class FeaturedArticleController extends Controller
         private AssignArticleUseCaseInterface $assignArticleUseCase,
         private DeactivateUseCaseInterface $deactivateUseCase,
         private ChangePriorityUseCaseInterface $changePriorityUseCase
-    )
-    {
+    ) {
     }
 
     /**
@@ -81,8 +80,8 @@ class FeaturedArticleController extends Controller
      * 正常に処理が完了した場合はコンテンツなしのレスポンス（HTTP 204）を返し、
      * ドメイン制約に違反した場合は HTTP 409 エラーで処理を中断します。
      *
-     * @param ChangePriorityRequest $request 優先度変更情報を含むリクエスト
-     * @param int $id 変更対象のフィーチャード記事の識別子
+     * @param  ChangePriorityRequest $request 優先度変更情報を含むリクエスト
+     * @param  int                   $id      変更対象のフィーチャード記事の識別子
      * @return Response コンテンツなしのレスポンス（HTTP 204）
      */
     public function changePriority(ChangePriorityRequest $request, int $id): Response
@@ -105,7 +104,7 @@ class FeaturedArticleController extends Controller
      * 指定された記事IDに基づき、フィーチャード記事の非アクティブ化処理を実行します。
      * 成功時にはコンテンツなしのレスポンスを返し、ドメイン例外が発生した場合はHTTP 409ステータスで中断されます。
      *
-     * @param int $id 非アクティブ化するフィーチャード記事のID。
+     * @param  int $id 非アクティブ化するフィーチャード記事のID。
      * @return Response コンテンツなしのレスポンス。
      */
     public function deactivate(int $id): Response

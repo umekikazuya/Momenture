@@ -57,10 +57,12 @@ class ProfileController extends Controller
     public function destroy(DestroyAction $action)
     {
         try {
-            return response()->json([
+            return response()->json(
+                [
                 'message' => 'プロフィールが削除されました',
                 'count' => $action(),
-            ], 200);
+                ], 200
+            );
         } catch (\DomainException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }

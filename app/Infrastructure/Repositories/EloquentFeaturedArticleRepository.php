@@ -12,11 +12,13 @@ use App\Models\FeaturedArticle as FeaturedArticleModel;
 class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInterface
 {
     /**
- * コンストラクタ
- *
- * 記事リポジトリの依存性注入により、記事データ管理に必要なリポジトリインスタンスを保持します。
- */
-public function __construct(protected ArticleRepositoryInterface $articleRepository) {}
+     * コンストラクタ
+     *
+     * 記事リポジトリの依存性注入により、記事データ管理に必要なリポジトリインスタンスを保持します。
+     */
+    public function __construct(protected ArticleRepositoryInterface $articleRepository)
+    {
+    }
 
     /**
      * 有効なフィーチャー記事を全件取得し、優先度順に並べ替えてエンティティ化した配列を返します。
@@ -41,17 +43,19 @@ public function __construct(protected ArticleRepositoryInterface $articleReposit
      * このメソッドは、提供された記事の識別子とフィーチャー記事の優先度に応じて、
      * データベースにアクティブなフィーチャー記事レコードを追加します。
      *
-     * @param int $articleId 追加する記事の識別子。
-     * @param FeaturedPriority $priority フィーチャー記事の優先度を示すオブジェクト。
+     * @param int              $articleId 追加する記事の識別子。
+     * @param FeaturedPriority $priority  フィーチャー記事の優先度を示すオブジェクト。
      */
     public function add(int $articleId, FeaturedPriority $priority): void
     {
         FeaturedArticleModel::query()
-            ->create([
+            ->create(
+                [
                 'article_id' => $articleId,
                 'priority' => $priority->value(),
                 'is_active' => true,
-            ]);
+                ]
+            );
     }
 
     /**
@@ -59,7 +63,7 @@ public function __construct(protected ArticleRepositoryInterface $articleReposit
      *
      * 対象のレコードが見つからない場合には、RuntimeException をスローする。
      *
-     * @param FeaturedArticleId $id 更新対象のフィーチャード記事の識別子。
+     * @param FeaturedArticleId $id       更新対象のフィーチャード記事の識別子。
      * @param FeaturedPriority  $priority 新しく設定する優先度。
      *
      * @throws \RuntimeException 指定されたIDで該当するレコードが見つからなかった場合にスローされる。
@@ -134,7 +138,7 @@ public function __construct(protected ArticleRepositoryInterface $articleReposit
      * モデルに含まれるID、優先度、状態、作成日時の情報を基に、articleRepositoryから関連する記事情報を取得した上で
      * 新たなFeaturedArticleエンティティを構築して返します。
      *
-     * @param FeaturedArticleModel $model 変換対象のモデルインスタンス
+     * @param  FeaturedArticleModel $model 変換対象のモデルインスタンス
      * @return FeaturedArticle 生成されたエンティティ
      */
     private function toEntity(FeaturedArticleModel $model): FeaturedArticle

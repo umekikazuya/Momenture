@@ -27,8 +27,8 @@ class ChangePriorityUseCase implements ChangePriorityUseCaseInterface
      * 記事が存在しない場合や非アクティブな場合は例外をスローします。
      * 存在し、アクティブな記事の場合は、指定の優先度に更新します。
      *
-     * @param FeaturedArticleId $id 対象の注目記事のID
-     * @param FeaturedPriority $priority 設定する新しい優先度
+     * @param FeaturedArticleId $id       対象の注目記事のID
+     * @param FeaturedPriority  $priority 設定する新しい優先度
      *
      * @throws \DomainException 対象の記事が存在しない場合、または記事が非アクティブな場合
      */

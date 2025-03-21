@@ -13,7 +13,7 @@ class ArticleServiceId
      *
      * 渡された整数値を内部プロパティに設定し、オブジェクトを初期化します。
      *
-     * @param  int  $value  初期値として設定する整数
+     * @param int $value 初期値として設定する整数
      */
     public function __construct(int $value)
     {
@@ -33,7 +33,7 @@ class ArticleServiceId
     /**
      * 別のArticleServiceIdオブジェクトと等価であるかを比較します。
      *
-     * @param  ArticleServiceId  $other  比較対象のオブジェクト
+     * @param  ArticleServiceId $other 比較対象のオブジェクト
      * @return bool 等価である場合はtrue、そうでない場合はfalse
      */
     public function equals(ArticleServiceId $other): bool

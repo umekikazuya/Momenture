@@ -15,8 +15,8 @@ interface UpdateUseCaseInterface
      *
      * 渡された ArticleService インスタンスに対して更新操作を行い、更新後のインスタンスを返却します。
      *
-     * @param  ArticleServiceId $articleService 更新対象の記事サービスの識別子
-     * @param  ArticleServiceName $name 更新後の記事サービス名
+     * @param  ArticleServiceId   $articleService 更新対象の記事サービスの識別子
+     * @param  ArticleServiceName $name           更新後の記事サービス名
      * @return ArticleService 更新後の記事サービスインスタンス
      *
      * @throws \DomainException 更新処理に失敗した場合にスローされます
