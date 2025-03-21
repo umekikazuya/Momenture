@@ -6,6 +6,8 @@ namespace App\Application\UseCases\ArticleService;
 
 use App\Domain\Entities\ArticleService;
 use App\Domain\Repositories\ArticleServiceRepositoryInterface;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 
 class UpdateUseCase implements UpdateUseCaseInterface
 {
@@ -22,12 +24,17 @@ class UpdateUseCase implements UpdateUseCaseInterface
      * {@inheritDoc}
      */
     public function execute(
-        ArticleService $articleService,
+        ArticleServiceId $id,
+        ArticleServiceName $name,
     ): ArticleService {
+        $entity = $this->articleServiceRepository->findById($id->value());
+        if ($entity === null) {
+            throw new \DomainException('更新対象の記事サービスが見つかりませんでした。');
+        }
         try {
-            $this->articleServiceRepository->update($articleService);
-
-            return $articleService;
+            $entity->updateName($name);
+            $this->articleServiceRepository->update($entity);
+            return $entity;
         } catch (\DomainException $e) {
             throw $e;
         }

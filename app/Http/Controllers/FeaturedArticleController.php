@@ -70,7 +70,7 @@ class FeaturedArticleController extends Controller
         } catch (\DomainException $e) {
             abort(409, $e->getMessage());
         } catch (\Exception $e) {
-            abort(200, $e->getMessage());
+            abort(500, $e->getMessage());
         }
     }
 

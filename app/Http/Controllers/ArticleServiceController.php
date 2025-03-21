@@ -65,10 +65,8 @@ class ArticleServiceController extends Controller
     {
         try {
             $entity = $this->update->execute(
-                new ArticleService(
-                    id: new ArticleServiceId($id),
-                    name: new ArticleServiceName($request->name),
-                )
+                id: new ArticleServiceId($id),
+                name: new ArticleServiceName($request->name),
             );
             return new ArticleServiceResource($entity);
         } catch (\DomainException $e) {

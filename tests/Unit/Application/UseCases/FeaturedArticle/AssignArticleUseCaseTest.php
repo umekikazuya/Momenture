@@ -4,6 +4,7 @@ namespace Tests\Unit\Application\UseCases\FeaturedArticle;
 
 use App\Application\UseCases\FeaturedArticle\AssignArticleUseCase;
 use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
+use App\Domain\ValueObjects\FeaturedArticleId;
 use App\Domain\ValueObjects\FeaturedPriority;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +18,7 @@ class AssignArticleUseCaseTest extends TestCase
         $repo->shouldReceive('add')->once();
 
         $useCase = new AssignArticleUseCase($repo, 5);
-        $useCase->handle(articleId: 10, priority: new FeaturedPriority(1));
+        $useCase->handle(articleId: new FeaturedArticleId(10), priority: new FeaturedPriority(1));
     }
 
     public function test_上限を超えた場合は例外を投げる()
@@ -27,6 +28,6 @@ class AssignArticleUseCaseTest extends TestCase
         $useCase = new AssignArticleUseCase($repo, 5);
 
         $this->expectException(\DomainException::class);
-        $useCase->handle(articleId: 11, priority: new FeaturedPriority(1));
+        $useCase->handle(articleId: new FeaturedArticleId(11), priority: new FeaturedPriority(1));
     }
 }

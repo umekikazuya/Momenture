@@ -9,6 +9,8 @@ use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
 use App\Domain\Repositories\ArticleRepositoryInterface;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 use App\Domain\ValueObjects\ArticleTitle;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +31,7 @@ class CreateArticleUseCaseTest extends TestCase
     {
         $title = new ArticleTitle('テスト記事');
         $status = ArticleStatus::DRAFT;
-        $service = new ArticleService(1, 'Qiita');
+        $service = new ArticleService(new ArticleServiceId(1), new ArticleServiceName('Qiita'));
 
         $this->repository
             ->shouldReceive('save')
@@ -42,7 +44,7 @@ class CreateArticleUseCaseTest extends TestCase
         $this->assertInstanceOf(Article::class, $article);
         $this->assertEquals('テスト記事', $article->title()->value());
         $this->assertEquals(ArticleStatus::DRAFT, $article->status());
-        $this->assertEquals('Qiita', $article->service()->name());
+        $this->assertEquals('Qiita', $article->service()->name()->value());
     }
 
     protected function tearDown(): void

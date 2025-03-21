@@ -8,6 +8,8 @@ use App\Domain\Entities\Article;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
 use App\Domain\ValueObjects\ArticleLink;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 use App\Domain\ValueObjects\ArticleTitle;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +25,7 @@ class ArticleTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = new ArticleService(1, 'Qiita');
+        $this->service = new ArticleService(new ArticleServiceId(1), new ArticleServiceName('Qiita'));
         $this->createdAt = new \DateTimeImmutable('-1 day', new \DateTimeZone('UTC'));
         $this->updatedAt = new \DateTimeImmutable('-1 hour');
 
@@ -44,7 +46,7 @@ class ArticleTest extends TestCase
         $this->assertSame(1, $this->article->id());
         $this->assertSame('テスト記事', $this->article->title()->value());
         $this->assertSame(ArticleStatus::DRAFT, $this->article->status());
-        $this->assertSame('Qiita', $this->article->service()->name());
+        $this->assertSame('Qiita', $this->article->service()->name()->value());
         $this->assertSame('https://example.com', $this->article->link()->value());
         $this->assertEquals($this->createdAt, $this->article->createdAt());
         $this->assertEquals($this->updatedAt, $this->article->updatedAt());

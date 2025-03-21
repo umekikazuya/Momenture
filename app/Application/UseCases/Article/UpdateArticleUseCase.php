@@ -32,26 +32,26 @@ class UpdateArticleUseCase implements UpdateArticleUseCaseInterface
     public function execute(
         UpdateArticleInput $input,
     ): Article {
-        $article = $this->articleRepository->findById($input->id);
+        $entity = $this->articleRepository->findById($input->id);
 
-        if (! $article) {
+        if (! $entity) {
             throw new \DomainException("記事が見つかりません。ID: {$input->id}");
         }
 
         if ($input->title !== null) {
-            $article->updateTitle($input->title);
+            $entity->updateTitle($input->title);
         }
 
         if ($input->link !== null) {
-            $article->updateLink($input->link);
+            $entity->updateLink($input->link);
         }
 
         if ($input->service !== null) {
-            $article->updateArticleService($input->service);
+            $entity->updateArticleService($input->service);
         }
 
-        $this->articleRepository->save($article);
+        $this->articleRepository->save($entity);
 
-        return $article;
+        return $entity;
     }
 }
