@@ -71,7 +71,7 @@ class ArticleServiceController extends Controller
             );
             return new ArticleServiceResource($entity);
         } catch (\DomainException $e) {
-            abort(Response::HTTP_NOT_FOUND, $e->getMessage());
+            abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
         }
 
     }
@@ -96,7 +96,7 @@ class ArticleServiceController extends Controller
 
             return response()->noContent();
         } catch (\DomainException $e) {
-            abort(Response::HTTP_NOT_FOUND, $e->getMessage());
+            abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
         } catch (\RuntimeException $e) {
             abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
