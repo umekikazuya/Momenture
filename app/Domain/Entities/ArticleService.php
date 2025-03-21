@@ -2,43 +2,54 @@
 
 namespace App\Domain\Entities;
 
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
+
 class ArticleService
 {
-    private int $id;
-
-    private string $name;
-
     /**
-     * 指定されたIDと名前を用いて記事サービスのプロパティを初期化するコンストラクタ。
+     * ArticleService のインスタンスを初期化する。
      *
-     * @param int $id 記事サービスの識別子
-     * @param string $name 記事サービスの名前
+     * コンストラクタは、記事サービスの識別子と名称を受け取り、オブジェクトの内部状態を設定します。
+     *
+     * @param ArticleServiceId $id 記事サービスの識別子を表す値オブジェクト
+     * @param ArticleServiceName $name 記事サービスの名称を表す値オブジェクト
      */
-    public function __construct(int $id, string $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
+    public function __construct(
+        protected ArticleServiceId $id,
+        protected ArticleServiceName $name,
+    ) {
     }
 
     /**
      * 記事サービスの識別子を返します。
      *
-     * @return int 記事サービスの識別子
+     * @return ArticleServiceId 記事サービスのIDを表すオブジェクト。
      */
-    public function id(): int
+    public function id(): ArticleServiceId
     {
         return $this->id;
     }
 
     /**
-     * 記事サービスの名前を取得する。
+     * 記事サービスの名前を取得します。
      *
-     * プロパティに格納された記事サービス名を文字列として返します。
-     *
-     * @return string 記事サービスの名前
+     * @return ArticleServiceName 記事サービスの名前を表す値オブジェクト
      */
-    public function name(): string
+    public function name(): ArticleServiceName
     {
         return $this->name;
+    }
+
+    /**
+     * アーティクルサービスの名前を新しい ArticleServiceName で更新します。
+     *
+     * 渡された値オブジェクトを使用して、サービス名プロパティを上書き更新します。
+     *
+     * @param ArticleServiceName $name 新しいサービス名を表す値オブジェクト
+     */
+    public function updateName(ArticleServiceName $name): void
+    {
+        $this->name = $name;
     }
 }

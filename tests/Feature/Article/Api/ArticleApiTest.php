@@ -23,11 +23,13 @@ class ArticleApiTest extends TestCase
         $response = $this->getJson('/backend/articles');
 
         $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => [
-                    '*' => ['id', 'title', 'status', 'service', 'link', 'created_at', 'updated_at'],
-                ],
-            ]);
+            ->assertJsonStructure(
+                [
+                    'data' => [
+                        '*' => ['id', 'title', 'status', 'service', 'link', 'created_at', 'updated_at'],
+                    ],
+                ]
+            );
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -45,10 +47,12 @@ class ArticleApiTest extends TestCase
         $response = $this->postJson('/backend/articles', $payload);
 
         $response->assertStatus(201)
-            ->assertJsonFragment([
-                'title' => 'APIテスト記事',
-                'status' => 'draft',
-            ]);
+            ->assertJsonFragment(
+                [
+                    'title' => 'APIテスト記事',
+                    'status' => 'draft',
+                ]
+            );
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -72,16 +76,20 @@ class ArticleApiTest extends TestCase
         $article = Article::first();
         $newTitle = '更新後のタイトル';
 
-        $response = $this->putJson("/api/articles/{$article->id}", [
-            'title' => $newTitle,
-            'link' => 'https://example.com/updated',
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJsonFragment([
+        $response = $this->putJson(
+            "/api/articles/{$article->id}", [
                 'title' => $newTitle,
                 'link' => 'https://example.com/updated',
-            ]);
+            ]
+        );
+
+        $response->assertStatus(200)
+            ->assertJsonFragment(
+                [
+                    'title' => $newTitle,
+                    'link' => 'https://example.com/updated',
+                ]
+            );
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

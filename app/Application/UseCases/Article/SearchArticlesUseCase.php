@@ -24,9 +24,9 @@ class SearchArticlesUseCase implements SearchArticlesUseCaseInterface
      * このメソッドは、オプションのキーワード、サービスID、およびタグIDを使用して記事をフィルタリングし、
      * 該当する記事の配列を返します。
      *
-     * @param string|null $keyword 検索キーワード（オプション）。
-     * @param int|null $serviceId サービスID（オプション）。
-     * @param int|null $tagId タグID（オプション）。
+     * @param string|null $keyword   検索キーワード（オプション）。
+     * @param int|null    $serviceId サービスID（オプション）。
+     * @param int|null    $tagId     タグID（オプション）。
      *
      * @return array 検索条件に一致する記事の配列。
      */

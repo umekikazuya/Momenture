@@ -16,6 +16,16 @@ use App\Application\UseCases\Article\RestoreArticleUseCase;
 use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
 use App\Application\UseCases\Article\UpdateArticleUseCase;
 use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
+use App\Application\UseCases\ArticleService\CreateUseCase;
+use App\Application\UseCases\ArticleService\CreateUseCaseInterface;
+use App\Application\UseCases\ArticleService\DeleteUseCase;
+use App\Application\UseCases\ArticleService\DeleteUseCaseInterface;
+use App\Application\UseCases\ArticleService\FindAllUseCase;
+use App\Application\UseCases\ArticleService\FindAllUseCaseInterface;
+use App\Application\UseCases\ArticleService\FindByIdUseCase;
+use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
+use App\Application\UseCases\ArticleService\UpdateUseCase;
+use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
@@ -28,11 +38,13 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * アプリケーションの各種サービスを登録し、依存性注入の設定を行う。
+     * アプリケーションサービスおよびユースケースのバインディングを登録し、依存性注入の設定を行います。
      *
-     * このメソッドは、フィードの取得およびパースサービス、DynamoDbClientのシングルトンインスタンス、
-     * 記事リポジトリ、そして記事管理に関連する各ユースケース（作成、更新、削除、復元、検索、状態変更）の
-     * インターフェースと実装のバインディングをコンテナに登録し、アプリケーション全体での依存性解決を可能にします。
+     * このメソッドでは、フィードの取得およびパースサービス、DynamoDbClientのシングルトンインスタンス、
+     * 記事関連のリポジトリ（記事リポジトリおよび記事サービスリポジトリ）、
+     * 記事管理に関するユースケース（作成、更新、削除、復元、検索、状態変更）と、
+     * 記事サービスに関連するユースケース（作成、更新、IDによる検索、全件検索、削除）の
+     * インターフェースと実装をコンテナに登録し、アプリケーション全体での依存性解決をサポートします。
      */
     public function register(): void
     {
@@ -54,6 +66,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
         );
+        $this->app->bind(
+            \App\Domain\Repositories\ArticleServiceRepositoryInterface::class,
+            \App\Infrastructure\Repositories\EloquentArticleServiceRepository::class
+        );
         $this->app->bind(CreateArticleUseCaseInterface::class, CreateArticleUseCase::class);
         $this->app->bind(UpdateArticleUseCaseInterface::class, UpdateArticleUseCase::class);
         $this->app->bind(DeleteArticleUseCaseInterface::class, DeleteArticleUseCase::class);
@@ -61,6 +77,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FindArticleByIdUseCaseInterface::class, FindArticleByIdUseCase::class);
         $this->app->bind(FindArticlesUseCaseInterface::class, FindArticlesUseCase::class);
         $this->app->bind(ChangeArticleStatusUseCaseInterface::class, ChangeArticleStatusUseCase::class);
+
+        $this->app->bind(CreateUseCaseInterface::class, CreateUseCase::class);
+        $this->app->bind(UpdateUseCaseInterface::class, UpdateUseCase::class);
+        $this->app->bind(FindByIdUseCaseInterface::class, FindByIdUseCase::class);
+        $this->app->bind(FindAllUseCaseInterface::class, FindAllUseCase::class);
+        $this->app->bind(DeleteUseCaseInterface::class, DeleteUseCase::class);
     }
 
     /**
