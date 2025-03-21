@@ -10,12 +10,12 @@ use App\Domain\Repositories\ArticleServiceRepositoryInterface;
 
 class FindByIdUseCase implements FindByIdUseCaseInterface
 {
-    public function __construct(private ArticleServiceRepositoryInterface $articleRepository)
+    public function __construct(private ArticleServiceRepositoryInterface $repository)
     {
     }
 
     public function execute(int $id): ?ArticleService
     {
-        return $this->articleRepository->findById($id);
+        return $this->repository->findById($id);
     }
 }

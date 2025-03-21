@@ -16,10 +16,6 @@ class UpdateUseCase implements UpdateUseCaseInterface
     public function execute(
         ArticleService $articleService,
     ): ArticleService {
-        if ($articleService->name() !== null) {
-            $articleService->updateName($articleService->name());
-        }
-
         $this->articleServiceRepository->update($articleService);
 
         return $articleService;

@@ -21,8 +21,8 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'タイトルは必須です。',
-            'name.max' => 'タイトルは255文字以内で入力してください。',
+            'name.required' => 'サービス名は必須です。',
+            'name.max' => 'サービス名は255文字以内で入力してください。',
         ];
     }
 }

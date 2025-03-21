@@ -6,12 +6,16 @@ use App\Domain\Repositories\ArticleServiceRepositoryInterface;
 
 class FindAllUseCase implements FindAllUseCaseInterface
 {
-    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository)
+    public function __construct(private ArticleServiceRepositoryInterface $repository)
     {
     }
 
     public function execute(): array
     {
-        return $this->articleServiceRepository->findAll();
+        try {
+            return $this->repository->findAll();
+        } catch (\Exception $e) {
+            throw new \RuntimeException('記事サービスの取得中にエラーが発生しました', 0, $e);
+        }
     }
 }

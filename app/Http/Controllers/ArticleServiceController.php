@@ -66,6 +66,10 @@ class ArticleServiceController extends Controller
     {
         $articleService = $this->findById->execute($articleServiceId);
 
+        if ($articleService === null) {
+            abort(Response::HTTP_NOT_FOUND, 'サービスが見つかりませんでした。');
+        }
+
         return new ArticleServiceResource($articleService);
     }
 

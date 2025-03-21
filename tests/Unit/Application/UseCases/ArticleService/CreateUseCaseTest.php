@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Application\UseCases\ArticleService;
+
 use App\Application\UseCases\ArticleService\CreateUseCase;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Repositories\ArticleServiceRepositoryInterface;

@@ -40,6 +40,11 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
     public function update(ArticleService $articleService): ArticleService
     {
         $model = ArticleServiceModel::find($articleService->id()->value());
+
+        if (! $model) {
+            throw new \DomainException("ID: {$articleService->id()->value()} の記事サービスが見つかりません。");
+        }
+
         $model->name = $articleService->name()->value();
         $model->save();
 
@@ -53,7 +58,12 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
 
     public function forceDelete(ArticleService $articleService): void
     {
-        ArticleServiceModel::withTrashed()->find($articleService->id()->value())->forceDelete();
+        $model = ArticleServiceModel::withTrashed()->find($articleService->id()->value());
+
+        if (! $model) {
+            throw new \DomainException("ID: {$articleService->id()->value()} の記事サービスが見つかりません。");
+        }
+        $model->forceDelete();
     }
 
     private function toEntity(ArticleServiceModel $model): ArticleService

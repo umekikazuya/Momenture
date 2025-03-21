@@ -10,7 +10,7 @@ interface ArticleServiceRepositoryInterface
 {
     public function findAll(): array;
 
-    public function findById(int $articleServiceId): ?ArticleService;
+    public function findById(int $id): ?ArticleService;
 
     public function create(ArticleService $articleService): ArticleService;
 
