@@ -11,15 +11,12 @@ use App\Models\FeaturedArticle as FeaturedArticleModel;
 
 class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInterface
 {
-    public function __construct(
-        protected ArticleRepositoryInterface $articleRepository
-    )
-    {
-    }
+    public function __construct(protected ArticleRepositoryInterface $articleRepository) {}
 
     public function findAll(): array
     {
-        return FeaturedArticleModel::where('is_active', true)
+        return FeaturedArticleModel::query()
+            ->where('is_active', true)
             ->orderBy('priority')
             ->get()
             ->map(fn ($model) => $this->toEntity($model))
@@ -28,25 +25,45 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
 
     public function add(int $articleId, FeaturedPriority $priority): void
     {
-        FeaturedArticleModel::create([
-            'article_id' => $articleId,
-            'priority' => $priority->value(),
-            'is_active' => true,
-        ]);
+        FeaturedArticleModel::query()
+            ->create([
+                'article_id' => $articleId,
+                'priority' => $priority->value(),
+                'is_active' => true,
+            ]);
     }
 
     public function updatePriority(FeaturedArticleId $id, FeaturedPriority $priority): void
     {
-        FeaturedArticleModel::where('id', $id->value())
+        $rows = FeaturedArticleModel::query()
+            ->where('id', $id->value())
             ->update(['priority' => $priority->value()]);
+
+        if ($rows === 0) {
+            throw new \RuntimeException(
+                '指定されたIDで更新対象のレコードが見つかりません: '.$id->value()
+            );
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function deactivate(FeaturedArticleId $id): void
     {
-        FeaturedArticleModel::where('id', $id->value())
+        $rows = FeaturedArticleModel::query()
+            ->where('id', $id->value())
             ->update(['is_active' => false]);
+        if ($rows === 0) {
+            throw new \RuntimeException(
+                '指定されたIDで削除対象のレコードが見つかりません: '.$id->value()
+            );
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function findById(FeaturedArticleId $id): ?FeaturedArticle
     {
         $model = FeaturedArticleModel::find($id->value());
@@ -54,14 +71,21 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
         return $model ? $this->toEntity($model) : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function countActive(): int
     {
         return FeaturedArticleModel::where('is_active', true)->count();
     }
 
+    /**
+     * モデルからエンティティに変換
+     */
     private function toEntity(FeaturedArticleModel $model): FeaturedArticle
     {
         $article = $this->articleRepository->findById($model->article_id);
+
         return new FeaturedArticle(
             new FeaturedArticleId($model->id),
             $article,

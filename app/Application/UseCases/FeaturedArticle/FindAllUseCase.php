@@ -19,7 +19,8 @@ class FindAllUseCase implements FindAllUseCaseInterface
      *
      * @return FeaturedArticle[]
      */
-    public function handle(): array {
+    public function handle(): array
+    {
         return $this->repository->findAll();
     }
 }

@@ -14,7 +14,8 @@ class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
      *
      * このコンストラクタは記事の取得や削除操作に必要なリポジトリを注入します。
      */
-    public function __construct(private ArticleRepositoryInterface $articleRepository) {
+    public function __construct(private ArticleRepositoryInterface $articleRepository)
+    {
     }
 
     /**
@@ -22,8 +23,8 @@ class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
      *
      * 指定したIDの記事が存在しない場合、DomainExceptionをスローします。強制削除フラグがtrueの場合は、永続的に記事を削除し、falseの場合は通常の削除処理を実施します。
      *
-     * @param  int  $id  削除対象の記事のID
-     * @param  bool  $force  trueの場合、強制削除を行います。falseの場合は通常の削除を行います。
+     * @param int  $id    削除対象の記事のID
+     * @param bool $force trueの場合、強制削除を行います。falseの場合は通常の削除を行います。
      *
      * @throws DomainException 指定されたIDの記事が存在しない場合にスローされます。
      */

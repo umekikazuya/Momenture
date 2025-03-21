@@ -14,7 +14,8 @@ class UpdateUseCase implements UpdateUseCaseInterface
      *
      * ArticleServiceRepositoryInterface のインスタンスを受け取り、記事サービスの更新処理に必要なリポジトリを初期化します。
      */
-    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository) {
+    public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository)
+    {
     }
 
     /**

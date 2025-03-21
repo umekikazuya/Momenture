@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('featured_articles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
-            $table->integer('priority')->comment('表示優先度');
+            $table->foreignId('article_id')->unique()->constrained('articles')->onDelete('cascade');
+            $table->integer('priority')->index()->comment('表示優先度');
             $table->boolean('is_active')->default(true)->comment('有効フラグ');
             $table->timestamps();
         });

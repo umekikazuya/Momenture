@@ -15,7 +15,8 @@ class AssignArticleUseCase implements AssignArticleUseCaseInterface
     public function __construct(
         private FeaturedArticleRepositoryInterface $repository,
         private int $maxFeaturedCount = self::DEFAULT_MAX_FEATURED_COUNT
-    ) {}
+    ) {
+    }
 
     public function handle(FeaturedArticleId $articleId, FeaturedPriority $priority): void
     {

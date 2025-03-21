@@ -11,6 +11,8 @@ interface ChangePriorityUseCaseInterface
 {
     /**
      * 注目記事の優先度を更新
+     *
+     * @throws \DomainException 更新不可時
      */
     public function handle(FeaturedArticleId $id, FeaturedPriority $priority): void;
 }

@@ -23,7 +23,9 @@ class FeaturedArticleController extends Controller
         private AssignArticleUseCaseInterface $assignArticleUseCase,
         private DeactivateUseCaseInterface $deactivateUseCase,
         private ChangePriorityUseCaseInterface $changePriorityUseCase
-    ) {}
+    )
+    {
+    }
 
     public function index(): AnonymousResourceCollection
     {
@@ -45,14 +47,20 @@ class FeaturedArticleController extends Controller
         } catch (\Exception $e) {
             abort(200, $e->getMessage());
         }
-
     }
 
     public function changePriority(ChangePriorityRequest $request, int $id): Response
     {
-        $this->changePriorityUseCase->handle(new FeaturedArticleId($id), new FeaturedPriority((int) $request->input('priority')));
+        try {
+            $this->changePriorityUseCase->handle(
+                id: new FeaturedArticleId($id),
+                priority: new FeaturedPriority((int) $request->input('priority'))
+            );
 
-        return response()->noContent();
+            return response()->noContent();
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        }
     }
 
     public function deactivate(int $id): Response

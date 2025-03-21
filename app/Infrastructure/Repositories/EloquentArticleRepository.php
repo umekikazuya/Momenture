@@ -84,7 +84,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function save(Article $article): void
     {
         /** @var ArticleModel $model */
-        $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel;
+        $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
         if ($article->id() && ! $model) {
             throw new \DomainException('該当IDの記事が見つかりません。');
         }
@@ -128,7 +128,10 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
             id: $model->id,
             title: new ArticleTitle($model->title),
             status: ArticleStatus::from($model->status),
-            service: new ArticleService(new ArticleServiceId($model->article_service_id), new ArticleServiceName($model->articleService?->name ?? '')),
+            service: new ArticleService(
+                new ArticleServiceId($model->article_service_id),
+                new ArticleServiceName($model->articleService?->name ?? '')
+            ),
             link: $model->link ? new ArticleLink($model->link) : null,
             createdAt: \DateTimeImmutable::createFromMutable($model->created_at),
             updatedAt: \DateTimeImmutable::createFromMutable($model->updated_at),

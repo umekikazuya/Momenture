@@ -33,7 +33,8 @@ class ArticleServiceController extends Controller
         private DeleteUseCaseInterface $delete,
         private FindByIdUseCaseInterface $findById,
         private FindAllUseCaseInterface $findAll,
-    ) {}
+    ) {
+    }
 
     /**
      * 記事サービスを新規作成し、そのリソースを返却します。
@@ -73,7 +74,6 @@ class ArticleServiceController extends Controller
         } catch (\DomainException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
         }
-
     }
 
     /**
@@ -100,7 +100,6 @@ class ArticleServiceController extends Controller
         } catch (\RuntimeException $e) {
             abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
-
     }
 
     /**
