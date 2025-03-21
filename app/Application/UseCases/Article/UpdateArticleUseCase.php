@@ -10,6 +10,9 @@ use App\Domain\Repositories\ArticleRepositoryInterface;
 
 class UpdateArticleUseCase implements UpdateArticleUseCaseInterface
 {
+    /**
+     * ArticleRepositoryInterface を内部プロパティとして設定し、記事の更新処理に利用します。
+     */
     public function __construct(private ArticleRepositoryInterface $articleRepository) {
     }
 

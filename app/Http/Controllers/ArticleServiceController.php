@@ -22,6 +22,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleServiceController extends Controller
 {
+    /**
+     * ArticleServiceControllerのインスタンスを初期化します。
+     *
+     * 記事サービスの作成、更新、削除、及び取得に必要なユースケースインターフェースを注入します。
+     */
     public function __construct(
         private CreateUseCaseInterface $create,
         private UpdateUseCaseInterface $update,
@@ -31,7 +36,14 @@ class ArticleServiceController extends Controller
     ) {
     }
 
-    // 記事サービス作成
+    /**
+     * 記事サービスを新規作成し、そのリソースを返却します。
+     *
+     * 入力リクエストから記事サービスの名称を取得し、作成用ユースケースを実行して新しい記事サービスを生成します。
+     *
+     * @param StoreRequest $request 作成に必要なリクエスト。記事サービスの名称情報を含みます。
+     * @return ArticleServiceResource 作成された記事サービスのリソース。
+     */
     public function store(StoreRequest $request): ArticleServiceResource
     {
         $articleService = $this->create->execute($request->name);
@@ -39,7 +51,16 @@ class ArticleServiceController extends Controller
         return new ArticleServiceResource($articleService);
     }
 
-    // 記事サービス更新
+    /**
+     * 記事サービスを更新する。
+     *
+     * 指定されたIDの記事サービスの名前を、リクエストに含まれる情報に基づいて更新します。
+     * 更新はアップデート用ユースケースを介して実行され、処理結果は更新後の記事サービス情報を含むリソースとして返されます。
+     *
+     * @param int $id 更新対象の記事サービスの識別子。
+     * @param UpdateRequest $request 更新情報を含むリクエストインスタンス。
+     * @return ArticleServiceResource 更新後の記事サービス情報を保持するリソース。
+     */
     public function update(int $id, UpdateRequest $request): ArticleServiceResource
     {
         $articleService = $this->update->execute(
@@ -52,7 +73,16 @@ class ArticleServiceController extends Controller
         return new ArticleServiceResource($articleService);
     }
 
-    // 記事サービス削除（ソフトデリート／完全削除）
+    /**
+     * 指定された記事サービスIDの削除を実行します（ソフトデリートまたは完全削除）。
+     *
+     * リクエストから "force" パラメータを取得し、true の場合は完全削除、false の場合はソフトデリートを行います。
+     * 削除処理完了後、HTTP 204 (No Content) のレスポンスを返します。
+     *
+     * @param int $id 削除対象の記事サービスのID
+     * @param DeleteRequest $request 削除リクエスト。'force' フラグで削除方法を指定
+     * @return Response HTTP 204 No Content レスポンス
+     */
     public function destroy(int $id, DeleteRequest $request): Response
     {
         $force = $request->boolean('force', false);
@@ -61,7 +91,14 @@ class ArticleServiceController extends Controller
         return response()->noContent();
     }
 
-    // 記事サービス詳細取得
+    /**
+     * 指定された記事サービスIDに対応する記事サービスの詳細情報を取得する。
+     *
+     * 指定のIDで記事サービスを検索し、存在しない場合はHTTP 404エラーで中断します。存在する場合は、その詳細情報を含むリソースを返却します。
+     *
+     * @param int $articleServiceId 取得対象のサービスID
+     * @return ArticleServiceResource 記事サービスの詳細情報を含むリソース
+     */
     public function show(ShowRequest $request, int $articleServiceId): ArticleServiceResource
     {
         $articleService = $this->findById->execute($articleServiceId);
@@ -73,7 +110,13 @@ class ArticleServiceController extends Controller
         return new ArticleServiceResource($articleService);
     }
 
-    // 記事サービス一覧取得
+    /**
+     * 登録されている全記事サービスの一覧を取得し、リソースコレクションとして返却します。
+     *
+     * すべての記事サービスを取得し、その一覧を ArticleServiceResource のコレクションに変換して返します。
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection 記事サービスリソースのコレクション
+     */
     public function index(FormRequest $request)
     {
         $articleServices = $this->findAll->execute();

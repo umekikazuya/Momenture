@@ -9,6 +9,11 @@ use App\Domain\Repositories\ArticleRepositoryInterface;
 
 class ChangeArticleStatusUseCase implements ChangeArticleStatusUseCaseInterface
 {
+    /**
+     * コンストラクタ
+     *
+     * ChangeArticleStatusUseCase のインスタンスを初期化します。記事の状態変更に必要な記事リポジトリを注入します。
+     */
     public function __construct(private ArticleRepositoryInterface $articleRepository)
     {
     }
