@@ -61,10 +61,9 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
         }
 
         $query->orderBy('created_at', $sort === 'created_at_desc' ? 'desc' : 'asc');
+        // $query->paginate($perPage ?: null, ['*'], 'page', null);
 
-        $paginator = $query->paginate($perPage, ['*'], 'page', $page);
-
-        return collect($paginator->items())
+        return $query->get()
             ->map(fn ($model) => $this->toEntity($model))
             ->all();
     }
