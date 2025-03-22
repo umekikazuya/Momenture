@@ -15,6 +15,8 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
      * コンストラクタ
      *
      * 記事リポジトリの依存性注入により、記事データ管理に必要なリポジトリインスタンスを保持します。
+     *
+     * @param ArticleRepositoryInterface $articleRepository 記事リポジトリのインスタンス
      */
     public function __construct(protected ArticleRepositoryInterface $articleRepository)
     {

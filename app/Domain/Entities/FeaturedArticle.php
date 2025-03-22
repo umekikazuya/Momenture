@@ -10,10 +10,10 @@ class FeaturedArticle
     /**
      * FeaturedArticleクラスのインスタンスを初期化するコンストラクタ。
      *
-     * 指定された一意の識別子、記事ID、優先度、有効状態、および作成日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
+     * 指定された一意の識別子、記事エンティティ、優先度、有効状態、および作成日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
      *
      * @param FeaturedArticleId  $id        FeaturedArticleの識別子
-     * @param int                $articleId 記事の識別ID
+     * @param Article            $article   記事エンティティ
      * @param FeaturedPriority   $priority  記事の優先度
      * @param bool               $isActive  記事が有効かどうかのフラグ
      * @param \DateTimeImmutable $createdAt 作成日時
