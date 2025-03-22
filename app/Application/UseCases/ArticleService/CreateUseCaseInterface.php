@@ -13,6 +13,8 @@ interface CreateUseCaseInterface
      *
      * @param  string $name 記事サービス生成に使用する名称。
      * @return ArticleService 生成された記事サービスのインスタンス。
+     *
+     * @throws \RuntimeException データベースエラーなど、予期しない例外が発生した場合にスロー。
      */
     public function execute(string $name): ArticleService;
 }

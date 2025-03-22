@@ -7,6 +7,8 @@ namespace App\Application\DTOs;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
 use App\Domain\ValueObjects\ArticleLink;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 use App\Domain\ValueObjects\ArticleTitle;
 use App\Http\Requests\Article\UpdateRequest;
 
@@ -52,7 +54,10 @@ class UpdateArticleInput
             $request->filled('link') ? new ArticleLink($request->link) : null,
             $request->filled('status') ? ArticleStatus::from($request->status) : null,
             $request->filled('service_id')
-                ? new ArticleService($request->service_id, '')
+                ? new ArticleService(
+                    id: new ArticleServiceId($request->service_id),
+                    name: new ArticleServiceName(''),
+                )
                 : null
         );
     }

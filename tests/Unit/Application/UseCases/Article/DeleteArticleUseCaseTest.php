@@ -26,7 +26,6 @@ class DeleteArticleUseCaseTest extends TestCase
 
     public function test_記事を削除できる()
     {
-        $this->expectNotToPerformAssertions();
         $this->repository
             ->shouldReceive('findById')
             ->with(1)
@@ -43,7 +42,6 @@ class DeleteArticleUseCaseTest extends TestCase
 
     public function test_記事を完全削除できる()
     {
-        $this->expectNotToPerformAssertions();
         $this->repository
             ->shouldReceive('findById')
             ->with(1)
@@ -63,7 +61,7 @@ class DeleteArticleUseCaseTest extends TestCase
         $this->repository
             ->shouldReceive('findById')
             ->with(999)
-            ->andReturnNull();
+            ->andThrow(new \DomainException('記事が見つかりません。'));
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('記事が見つかりません。');

@@ -9,10 +9,10 @@ use App\Domain\ValueObjects\ArticleTitle;
 class Article
 {
     /**
-     * Articleエンティティを初期化します。
+     * Articleエンティティを初期化。
      *
-     * 記事の一意なID、タイトル、ステータス、サービス、作成日時、更新日時、およびオプションのリンクを設定します。
-     * 検証やエラー処理は行いません。
+     * 記事の一意なID、タイトル、ステータス、サービス、作成日時、更新日時、およびオプションのリンクを設定。
+     * 検証やエラー処理は実施しない。
      */
     public function __construct(
         private int $id,
@@ -23,19 +23,12 @@ class Article
         private \DateTimeImmutable $updatedAt,
         private ?ArticleLink $link = null
     ) {
-        $this->id = $id;
-        $this->title = $title;
-        $this->status = $status;
-        $this->service = $service;
-        $this->link = $link;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
     }
 
     /**
-     * 記事の一意なIDを取得します。
+     * 記事の一意なIDを取得。
      *
-     * このメソッドは、記事エンティティに設定された識別子を返します。
+     * このメソッドは、記事エンティティに設定された識別子を返す。
      *
      * @return int 記事のID
      */
@@ -45,7 +38,7 @@ class Article
     }
 
     /**
-     * 記事のタイトルを返却します。
+     * 記事のタイトルを返却。
      *
      * @return ArticleTitle 記事のタイトルを表すオブジェクト。
      */
@@ -55,7 +48,7 @@ class Article
     }
 
     /**
-     * 記事に関連するサービスを取得します。
+     * 記事に関連するサービスを取得。
      *
      * @return ArticleService 記事に対応するサービスオブジェクト
      */
@@ -67,7 +60,7 @@ class Article
     /**
      * 記事の作成日時を取得する。
      *
-     * このメソッドは記事が作成された日時を表す DateTimeImmutable オブジェクトを返します。
+     * このメソッドは記事が作成された日時を表す DateTimeImmutable オブジェクトを返す。
      *
      * @return \DateTimeImmutable 記事の作成日時
      */
@@ -77,7 +70,7 @@ class Article
     }
 
     /**
-     * 記事の最新の更新日時を返します。
+     * 記事の最新の更新日時を返す。
      *
      * @return \DateTimeImmutable 最新の更新日時
      */
@@ -89,7 +82,7 @@ class Article
     /**
      * 記事の状態を取得する。
      *
-     * 現在の記事の状態（例：公開、下書きなど）を返します。
+     * 現在の記事の状態（例：公開、下書きなど）を返す。
      *
      * @return ArticleStatus 記事の状態
      */
@@ -101,7 +94,7 @@ class Article
     /**
      * 記事が公開済みかどうかを判定する。
      *
-     * 現在のステータスが ArticleStatus::PUBLISHED と一致している場合に true を返します。
+     * 現在のステータスが ArticleStatus::PUBLISHED と一致している場合に true を返す。
      *
      * @return bool 公開済みの場合は true、それ以外は false。
      */
@@ -115,7 +108,7 @@ class Article
      *
      * 現在のステータスが `ArticleStatus::DRAFT` と一致する場合に、記事が下書き状態であると判断します。
      *
-     * @return bool 下書き状態の場合は true、それ以外の場合は false を返します。
+     * @return bool 下書き状態の場合は true、それ以外の場合は false を返す。
      */
     public function isDraft(): bool
     {
@@ -125,7 +118,7 @@ class Article
     /**
      * 記事にリンクが存在するかを判定する。
      *
-     * リンクが設定されている場合は true、設定されていない場合は false を返します。
+     * リンクが設定されている場合は true、設定されていない場合は false を返す。
      *
      * @return bool リンクの有無を示す真偽値
      */
@@ -137,7 +130,7 @@ class Article
     /**
      * 記事に関連付けられたリンクを取得する.
      *
-     * リンクが設定されていない場合は null を返します.
+     * リンクが設定されていない場合は null を返す.
      *
      * @return ArticleLink|null 記事のリンクまたは null
      */
@@ -147,9 +140,9 @@ class Article
     }
 
     /**
-     * 記事を公開状態に更新する。
+     * 記事を公開状態に更新。
      *
-     * 現在の記事状態が公開可能な場合、記事の状態を「公開済み」に設定し、更新日時を現在の日時に更新します。
+     * 現在の記事状態が公開可能な場合、記事の状態を「公開済み」に設定し、更新日時を現在の日時に更新。
      * 公開できない状態の場合は、DomainException をスローします。
      *
      * @throws \DomainException 記事が公開できない状態の場合にスローされます。
@@ -164,7 +157,7 @@ class Article
     }
 
     /**
-     * 記事のタイトルを新しい値に更新し、更新日時を現在時刻に設定します。
+     * 記事のタイトルを新しい値に更新し、更新日時を現在時刻に設定。
      *
      * @param ArticleTitle $title 変更後の記事タイトルオブジェクト
      */

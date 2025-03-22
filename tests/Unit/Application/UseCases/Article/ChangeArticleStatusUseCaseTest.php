@@ -43,7 +43,10 @@ class ChangeArticleStatusUseCaseTest extends TestCase
             ->shouldReceive('save')
             ->once();
 
-        $this->useCase->execute(1, ArticleStatus::PUBLISHED->value);
+        $this->useCase->execute(
+            id: 1,
+            newStatus: ArticleStatus::PUBLISHED->value
+        );
     }
 
     protected function tearDown(): void

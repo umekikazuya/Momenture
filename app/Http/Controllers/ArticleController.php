@@ -54,7 +54,7 @@ class ArticleController extends Controller
         $input = CreateArticleInput::fromRequest($request);
         $article = $this->createArticle->execute($input);
 
-        return (new ArticleResource($article));
+        return new ArticleResource($article);
     }
 
     /**
@@ -70,9 +70,15 @@ class ArticleController extends Controller
     public function update(int $id, UpdateRequest $request): ArticleResource
     {
         $input = UpdateArticleInput::fromRequest($id, $request);
-        $article = $this->updateArticle->execute($input);
+        try {
+            $article = $this->updateArticle->execute($input);
 
-        return new ArticleResource($article);
+            return new ArticleResource($article);
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -86,9 +92,15 @@ class ArticleController extends Controller
     public function destroy(int $id, Request $request): Response
     {
         $force = $request->boolean('force', false);
-        $this->deleteArticle->execute($id, $force);
+        try {
+            $this->deleteArticle->execute($id, $force);
 
-        return response()->noContent();
+            return response()->noContent();
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -101,9 +113,15 @@ class ArticleController extends Controller
      */
     public function restore(int $id): Response
     {
-        $this->restoreArticle->execute($id);
+        try {
+            $this->restoreArticle->execute($id);
 
-        return response()->noContent();
+            return response()->noContent();
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -112,9 +130,8 @@ class ArticleController extends Controller
      * このメソッドは、findArticleByIdユースケースを用いて記事情報を取得し、
      * その結果をArticleResourceにラップしてレスポンスとする。
      *
-     * @param ShowRequest $request リクエスト情報を保持するShowRequestインスタンス
-     * @param int         $id      取得対象の記事の一意な識別子
-     *
+     * @param  ShowRequest $request リクエスト情報を保持するShowRequestインスタンス
+     * @param  int         $id      取得対象の記事の一意な識別子
      * @return ArticleResource 取得された記事詳細を含むリソースオブジェクト
      */
     public function show(ShowRequest $request, int $id): ArticleResource
@@ -156,7 +173,16 @@ class ArticleController extends Controller
      */
     public function changeStatus(ChangeStatusRequest $request, int $id): Response
     {
-        $this->changeArticleStatus->execute($id, $request->new_status);
+        try {
+            $this->changeArticleStatus->execute(
+                id: $id,
+                newStatus: $request->get('new_status'),
+            );
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
 
         return response()->noContent();
     }

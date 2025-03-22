@@ -7,6 +7,7 @@ namespace App\Application\UseCases\ArticleService;
 use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Repositories\ArticleServiceRepositoryInterface;
+use App\Domain\ValueObjects\ArticleServiceId;
 
 class FindByIdUseCase implements FindByIdUseCaseInterface
 {
@@ -20,17 +21,10 @@ class FindByIdUseCase implements FindByIdUseCaseInterface
     }
 
     /**
-     * 指定されたIDを元に記事サービスを取得する。
-     *
-     * リポジトリを用いて、指定されたIDに一致するArticleServiceインスタンスを検索し、
-     * 存在する場合はそのインスタンスを、見つからない場合はnullを返します。
-     *
-     * @param int $id 検索対象の記事サービスのID
-     *
-     * @return ArticleService|null 該当する記事サービスが存在する場合はそのインスタンス、存在しない場合はnull
+     * {@inheritDoc}
      */
-    public function execute(int $id): ?ArticleService
+    public function execute(ArticleServiceId $id): ArticleService
     {
-        return $this->repository->findById($id);
+        return $this->repository->findById($id->value());
     }
 }

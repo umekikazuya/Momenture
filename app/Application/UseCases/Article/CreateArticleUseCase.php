@@ -19,15 +19,7 @@ class CreateArticleUseCase implements CreateArticleUseCaseInterface
     }
 
     /**
-     * 入力DTOから記事を生成し、リポジトリに保存された記事を返す。
-     *
-     * CreateArticleInput DTOから記事作成に必要な情報（タイトル、リンク、ステータス、サービス）を取得し、
-     * 新しいArticleオブジェクトを生成します。生成時には記事IDが0に初期化され、作成日時および更新日時に現在の日時が設定されます。
-     * 生成された記事は記事リポジトリに保存され、その結果のArticleオブジェクトが返されます。
-     *
-     * @param CreateArticleInput $dto 記事作成に必要な情報を持つDTO
-     *
-     * @return Article 保存された記事オブジェクト
+     * {@inheritDoc}
      */
     public function execute(
         CreateArticleInput $dto

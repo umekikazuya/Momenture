@@ -18,5 +18,5 @@ interface FindByIdUseCaseInterface
      * @param  FeaturedArticleId $id 注目記事のID。
      * @return FeaturedArticle|null 指定されたIDに対応する注目記事、存在しない場合はnull。
      */
-    public function handle(FeaturedArticleId $id): ?FeaturedArticle;
+    public function execute(FeaturedArticleId $id): ?FeaturedArticle;
 }

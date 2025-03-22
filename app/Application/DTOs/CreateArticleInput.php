@@ -46,7 +46,9 @@ final class CreateArticleInput
     {
         return new self(
             new ArticleTitle($request->title),
-            new ArticleLink($request->link) ?? null,
+            $request->link
+                ? new ArticleLink($request->link)
+                : null,
             ArticleStatus::from($request->status),
             new ArticleService($request->service, new ArticleServiceName(''))
         );

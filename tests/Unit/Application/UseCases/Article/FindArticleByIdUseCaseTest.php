@@ -41,11 +41,11 @@ class FindArticleByIdUseCaseTest extends TestCase
         $this->repository
             ->shouldReceive('findById')
             ->with(99)
-            ->andReturn(null);
+            ->andThrow(new \DomainException('記事が見つかりません。'));
 
-        $result = $this->useCase->execute(99);
-
-        $this->assertNull($result);
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('記事が見つかりません。');
+        $this->useCase->execute(99);
     }
 
     protected function tearDown(): void

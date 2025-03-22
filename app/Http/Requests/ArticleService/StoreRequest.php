@@ -29,14 +29,14 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:255',
         ];
     }
 
     /**
-     * バリデーションエラーメッセージを定義します。
+     * バリデーションエラーメッセージを定義。
      *
-     * フォームリクエストの検証が失敗した際に返されるエラーメッセージを、各ルールに対してカスタム設定します。
+     * フォームリクエストの検証が失敗した際に返されるエラーメッセージを、各ルールに対してカスタム設定。
      * 現在は、サービス名の必須入力と文字数制限に関するエラーメッセージが含まれます。
      *
      * @return array フォーム検証エラーメッセージの連想配列
@@ -45,7 +45,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name.required' => 'サービス名は必須です。',
-            'name.max' => 'サービス名は100文字以内で入力してください。',
+            'name.max' => 'サービス名は255文字以内で入力してください。',
         ];
     }
 }

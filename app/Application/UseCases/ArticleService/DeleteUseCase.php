@@ -11,7 +11,7 @@ class DeleteUseCase implements DeleteUseCaseInterface
     /**
      * コンストラクタ
      *
-     * 記事削除に必要なリポジトリを注入し、ユースケースインスタンスを初期化します。
+     * 記事削除に必要なリポジトリを注入し、ユースケースインスタンスを初期化。
      */
     public function __construct(private ArticleServiceRepositoryInterface $articleServiceRepository)
     {
@@ -34,16 +34,13 @@ class DeleteUseCase implements DeleteUseCaseInterface
     {
         try {
             $article = $this->articleServiceRepository->findById($id);
-            if (! $article) {
-                throw new \DomainException("ID: {$id} の記事サービスが見つかりません。");
-            }
             if ($force) {
                 $this->articleServiceRepository->forceDelete($article);
             } else {
                 $this->articleServiceRepository->delete($article);
             }
         } catch (\DomainException $e) {
-            throw new \DomainException("ID: {$id} の記事サービスは存在しません", 0, $e);
+            throw $e;
         } catch (\Exception $e) {
             throw new \RuntimeException("ID: {$id} の記事サービスの削除中にエラーが発生しました", 0, $e);
         }

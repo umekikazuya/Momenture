@@ -41,7 +41,9 @@ class FeaturedArticleResource extends JsonResource
             'article' => [
                 'id' => $this->resource->article()->id(),
                 'title' => $this->resource->article()->title()->value(),
-                'link' => $this->resource->article()->link()->value(),
+                'link' => $this->resource->article()->hasLink()
+                ? $this->resource->article()->link()->value()
+                : null,
                 'status' => $this->resource->article()->isPublished() ? 'published' : 'draft',
                 'service' => [
                     'id' => $this->resource->article()->service()->id()->value(),

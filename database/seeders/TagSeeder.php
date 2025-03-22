@@ -15,14 +15,15 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        Tag::create([
-            'name' => 'PHP',
-        ]);
-        Tag::create([
-            'name' => 'Laravel',
-        ]);
-        Tag::create([
-            'name' => 'DDD',
-        ]);
+        $tags = [
+            'PHP',
+            'Laravel',
+            'DDD',
+        ];
+        foreach ($tags as $tag) {
+            Tag::query()->updateOrCreate([
+                'name' => $tag,
+            ]);
+        }
     }
 }

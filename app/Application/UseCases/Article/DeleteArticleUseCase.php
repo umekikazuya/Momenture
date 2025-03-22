@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\UseCases\Article;
 
 use App\Domain\Repositories\ArticleRepositoryInterface;
-use DomainException;
 
 class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
 {
@@ -19,27 +18,21 @@ class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
     }
 
     /**
-     * 指定されたIDの記事を削除します。
-     *
-     * 指定したIDの記事が存在しない場合、DomainExceptionをスローします。強制削除フラグがtrueの場合は、永続的に記事を削除し、falseの場合は通常の削除処理を実施します。
-     *
-     * @param int  $id    削除対象の記事のID
-     * @param bool $force trueの場合、強制削除を行います。falseの場合は通常の削除を行います。
-     *
-     * @throws DomainException 指定されたIDの記事が存在しない場合にスローされます。
+     * {@inheritDoc}
      */
     public function execute(int $id, bool $force = false): void
     {
-        $article = $this->articleRepository->findById($id);
-
-        if (! $article) {
-            throw new DomainException("ID: {$id} の記事が見つかりません。");
-        }
-
-        if ($force) {
-            $this->articleRepository->forceDelete($article);
-        } else {
-            $this->articleRepository->delete($article);
+        try {
+            $entity = $this->articleRepository->findById($id);
+            if ($force) {
+                $this->articleRepository->forceDelete($entity);
+            } else {
+                $this->articleRepository->delete($entity);
+            }
+        } catch (\DomainException $e) {
+            throw $e;
+        } catch (\RuntimeException $e) {
+            throw new \RuntimeException('データベースエラーが発生しました。', 0, $e);
         }
     }
 }

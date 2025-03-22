@@ -13,27 +13,35 @@ use App\Domain\ValueObjects\ArticleServiceId;
 use App\Domain\ValueObjects\ArticleServiceName;
 use App\Domain\ValueObjects\ArticleTitle;
 use App\Models\Article as ArticleModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EloquentArticleRepository implements ArticleRepositoryInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function findById(int $id): ?Article
+    public function findById(int $id): Article
     {
-        $model = ArticleModel::query()->find($id);
-
-        return $model ? $this->toEntity($model) : null;
+        try {
+            $model = ArticleModel::query()->findOrFail($id);
+            return $this->toEntity($model);
+        } catch (ModelNotFoundException $e) {
+            throw new \DomainException("ID: {$id} の記事が見つかりません。");
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findTrashedById(int $id): ?Article
+    public function findTrashedById(int $id): Article
     {
-        $model = ArticleModel::withTrashed()->find($id);
+        try {
+            $model = ArticleModel::query()->withTrashed()->findOrFail($id);
 
-        return $model ? $this->toEntity($model) : null;
+            return $this->toEntity($model);
+        } catch (ModelNotFoundException $e) {
+            throw new \DomainException("ID: {$id} の記事が見つかりません。");
+        }
     }
 
     /**
@@ -59,7 +67,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function search(string $keyword, ?int $serviceId = null, ?int $tagId = null): array
+    public function search(?string $keyword, ?int $serviceId = null, ?int $tagId = null): array
     {
         $query = ArticleModel::query();
 
@@ -89,8 +97,8 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function save(Article $article): void
     {
         /**
- * @var ArticleModel $model
-*/
+         * @var ArticleModel $model
+         */
         $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
         if ($article->id() && ! $model) {
             throw new \DomainException('該当IDの記事が見つかりません。');
@@ -107,7 +115,11 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      */
     public function delete(Article $article): void
     {
-        ArticleModel::find($article->id())?->delete();
+        try {
+            ArticleModel::destroy($article->id());
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
     }
 
     /**
@@ -115,7 +127,11 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      */
     public function forceDelete(Article $article): void
     {
-        ArticleModel::withTrashed()->find($article->id())?->forceDelete();
+        try {
+            ArticleModel::query()->withTrashed()->forceDelete($article->id());
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
     }
 
     /**
@@ -123,7 +139,13 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      */
     public function restore(Article $article): void
     {
-        ArticleModel::withTrashed()->find($article->id())?->restore();
+        try {
+            ArticleModel::withTrashed()->findOrFail($article->id())->restore();
+        } catch (ModelNotFoundException $e) {
+            throw new \DomainException("ID: {$article->id()} の記事が見つかりません。");
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
     }
 
     /**

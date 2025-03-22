@@ -17,14 +17,9 @@ class FindArticleByIdUseCase implements FindArticleByIdUseCaseInterface
     }
 
     /**
-     * 指定された記事IDに対する記事を取得する。
-     *
-     * 与えられた記事IDで記事を検索し、該当する記事が存在する場合はその記事のインスタンスを、存在しない場合は null を返します。
-     *
-     * @param  int $articleId 記事の識別子
-     * @return Article|null 検索結果の文章記事または記事が見つからない場合は null
+     * {@inheritDoc}
      */
-    public function execute(int $articleId): ?Article
+    public function execute(int $articleId): Article
     {
         return $this->articleRepository->findById($articleId);
     }

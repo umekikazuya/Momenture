@@ -14,7 +14,14 @@ class ArticleServiceSeeder extends Seeder
      */
     public function run()
     {
-        ArticleService::create(['name' => 'Qiita']);
-        ArticleService::create(['name' => 'Zenn']);
+        $services = [
+            'Qiita',
+            'Zenn',
+        ];
+        foreach ($services as $service) {
+            ArticleService::query()->updateOrCreate([
+                'name' => $service,
+            ]);
+        }
     }
 }

@@ -59,20 +59,20 @@ class ProfileRepository implements ProfileRepositoryInterface
     {
         $item = $this->toDynamoDbFormat(
             [
-            'PK' => $profile->id,
-            'display_name' => $profile->displayName,
-            'display_short_name' => $profile->displayShortName,
-            'address' => $profile->address,
-            'from' => $profile->from,
-            'github' => $profile->github,
-            'introduction' => $profile->introduction,
-            'job' => $profile->job,
-            'like' => $profile->likes,
-            'qiita' => $profile->qiita,
-            'skill' => $profile->skills,
-            'summary_introduction' => $profile->summaryIntroduction,
-            'zenn' => $profile->zenn,
-            'updated_at' => $profile->updatedAt,
+                'PK' => $profile->id,
+                'display_name' => $profile->displayName,
+                'display_short_name' => $profile->displayShortName,
+                'address' => $profile->address,
+                'from' => $profile->from,
+                'github' => $profile->github,
+                'introduction' => $profile->introduction,
+                'job' => $profile->job,
+                'like' => $profile->likes,
+                'qiita' => $profile->qiita,
+                'skill' => $profile->skills,
+                'summary_introduction' => $profile->summaryIntroduction,
+                'zenn' => $profile->zenn,
+                'updated_at' => $profile->updatedAt,
             ]
         );
 
@@ -117,15 +117,19 @@ class ProfileRepository implements ProfileRepositoryInterface
                                 return null;
                             }
 
-                            throw new \InvalidArgumentException('Unsupported DynamoDB data type in list: ' . json_encode($v));
-                        }, $value['L']
+                            throw new \InvalidArgumentException(
+                                'Unsupported DynamoDB data type in list: ' . json_encode($v)
+                            );
+                        },
+                        $value['L']
                     );
                 } elseif (isset($value['NULL'])) {
                     return null;
                 }
 
                 throw new \InvalidArgumentException('Unsupported DynamoDB data type: ' . json_encode($value));
-            }, $data
+            },
+            $data
         );
     }
 
@@ -154,12 +158,14 @@ class ProfileRepository implements ProfileRepositoryInterface
                                 return ['N' => (string) $v];
                             }
                             throw new \InvalidArgumentException('Unsupported array element type');
-                        }, $value
+                        },
+                        $value
                     )];
                 }
 
                 throw new \InvalidArgumentException('Unsupported data type');
-            }, $data
+            },
+            $data
         );
     }
 }
