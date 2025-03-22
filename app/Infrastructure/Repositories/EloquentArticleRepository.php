@@ -24,7 +24,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     {
         try {
             $model = ArticleModel::query()->findOrFail($id);
-            return $model ? $this->toEntity($model) : null;
+            return $this->toEntity($model);
         } catch (ModelNotFoundException $e) {
             throw new \DomainException("ID: {$id} の記事が見つかりません。");
         }
@@ -128,7 +128,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function forceDelete(Article $article): void
     {
         try {
-            ArticleModel::forceDestroy([$article->id()]);
+            ArticleModel::query()->withTrashed()->forceDelete($article->id());
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }
@@ -140,7 +140,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function restore(Article $article): void
     {
         try {
-            ArticleModel::withTrashed()->findOrFail($article->id())?->restore();
+            ArticleModel::withTrashed()->findOrFail($article->id())->restore();
         } catch (ModelNotFoundException $e) {
             throw new \DomainException("ID: {$article->id()} の記事が見つかりません。");
         } catch (\Exception $e) {
