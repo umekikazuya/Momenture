@@ -24,16 +24,20 @@ interface FeaturedArticleRepositoryInterface
      *
      * @param int              $articleId 追加する記事の識別子
      * @param FeaturedPriority $priority  記事の表示優先度を表すオブジェクト
+     *
+     * @throws \RuntimeException データベースエラーが発生した場合
      */
     public function add(int $articleId, FeaturedPriority $priority): void;
 
     /**
-     * 指定されたフィーチャー記事の優先度を更新する。
+     * 指定された注目記事の優先度を更新する。
      *
-     * 更新対象のフィーチャー記事を識別するIDと新しい優先度を受け取り、記事の表示順序を更新します。
+     * 更新対象の注目記事を識別するIDと新しい優先度を受け取り、記事の表示順序を更新します。
      *
-     * @param FeaturedArticleId $id       更新対象のフィーチャー記事を示す識別子。
+     * @param FeaturedArticleId $id       更新対象の注目記事を示す識別子。
      * @param FeaturedPriority  $priority 設定する新しい優先度を表す値オブジェクト。
+     *
+     * @throws \DomainException 指定されたIDで該当するレコードが見つからなかった場合にスローされる。
      */
     public function updatePriority(FeaturedArticleId $id, FeaturedPriority $priority): void;
 
@@ -43,6 +47,8 @@ interface FeaturedArticleRepositoryInterface
      * このメソッドは、対象の注目記事の is_active プロパティを false に設定し、記事を無効な状態に更新します。
      *
      * @param FeaturedArticleId $id 無効化する注目記事の識別子
+     *
+     * @throws \DomainException 指定されたIDで該当するレコードが見つからなかった場合にスローされる。
      */
     public function deactivate(FeaturedArticleId $id): void;
 

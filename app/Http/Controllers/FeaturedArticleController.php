@@ -21,7 +21,7 @@ class FeaturedArticleController extends Controller
     /**
      * コンストラクタ
      *
-     * このコンストラクタは、フィーチャード記事の全件取得、記事の割り当て、非活性化、優先度変更に対応するユースケースを注入し、
+     * このコンストラクタは、注目記事の全件取得、記事の割り当て、非活性化、優先度変更に対応するユースケースを注入し、
      * コントローラーの機能を提供するための依存性を初期化します。
      */
     public function __construct(
@@ -42,9 +42,12 @@ class FeaturedArticleController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $entities = $this->findAllUseCase->handle();
-
-        return FeaturedArticleResource::collection($entities);
+        try {
+            $entities = $this->findAllUseCase->handle();
+            return FeaturedArticleResource::collection($entities);
+        } catch (\RuntimeException $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -62,8 +65,8 @@ class FeaturedArticleController extends Controller
     {
         try {
             $entity = $this->assignArticleUseCase->handle(
-                new FeaturedArticleId((int) $request->input('article_id')),
-                new FeaturedPriority((int) $request->input('priority')),
+                id: new FeaturedArticleId((int) $request->input('article_id')),
+                priority: new FeaturedPriority((int) $request->input('priority')),
             );
             return new FeaturedArticleResource($entity);
         } catch (\DomainException $e) {
@@ -74,14 +77,14 @@ class FeaturedArticleController extends Controller
     }
 
     /**
-     * 指定されたフィーチャード記事の優先度を変更する。
+     * 指定された注目記事の優先度を変更する。
      *
-     * リクエストから取得した優先度に基づき、指定されたIDのフィーチャード記事の優先度を更新します。
+     * リクエストから取得した優先度に基づき、指定されたIDの注目記事の優先度を更新します。
      * 正常に処理が完了した場合はコンテンツなしのレスポンス（HTTP 204）を返し、
      * ドメイン制約に違反した場合は HTTP 409 エラーで処理を中断します。
      *
      * @param  ChangePriorityRequest $request 優先度変更情報を含むリクエスト
-     * @param  int                   $id      変更対象のフィーチャード記事の識別子
+     * @param  int                   $id      変更対象の注目記事の識別子
      * @return Response コンテンツなしのレスポンス（HTTP 204）
      */
     public function changePriority(ChangePriorityRequest $request, int $id): Response
@@ -99,19 +102,20 @@ class FeaturedArticleController extends Controller
     }
 
     /**
-     * 指定されたIDのフィーチャード記事を非アクティブ化する。
+     * 指定されたIDの注目記事を非アクティブ化する。
      *
-     * 指定された記事IDに基づき、フィーチャード記事の非アクティブ化処理を実行します。
+     * 指定された記事IDに基づき、注目記事の非アクティブ化処理を実行します。
      * 成功時にはコンテンツなしのレスポンスを返し、ドメイン例外が発生した場合はHTTP 409ステータスで中断されます。
      *
-     * @param  int $id 非アクティブ化するフィーチャード記事のID。
+     * @param  int $id 非アクティブ化する注目記事のID。
      * @return Response コンテンツなしのレスポンス。
      */
     public function deactivate(int $id): Response
     {
         try {
-            $this->deactivateUseCase->handle(new FeaturedArticleId($id));
-
+            $this->deactivateUseCase->handle(
+                id: new FeaturedArticleId($id)
+            );
             return response()->noContent();
         } catch (\DomainException $e) {
             abort(409, $e->getMessage());

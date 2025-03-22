@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 注目記事モデル
+ */
 class FeaturedArticle extends Model
 {
     protected $table = 'featured_articles';

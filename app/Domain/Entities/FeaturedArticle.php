@@ -8,11 +8,11 @@ use App\Domain\ValueObjects\FeaturedPriority;
 class FeaturedArticle
 {
     /**
-     * FeaturedArticleクラスのインスタンスを初期化するコンストラクタ。
+     * 注目記事クラスのインスタンスを初期化するコンストラクタ。
      *
-     * 指定された一意の識別子、記事エンティティ、優先度、有効状態、および作成日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
+     * 指定された一意の識別子、記事エンティティ、優先度、有効状態、および作成日時を用いて、注目記事オブジェクトのプロパティを初期化します。
      *
-     * @param FeaturedArticleId  $id        FeaturedArticleの識別子
+     * @param FeaturedArticleId  $id        注目記事の識別子
      * @param Article            $article   記事エンティティ
      * @param FeaturedPriority   $priority  記事の優先度
      * @param bool               $isActive  記事が有効かどうかのフラグ
@@ -28,9 +28,9 @@ class FeaturedArticle
     }
 
     /**
-     * FeaturedArticleの識別子を取得します。
+     * 注目記事の識別子を取得します。
      *
-     * @return FeaturedArticleId FeaturedArticleの識別子
+     * @return FeaturedArticleId 注目記事の識別子
      */
     public function id(): FeaturedArticleId
     {
@@ -38,7 +38,7 @@ class FeaturedArticle
     }
 
     /**
-     * FeaturedArticleに紐づくArticleオブジェクトを取得します。
+     * 注目記事に紐づくArticleオブジェクトを取得します。
      *
      * @return Article 関連する記事の詳細情報を保持するArticleオブジェクト
      */
@@ -60,7 +60,7 @@ class FeaturedArticle
     }
 
     /**
-     * フィーチャード記事がアクティブな状態かどうかを返します。
+     * 注目記事がアクティブな状態かどうかを返します。
      *
      * このメソッドは、記事が現在有効（アクティブ）であるかを示すブール値を返します。
      *
