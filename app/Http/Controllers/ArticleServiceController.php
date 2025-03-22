@@ -50,7 +50,7 @@ class ArticleServiceController extends Controller
 
             return new ArticleServiceResource($entity);
         } catch (\RuntimeException $e) {
-            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, '内部エラーが発生しました。');
         }
     }
 
@@ -76,7 +76,7 @@ class ArticleServiceController extends Controller
         } catch (\DomainException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
         } catch (\RuntimeException $e) {
-            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, '内部エラーが発生しました。');
         }
     }
 
@@ -97,13 +97,16 @@ class ArticleServiceController extends Controller
     {
         $force = $request->boolean('force', false);
         try {
-            $this->delete->execute($id, $force);
+            $this->delete->execute(
+                id: new ArticleServiceId($id),
+                force: $force
+            );
 
             return response()->noContent();
         } catch (\DomainException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
         } catch (\RuntimeException $e) {
-            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, '内部エラーが発生しました。');
         }
     }
 
@@ -124,7 +127,7 @@ class ArticleServiceController extends Controller
         } catch (\DomainException $e) {
             abort(Response::HTTP_NOT_FOUND, 'サービスが見つかりませんでした。');
         } catch (\RuntimeException $e) {
-            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, '内部エラーが発生しました。');
         }
     }
 

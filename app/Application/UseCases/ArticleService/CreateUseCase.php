@@ -31,8 +31,7 @@ class CreateUseCase implements CreateUseCaseInterface
             name: new ArticleServiceName($name),
         );
         try {
-            $this->repository->create($article);
-            return $article;
+            return $this->repository->create($article);
         } catch (\Exception $e) {
             throw $e;
         }

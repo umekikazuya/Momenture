@@ -47,33 +47,45 @@ interface ArticleRepositoryInterface
     public function findAll(array $filters, string $sort, int $page, int $perPage): array;
 
     /**
-     * 指定された記事オブジェクトをリポジトリに保存します。
+     * 新しい記事をリポジトリに追加します。
      *
-     * @param Article $article 保存対象の記事オブジェクト
+     * @param  Article $article 追加する記事オブジェクト
+     * @return Article 保存後の記事オブジェクト
+     *
+     * @throws \RuntimeException データベースエラーなど、予期しない例外が発生した場合
      */
-    public function save(Article $article): void;
+    public function create(Article $article): Article;
+
+    /**
+     * 指定された記事オブジェクトを更新します。
+     *
+     * @param Article $article 更新対象の記事オブジェクト
+     */
+    public function update(Article $article): Article;
 
     /**
      * 指定された記事を論理削除します。
      *
      * この操作は記事に論理削除フラグを設定し、通常の表示および検索から除外しますが、後から復元可能です。
      *
-     * @param Article $article 対象の記事オブジェクト
+     * @param int $id 削除対象の記事ID
      *
+     * @throws \DomainException 指定されたIDの記事が存在しない場合
      * @throws \RuntimeException データベースエラーなど、予期しない例外が発生した場合
      */
-    public function delete(Article $article): void;
+    public function delete(int $id): void;
 
     /**
      * 指定された記事を物理的に削除します。
      *
      * 論理削除ではなく、記事のデータがデータベースから完全に除去されるため、復元はできません。
      *
-     * @param Article $article 削除対象の記事オブジェクト
+     * @param int $id 削除対象の記事ID
      *
+     * @throws \DomainException 指定されたIDの記事が存在しない場合
      * @throws \RuntimeException データベースエラーなど、予期しない例外が発生した場合
      */
-    public function forceDelete(Article $article): void;
+    public function forceDelete(int $id): void;
 
     /**
      * 論理削除された記事を元の状態に復元する。

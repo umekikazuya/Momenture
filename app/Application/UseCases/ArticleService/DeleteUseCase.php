@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\UseCases\ArticleService;
 
 use App\Domain\Repositories\ArticleServiceRepositoryInterface;
+use App\Domain\ValueObjects\ArticleServiceId;
 
 class DeleteUseCase implements DeleteUseCaseInterface
 {
@@ -24,13 +25,13 @@ class DeleteUseCase implements DeleteUseCaseInterface
      * 該当記事サービスが見つからない場合は、DomainExceptionが内部で捕捉され、削除処理は実行されない。
      * 処理中に予期しないエラーが発生した場合は、RuntimeExceptionがスローされる。
      *
-     * @param int  $id    削除対象の記事サービスの識別子。
+     * @param ArticleServiceId  $id    削除対象の記事サービスの識別子。
      * @param bool $force 強制削除を行う場合はtrue（デフォルトはfalse）。
      *
      * @throws \DomainException 指定された記事サービスが見つからない場合にスローされる。
      * @throws \RuntimeException 削除処理中に予期しないエラーが発生した場合にスローされる。
      */
-    public function execute(int $id, bool $force = false): void
+    public function execute(ArticleServiceId $id, bool $force = false): void
     {
         try {
             $article = $this->articleServiceRepository->findById($id);

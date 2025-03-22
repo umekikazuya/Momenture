@@ -16,14 +16,14 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
     /**
      * {@inheritDoc}
      */
-    public function findById(int $id): ArticleService
+    public function findById(ArticleServiceId $id): ArticleService
     {
         try {
-            $model = ArticleServiceModel::query()->findOrFail($id);
+            $model = ArticleServiceModel::query()->findOrFail($id->value());
 
             return $this->toEntity(model: $model);
         } catch (ModelNotFoundException $e) {
-            throw new \DomainException("ID: {$id} の記事サービスが見つかりません。");
+            throw new \DomainException("ID: {$id->value()} の記事サービスが見つかりません。");
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }

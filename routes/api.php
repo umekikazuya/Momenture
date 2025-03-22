@@ -16,6 +16,7 @@ Route::prefix('articles')->group(function () {
     Route::get('{id}', [ArticleController::class, 'show']); // 詳細取得
     Route::get('/', [ArticleController::class, 'index']); // 一覧・検索
     Route::patch('{id}/status', [ArticleController::class, 'changeStatus']); // 公開状態変更
+    Route::get('trashed', [ArticleController::class, 'trashed']); // 削除済み記事一覧取得
 });
 Route::prefix('featured-articles')->group(function () {
     Route::get('/', [FeaturedArticleController::class, 'index']);

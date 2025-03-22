@@ -44,7 +44,7 @@ class ChangeArticleStatusUseCase implements ChangeArticleStatusUseCaseInterface
                 return;
             }
             $entity->updateStatus($newStatusEnum);
-            $this->repository->save($entity);
+            $this->repository->update($entity);
         } catch (\DomainException $e) {
             throw $e;
         } catch (\InvalidArgumentException $e) {

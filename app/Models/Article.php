@@ -18,9 +18,9 @@ class Article extends Model
         'status',
         'article_service_id',
         'link',
-        'created_at',
-        'updated_at',
     ];
+
+    public $timestamps = true;
 
     /**
      * ArticleService モデルとの belongsTo リレーションを返します。

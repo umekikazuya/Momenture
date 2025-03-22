@@ -25,7 +25,7 @@ class ArticleSeeder extends Seeder
         Article::factory()
             ->count(50)
             ->create()
-            ->each(function ($article) {
+            ->each(function ($article) use ($allTagIds) {
                 // タグが存在しない場合は処理をスキップ
                 if (empty($allTagIds)) {
                     return;

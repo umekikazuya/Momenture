@@ -23,29 +23,26 @@ class UpdateArticleUseCase implements UpdateArticleUseCaseInterface
     public function execute(
         UpdateArticleInput $input,
     ): Article {
-        try {
-            $entity = $this->articleRepository->findById($input->id);
+        $entity = $this->articleRepository->findById($input->id);
 
-            // エンティティの更新
-            if ($input->title !== null) {
-                $entity->updateTitle($input->title);
-            }
-
-            if ($input->link !== null) {
-                $entity->updateLink($input->link);
-            }
-
-            if ($input->service !== null) {
-                $entity->updateArticleService($input->service);
-            }
-            // モデルの更新
-            $this->articleRepository->save($entity);
-
-            return $entity;
-        } catch (\DomainException $e) {
-            throw $e;
-        } catch (\RuntimeException $e) {
-            throw $e;
+        // エンティティの更新
+        if ($input->title !== null) {
+            $entity->updateTitle($input->title);
         }
+
+        if ($input->link !== null) {
+            $entity->updateLink($input->link);
+        }
+
+        if ($input->service !== null) {
+            $entity->updateArticleService($input->service);
+        }
+
+        if ($input->status !== null) {
+            $entity->updateStatus($input->status);
+        }
+
+        // モデルの更新
+        return $this->articleRepository->update($entity);
     }
 }

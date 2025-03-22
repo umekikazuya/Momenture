@@ -52,9 +52,16 @@ class ArticleController extends Controller
     public function store(StoreRequest $request): ArticleResource
     {
         $input = CreateArticleInput::fromRequest($request);
-        $article = $this->createArticle->execute($input);
 
-        return new ArticleResource($article);
+        try {
+            $article = $this->createArticle->execute($input);
+
+            return new ArticleResource($article);
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**
@@ -154,8 +161,8 @@ class ArticleController extends Controller
         $articles = $this->findArticles->execute(
             $request->only(['status', 'service_id', 'tag_id']),
             $request->get('sort', 'created_at_desc'),
-            (int) $request->get('page', 1),
-            (int) $request->get('per_page', 10)
+            (int) $request->get('page', $request->get('page', 0)),
+            (int) $request->get('per_page', $request->get('per_page', 10)),
         );
 
         return ArticleResource::collection($articles);

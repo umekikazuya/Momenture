@@ -23,11 +23,10 @@ class DeleteArticleUseCase implements DeleteArticleUseCaseInterface
     public function execute(int $id, bool $force = false): void
     {
         try {
-            $entity = $this->articleRepository->findById($id);
             if ($force) {
-                $this->articleRepository->forceDelete($entity);
+                $this->articleRepository->forceDelete($id);
             } else {
-                $this->articleRepository->delete($entity);
+                $this->articleRepository->delete($id);
             }
         } catch (\DomainException $e) {
             throw $e;

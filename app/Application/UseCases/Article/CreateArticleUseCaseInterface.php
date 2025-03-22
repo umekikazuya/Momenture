@@ -16,6 +16,8 @@ interface CreateArticleUseCaseInterface
      *
      * @param  CreateArticleInput $dto 記事作成に必要なデータを保持するDTO
      * @return Article 作成された記事エンティティ
+     *
+     * @throws \DomainException 記事作成に失敗した場合にスロー
      */
     public function execute(CreateArticleInput $dto): Article;
 }

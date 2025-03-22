@@ -12,8 +12,7 @@ interface FindByIdUseCaseInterface
     /**
      * 指定した記事IDに基づいて記事のサービスインスタンスを取得する。
      *
-     * 指定されたIDと一致する記事が存在する場合は、対応するArticleServiceオブジェクトを返し、
-     * 存在しない場合はnullを返します。
+     * 指定されたIDと一致する記事が存在する場合は、対応するArticleServiceオブジェクトを返す。
      *
      * @param  ArticleServiceId $id 検索対象の記事のID
      * @return ArticleService 該当する記事が存在する場合はArticleServiceのインスタンスを返す
