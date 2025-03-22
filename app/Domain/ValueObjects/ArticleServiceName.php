@@ -15,13 +15,10 @@ class ArticleServiceName
      *
      * @param string $value サービス名
      *
-     * @throws \DomainException サービス名が空白の場合は「サービス名は空白にできません。」、または100文字を超える場合は「サービス名は100文字以内にしてください。」
+     * @throws \DomainException 100文字を超える場合は「サービス名は100文字以内にしてください。」
      */
     public function __construct(string $value)
     {
-        if (empty(trim($value))) {
-            throw new \DomainException('サービス名は空白にできません。');
-        }
         if (mb_strlen($value) > 100) {
             throw new \DomainException('サービス名は100文字以内にしてください。');
         }

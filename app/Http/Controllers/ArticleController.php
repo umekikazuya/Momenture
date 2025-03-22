@@ -52,9 +52,16 @@ class ArticleController extends Controller
     public function store(StoreRequest $request): ArticleResource
     {
         $input = CreateArticleInput::fromRequest($request);
-        $article = $this->createArticle->execute($input);
 
-        return new ArticleResource($article);
+        try {
+            $article = $this->createArticle->execute($input);
+
+            return new ArticleResource($article);
+        } catch (\DomainException $e) {
+            abort(409, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(500, $e->getMessage());
+        }
     }
 
     /**

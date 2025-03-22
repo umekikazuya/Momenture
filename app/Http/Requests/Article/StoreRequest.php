@@ -37,6 +37,8 @@ class StoreRequest extends FormRequest
             'status' => 'required|in:draft,published',
             'service' => 'required|integer|exists:article_services,id',
             'link' => 'nullable|url',
+            'created_at' => 'nullable|date',
+            'updated_at' => 'nullable|date',
         ];
     }
 
@@ -57,6 +59,8 @@ class StoreRequest extends FormRequest
             'service.required' => 'サービスは必須です。',
             'service.exists' => '選択されたサービスは無効です。',
             'link.url' => 'リンクは有効なURLを入力してください。',
+            'created_at.date' => '作成日時は日付形式で入力してください。',
+            'updated_at.date' => '更新日時は日付形式で入力してください。',
         ];
     }
 }

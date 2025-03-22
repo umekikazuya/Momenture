@@ -25,6 +25,6 @@ class FindByIdUseCase implements FindByIdUseCaseInterface
      */
     public function execute(ArticleServiceId $id): ArticleService
     {
-        return $this->repository->findById($id->value());
+        return $this->repository->findById($id);
     }
 }

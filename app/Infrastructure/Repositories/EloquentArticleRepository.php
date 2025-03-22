@@ -24,6 +24,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     {
         try {
             $model = ArticleModel::query()->findOrFail($id);
+
             return $this->toEntity($model);
         } catch (ModelNotFoundException $e) {
             throw new \DomainException("ID: {$id} の記事が見つかりません。");
@@ -50,6 +51,10 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function findAll(array $filters, string $sort, int $page, int $perPage): array
     {
         $query = ArticleModel::query();
+
+        if (isset($filters['service_id'])) {
+            $query->where('article_service_id', $filters['service_id']);
+        }
 
         if (isset($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -87,36 +92,26 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     }
 
     /**
-     * 指定された Article エンティティを保存または更新する。
-     *
-     * Article に ID がある場合は、対応する記事モデルを取得して更新し、存在しない場合は新規作成します。
-     * 指定された ID の記事が見つからない場合は DomainException を発生させます。
-     *
-     * @throws \DomainException 指定された ID の記事が存在しない場合
-     */
-    public function save(Article $article): void
-    {
-        /**
-         * @var ArticleModel $model
-         */
-        $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
-        if ($article->id() && ! $model) {
-            throw new \DomainException('該当IDの記事が見つかりません。');
-        }
-        $model->title = $article->title()->value();
-        $model->status = $article->isPublished() ? ArticleStatus::PUBLISHED->value : ArticleStatus::DRAFT->value;
-        $model->article_service_id = $article->service()->id();
-        $model->link = $article->hasLink() ? $article->link()->value() : null;
-        $model->save();
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public function delete(Article $article): void
+    public function create(Article $article): Article
     {
         try {
-            ArticleModel::destroy($article->id());
+            $model = ArticleModel::query()->create([
+                'title' => $article->title()->value(),
+                'status' => $article->isPublished()
+                    ? ArticleStatus::PUBLISHED->value
+                    : ArticleStatus::DRAFT->value,
+                'article_service_id' => $article->service()->id()->value(),
+                'link' => $article->hasLink()
+                    ? $article->link()->value()
+                        : null,
+            ]);
+            $model->setCreatedAt($article->createdAt());
+            $model->setUpdatedAt($article->updatedAt());
+            $model->save();
+
+            return $this->toEntity($model);
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }
@@ -125,10 +120,57 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function forceDelete(Article $article): void
+    public function update(Article $article): Article
     {
         try {
-            ArticleModel::query()->withTrashed()->forceDelete($article->id());
+            $model = ArticleModel::query()->findOrFail($article->id());
+            $model->title = $article->title()->value();
+            $model->status = $article->isPublished()
+                ? ArticleStatus::PUBLISHED->value
+                : ArticleStatus::DRAFT->value;
+            $model->article_service_id = $article->service()->id()->value();
+            $model->link = $article->hasLink()
+                ? $article->link()->value()
+                : null;
+            $model->setCreatedAt($article->createdAt());
+            $model->setUpdatedAt($article->updatedAt());
+            $model->save();
+
+            return $this->toEntity($model);
+        } catch (\DomainException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete(int $id): void
+    {
+        try {
+            // 既に削除済みの場合は例外をスローする
+            $model = ArticleModel::query()->findOrFail($id);
+            $model->delete();
+        } catch (ModelNotFoundException $e) {
+            throw new \DomainException("ID: {$id} の記事が見つかりません。");
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function forceDelete(int $id): void
+    {
+        try {
+            // 記事の存在チェック
+            $model = ArticleModel::query()->withTrashed()->findOrFail($id);
+            $model->forceDelete();
+        } catch (ModelNotFoundException $e) {
+            throw new \DomainException("ID: {$id} の記事が見つかりません。");
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }
@@ -153,7 +195,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      *
      * Eloquentモデルの各プロパティを対応する値オブジェクトに変換し、新たなArticleエンティティを生成します。
      *
-     * @param  ArticleModel $model 変換対象のEloquent記事モデル
+     * @param  ArticleModel  $model  変換対象のEloquent記事モデル
      * @return Article 変換されたArticleエンティティ
      */
     private function toEntity(ArticleModel $model): Article

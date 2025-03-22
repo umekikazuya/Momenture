@@ -30,10 +30,9 @@ class CreateArticleUseCase implements CreateArticleUseCaseInterface
             link: $dto->link,
             status: $dto->status,
             service: $dto->service,
-            createdAt: new \DateTimeImmutable(),
-            updatedAt: new \DateTimeImmutable(),
+            createdAt: $dto->createdAt,
+            updatedAt: $dto->updatedAt,
         );
-        $this->articleRepository->save($article);
-        return $article;
+        return $this->articleRepository->create($article);
     }
 }

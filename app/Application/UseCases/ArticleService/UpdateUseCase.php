@@ -28,12 +28,11 @@ class UpdateUseCase implements UpdateUseCaseInterface
         ArticleServiceName $name,
     ): ArticleService {
         try {
-            $entity = $this->articleServiceRepository->findById($id->value());
+            $entity = $this->articleServiceRepository->findById($id);
             // エンティティの更新.
             $entity->updateName($name);
             // モデルの更新.
-            $this->articleServiceRepository->update($entity);
-            return $entity;
+            return $this->articleServiceRepository->update($entity);
         } catch (\DomainException $e) {
             throw $e;
         } catch (\RuntimeException $e) {

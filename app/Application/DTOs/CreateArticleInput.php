@@ -7,6 +7,7 @@ namespace App\Application\DTOs;
 use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
 use App\Domain\ValueObjects\ArticleLink;
+use App\Domain\ValueObjects\ArticleServiceId;
 use App\Domain\ValueObjects\ArticleServiceName;
 use App\Domain\ValueObjects\ArticleTitle;
 use App\Http\Requests\Article\StoreRequest;
@@ -28,7 +29,9 @@ final class CreateArticleInput
         public readonly ArticleTitle $title,
         public readonly ?ArticleLink $link,
         public readonly ArticleStatus $status,
-        public readonly ArticleService $service
+        public readonly ArticleService $service,
+        public readonly \DateTimeImmutable $createdAt,
+        public readonly \DateTimeImmutable $updatedAt,
     ) {
     }
 
@@ -45,12 +48,17 @@ final class CreateArticleInput
     public static function fromRequest(StoreRequest $request): self
     {
         return new self(
-            new ArticleTitle($request->title),
-            $request->link
+            title: new ArticleTitle($request->title),
+            link: $request->link
                 ? new ArticleLink($request->link)
                 : null,
-            ArticleStatus::from($request->status),
-            new ArticleService($request->service, new ArticleServiceName(''))
+            status: ArticleStatus::from($request->status),
+            service: new ArticleService(
+                id: new ArticleServiceId((int) $request->service),
+                name: new ArticleServiceName('')
+            ),
+            createdAt: new \DateTimeImmutable($request->created_at ?? 'now'),
+            updatedAt: new \DateTimeImmutable($request->updated_at ?? 'now'),
         );
     }
 }

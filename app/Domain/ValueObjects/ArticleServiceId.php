@@ -6,22 +6,19 @@ namespace App\Domain\ValueObjects;
 
 class ArticleServiceId
 {
-    private int $value;
-
     /**
-     * ArticleServiceId の新しいインスタンスを生成します。
+     * ArticleServiceId の新しいインスタンスを生成。
      *
-     * 渡された整数値を内部プロパティに設定し、オブジェクトを初期化します。
+     * 渡された整数値を内部プロパティに設定し、オブジェクトを初期化。
      *
      * @param int $value 初期値として設定する整数
      */
-    public function __construct(int $value)
+    public function __construct(private readonly int $value)
     {
-        $this->value = $value;
     }
 
     /**
-     * 格納されている整数値を取得します。
+     * 格納されている整数値を取得。
      *
      * @return int 保持されている整数値
      */
@@ -31,7 +28,7 @@ class ArticleServiceId
     }
 
     /**
-     * 別のArticleServiceIdオブジェクトと等価であるかを比較します。
+     * 別のArticleServiceIdオブジェクトと等価であるかを比較。
      *
      * @param  ArticleServiceId $other 比較対象のオブジェクト
      * @return bool 等価である場合はtrue、そうでない場合はfalse
