@@ -25,10 +25,10 @@ class FeaturedArticleSeeder extends Seeder
         // 既存の注目記事をクリア
         FeaturedArticle::query()->delete();
         $this->command->info('既存の注目記事をクリアしました。');
-        // 記事をランダムに10件ピックアップして注目記事として登録
+        // 記事をランダムに3件ピックアップして注目記事として登録
         $articles = Article::query()
             ->orderBy('created_at', 'desc') // 最新の記事を優先
-            ->limit(10)
+            ->limit(3)
             ->get();
         $count = 0;
         foreach ($articles as $index => $article) {

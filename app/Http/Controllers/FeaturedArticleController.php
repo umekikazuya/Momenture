@@ -55,7 +55,7 @@ class FeaturedArticleController extends Controller
      *
      * HTTPリクエストから取得した記事IDと優先度を用いて、注目記事作成のユースケースを実行し、
      * 作成された注目記事をリソースとして返します。なお、DomainException発生時はHTTP 409で、
-     * その他の例外発生時はHTTP 200で中断します。
+     * その他の例外発生時はHTTP 500で中断します。
      *
      * @param StoreRequest $request 記事の割り当てに必要な入力（記事IDと優先度）を含むHTTPリクエスト。
      *

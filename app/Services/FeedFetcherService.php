@@ -28,7 +28,6 @@ final class FeedFetcherService implements FeedFetcherInterface
     public function __construct(
         private Client $httpClient,
     ) {
-        $this->httpClient = $httpClient;
     }
 
     /**
@@ -42,7 +41,7 @@ final class FeedFetcherService implements FeedFetcherInterface
                 ->get($url)
                 ->getBody()->getContents();
         } catch (\Exception $e) {
-            return throw new \Exception($e->getMessage());
+            throw new \Exception($e->getMessage());
         }
     }
 }

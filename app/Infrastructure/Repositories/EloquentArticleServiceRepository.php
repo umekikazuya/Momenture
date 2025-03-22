@@ -9,17 +9,24 @@ use App\Domain\Repositories\ArticleServiceRepositoryInterface;
 use App\Domain\ValueObjects\ArticleServiceId;
 use App\Domain\ValueObjects\ArticleServiceName;
 use App\Models\ArticleService as ArticleServiceModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function findById(int $id): ?ArticleService
+    public function findById(int $id): ArticleService
     {
-        $model = ArticleServiceModel::find($id);
+        try {
+            $model = ArticleServiceModel::query()->findOrFail($id);
 
-        return $model ? $this->toEntity($model) : null;
+            return $this->toEntity(model: $model);
+        } catch (ModelNotFoundException $e) {
+            throw new \DomainException("ID: {$id} の記事サービスが見つかりません。");
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
     }
 
     /**
@@ -30,7 +37,7 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
         $models = ArticleServiceModel::all();
         $entities = [];
         foreach ($models as $model) {
-            $entities[] = $this->toEntity($model);
+            $entities[] = $this->toEntity(model: $model);
         }
 
         return $entities;
@@ -39,54 +46,57 @@ class EloquentArticleServiceRepository implements ArticleServiceRepositoryInterf
     /**
      * {@inheritDoc}
      */
-    public function create(ArticleService $articleService): ArticleService
+    public function create(ArticleService $entity): ArticleService
     {
-        $model = ArticleServiceModel::create(['name' => $articleService->name()->value()]);
+        try {
+            $model = ArticleServiceModel::query()
+                ->create(['name' => $entity->name()->value()]);
 
-        return $this->toEntity($model);
+            return $this->toEntity(model: $model);
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function update(ArticleService $articleService): ArticleService
+    public function update(ArticleService $entity): ArticleService
     {
-        $model = ArticleServiceModel::find($articleService->id()->value());
-
-        if (! $model) {
-            throw new \DomainException("ID: {$articleService->id()->value()} の記事サービスが見つかりません。");
+        try {
+            $model = ArticleServiceModel::query()->findOrFail($entity->id()->value());
+            $model->name = $entity->name()->value();
+            $model->save();
+            return $this->toEntity(model: $model);
+        } catch (\DomainException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
         }
-
-        $model->name = $articleService->name()->value();
-        $model->save();
-
-        return $this->toEntity($model);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function delete(ArticleService $articleService): void
+    public function delete(ArticleService $entity): void
     {
-        $model = ArticleServiceModel::find($articleService->id()->value());
-
-        if (! $model) {
-            throw new \DomainException("ID: {$articleService->id()->value()} の記事サービスが見つかりません。");
+        try {
+            ArticleServiceModel::destroy($entity->id()->value());
+        } catch (\Exception $e) {
+            throw new \RuntimeException('削除処理中にエラーが発生しました。');
         }
-        ArticleServiceModel::destroy($articleService->id()->value());
     }
 
     /**
      * {@inheritDoc}
      */
-    public function forceDelete(ArticleService $articleService): void
+    public function forceDelete(ArticleService $entity): void
     {
-        $model = ArticleServiceModel::withTrashed()->find($articleService->id()->value());
-
-        if (! $model) {
-            throw new \DomainException("ID: {$articleService->id()->value()} の記事サービスが見つかりません。");
+        try {
+            ArticleServiceModel::query()->withTrashed()->forceDelete($entity->id()->value());
+        } catch (\Exception $e) {
+            throw new \RuntimeException('削除処理中にエラーが発生しました。');
         }
-        $model->forceDelete();
     }
 
     /**

@@ -9,7 +9,6 @@ use App\Application\UseCases\ArticleService\DeleteUseCaseInterface;
 use App\Application\UseCases\ArticleService\FindAllUseCaseInterface;
 use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
-use App\Domain\Entities\ArticleService;
 use App\Domain\ValueObjects\ArticleServiceId;
 use App\Domain\ValueObjects\ArticleServiceName;
 use App\Http\Requests\ArticleService\DeleteRequest;
@@ -37,18 +36,22 @@ class ArticleServiceController extends Controller
     }
 
     /**
-     * 記事サービスを新規作成し、そのリソースを返却します。
+     * 記事サービスを新規作成し、そのリソースを返却。
      *
-     * 入力リクエストから記事サービスの名称を取得し、作成用ユースケースを実行して新しい記事サービスを生成します。
+     * 入力リクエストから記事サービスの名称を取得し、作成用ユースケースを実行して新しい記事サービスを生成。
      *
      * @param  StoreRequest $request 作成に必要なリクエスト。記事サービスの名称情報を含みます。
      * @return ArticleServiceResource 作成された記事サービスのリソース。
      */
     public function store(StoreRequest $request): ArticleServiceResource
     {
-        $entity = $this->create->execute($request->name);
+        try {
+            $entity = $this->create->execute($request->name);
 
-        return new ArticleServiceResource($entity);
+            return new ArticleServiceResource($entity);
+        } catch (\RuntimeException $e) {
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 
     /**
@@ -68,9 +71,12 @@ class ArticleServiceController extends Controller
                 id: new ArticleServiceId($id),
                 name: new ArticleServiceName($request->name),
             );
+
             return new ArticleServiceResource($entity);
         } catch (\DomainException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
+        } catch (\RuntimeException $e) {
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
     }
 
@@ -106,18 +112,20 @@ class ArticleServiceController extends Controller
      *
      * 指定のIDで記事サービスを検索し、存在しない場合はHTTP 404エラーで中断します。存在する場合は、その詳細情報を含むリソースを返却します。
      *
-     * @param  int $entityId 取得対象のサービスID
+     * @param  int $id 取得対象のサービスID
      * @return ArticleServiceResource 記事サービスの詳細情報を含むリソース
      */
-    public function show(ShowRequest $request, int $entityId): ArticleServiceResource
+    public function show(ShowRequest $request, int $id): ArticleServiceResource
     {
-        $entity = $this->findById->execute($entityId);
+        try {
+            $entity = $this->findById->execute(new ArticleServiceId($id));
 
-        if ($entity === null) {
+            return new ArticleServiceResource($entity);
+        } catch (\DomainException $e) {
             abort(Response::HTTP_NOT_FOUND, 'サービスが見つかりませんでした。');
+        } catch (\RuntimeException $e) {
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
-
-        return new ArticleServiceResource($entity);
     }
 
     /**

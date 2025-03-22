@@ -53,15 +53,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
         $this->app->singleton(
-            DynamoDbClient::class, function ($app) {
+            DynamoDbClient::class,
+            function ($app) {
                 return new DynamoDbClient(
                     [
                     'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
                     'version' => 'latest',
                     'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
                     'credentials' => [
-                    'key' => env('AWS_ACCESS_KEY_ID'),
-                    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                        'key' => env('AWS_ACCESS_KEY_ID'),
+                        'secret' => env('AWS_SECRET_ACCESS_KEY'),
                     ],
                     ]
                 );
@@ -90,11 +91,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DeleteUseCaseInterface::class, DeleteUseCase::class);
 
         $this->app->bind(FeaturedArticleRepositoryInterface::class, EloquentFeaturedArticleRepository::class);
-
-        // $this->app->bind(
-        //     \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
-        //     FindAllUseCase::class
-        // );
         $this->app->bind(
             \App\Application\UseCases\FeaturedArticle\AssignArticleUseCaseInterface::class,
             \App\Application\UseCases\FeaturedArticle\AssignArticleUseCase::class

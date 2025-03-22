@@ -28,7 +28,7 @@ class ArticleResource extends JsonResource
         return [
             'id' => $this->resource->id(),
             'title' => $this->resource->title()->value(),
-            'link' => $this->resource->link()->value(),
+            'link' => $this->resource->link()?->value(),
             'status' => $this->resource->isPublished() ? 'published' : 'draft',
             'service' => [
                 'id' => $this->resource->service()->id()->value(),

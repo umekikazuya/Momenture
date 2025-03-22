@@ -70,4 +70,14 @@ class FeaturedArticle
     {
         return $this->isActive;
     }
+
+    /**
+     * 注目記事の作成日時を取得します。
+     *
+     * @return \DateTimeImmutable 注目記事の作成日時
+     */
+    public function createdAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

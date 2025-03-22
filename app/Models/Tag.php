@@ -12,4 +12,14 @@ class Tag extends Model
     protected $fillable = [
         'name',
     ];
+
+    /**
+     * このタグに関連する記事を取得
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class, 'article_tag');
+    }
 }

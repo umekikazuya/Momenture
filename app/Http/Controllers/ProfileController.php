@@ -59,9 +59,10 @@ class ProfileController extends Controller
         try {
             return response()->json(
                 [
-                'message' => 'プロフィールが削除されました',
-                'count' => $action(),
-                ], 200
+                    'message' => 'プロフィールが削除されました',
+                    'count' => $action(),
+                ],
+                200
             );
         } catch (\DomainException $e) {
             return response()->json(['message' => $e->getMessage()], 404);

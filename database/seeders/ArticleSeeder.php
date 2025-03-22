@@ -15,12 +15,24 @@ class ArticleSeeder extends Seeder
      */
     public function run()
     {
+        // 利用可能なタグIDをあらかじめ取得
+        $allTagIds = Tag::pluck('id')->toArray();
+
+        // タグが存在しない場合の処理
+        if (empty($allTagIds)) {
+            $this->command->warn('タグが存在しないため、記事のタグ付けは行いません。');
+        }
         Article::factory()
             ->count(50)
             ->create()
             ->each(function ($article) {
-                // 全タグをランダムに1〜3個付与
-                $tagIds = Tag::inRandomOrder()->limit(rand(1, 3))->pluck('id');
+                // タグが存在しない場合は処理をスキップ
+                if (empty($allTagIds)) {
+                    return;
+                }
+                $tagCount = min(rand(1, 3), count($allTagIds));
+                $selectedTagIds = array_rand(array_flip($allTagIds), $tagCount);
+                $tagIds = is_array($selectedTagIds) ? $selectedTagIds : [$selectedTagIds];
                 $article->tags()->attach($tagIds);
             });
     }

@@ -64,7 +64,7 @@ class UpdateArticleUseCaseTest extends TestCase
         $this->repository
             ->shouldReceive('findById')
             ->with(999)
-            ->andReturn(null);
+            ->andThrow(new \DomainException('記事が見つかりません。'));
 
         $this->expectException(\DomainException::class);
 

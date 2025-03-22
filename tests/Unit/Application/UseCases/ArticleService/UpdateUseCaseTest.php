@@ -73,7 +73,10 @@ class UpdateUseCaseTest extends TestCase
         $name = new ArticleServiceName('Updated Article Service');
 
         $mockRepository = $this->createMock(ArticleServiceRepositoryInterface::class);
-        $mockRepository->method('findById')->with($id->value())->willReturn(null);
+        $mockRepository
+            ->method('findById')
+            ->with($id->value())
+            ->willThrowException(new \DomainException('更新対象の記事サービスが見つかりませんでした。'));
 
         $useCase = new UpdateUseCase($mockRepository);
 
