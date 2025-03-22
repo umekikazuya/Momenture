@@ -23,7 +23,7 @@ class ArticleSeeder extends Seeder
             $this->command->warn('タグが存在しないため、記事のタグ付けは行いません。');
         }
         Article::factory()
-            ->count(50)
+            ->count(10)
             ->create()
             ->each(function ($article) use ($allTagIds) {
                 // タグが存在しない場合は処理をスキップ

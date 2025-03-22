@@ -25,8 +25,8 @@ class DeleteUseCase implements DeleteUseCaseInterface
      * 該当記事サービスが見つからない場合は、DomainExceptionが内部で捕捉され、削除処理は実行されない。
      * 処理中に予期しないエラーが発生した場合は、RuntimeExceptionがスローされる。
      *
-     * @param ArticleServiceId  $id    削除対象の記事サービスの識別子。
-     * @param bool $force 強制削除を行う場合はtrue（デフォルトはfalse）。
+     * @param ArticleServiceId $id    削除対象の記事サービスの識別子。
+     * @param bool             $force 強制削除を行う場合はtrue（デフォルトはfalse）。
      *
      * @throws \DomainException 指定された記事サービスが見つからない場合にスローされる。
      * @throws \RuntimeException 削除処理中に予期しないエラーが発生した場合にスローされる。

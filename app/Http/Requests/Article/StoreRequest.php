@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
      *
      * このメソッドは、記事保存フォームで送信されたデータに対するバリデーションルールを定義します。
      * 具体的なルールは以下の通りです:
-     * - 'title': 必須、文字列、最大255文字
+     * - 'title': 必須、文字列、最大100文字
      * - 'status': 必須、値は 'draft' または 'published' のみ許可
      * - 'service': 必須、整数、article_servicesテーブルに存在するIDであること
      * - 'link': 任意、URL形式
@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:100',
             'status' => 'required|in:draft,published',
             'service' => 'required|integer|exists:article_services,id',
             'link' => 'nullable|url',
@@ -53,7 +53,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title.required' => 'タイトルは必須です。',
-            'title.max' => 'タイトルは255文字以内で入力してください。',
+            'title.max' => 'タイトルは100文字以内で入力してください。',
             'status.required' => 'ステータスは必須です。',
             'status.in' => 'ステータスは`draft`または`published`のいずれかを選択してください。',
             'service.required' => 'サービスは必須です。',

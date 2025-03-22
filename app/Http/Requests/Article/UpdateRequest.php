@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
      * 記事更新リクエストのバリデーションルールを定義します。
      *
      * 各フィールドに以下のルールを適用します:
-     * - title: null または文字列で、最大255文字まで許容。
+     * - title: null または文字列で、最大100文字まで許容。
      * - link: null または有効なURL形式。
      * - service: null または整数で、article_servicesテーブルに存在する有効なIDである必要があります。
      *
@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:100',
             'link' => 'nullable|url',
             'service' => 'nullable|integer|exists:article_services,id',
 
@@ -48,7 +48,7 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.max' => 'タイトルは255文字以内で入力してください。',
+            'title.max' => 'タイトルは100文字以内で入力してください。',
             'service.exists' => '選択されたサービスは無効です。',
             'link.url' => 'リンクは有効なURLを入力してください。',
         ];

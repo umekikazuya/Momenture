@@ -96,7 +96,8 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function create(Article $article): Article
     {
         try {
-            $model = ArticleModel::query()->create([
+            $model = ArticleModel::query()->create(
+                [
                 'title' => $article->title()->value(),
                 'status' => $article->isPublished()
                     ? ArticleStatus::PUBLISHED->value
@@ -105,7 +106,8 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
                 'link' => $article->hasLink()
                     ? $article->link()->value()
                         : null,
-            ]);
+                ]
+            );
             $model->setCreatedAt($article->createdAt());
             $model->setUpdatedAt($article->updatedAt());
             $model->save();
@@ -194,7 +196,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      *
      * Eloquentモデルの各プロパティを対応する値オブジェクトに変換し、新たなArticleエンティティを生成します。
      *
-     * @param  ArticleModel  $model  変換対象のEloquent記事モデル
+     * @param  ArticleModel $model 変換対象のEloquent記事モデル
      * @return Article 変換されたArticleエンティティ
      */
     private function toEntity(ArticleModel $model): Article
