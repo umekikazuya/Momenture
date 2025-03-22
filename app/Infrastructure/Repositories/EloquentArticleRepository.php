@@ -21,7 +21,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
      */
     public function findById(int $id): ?Article
     {
-        $model = ArticleModel::find($id);
+        $model = ArticleModel::query()->find($id);
 
         return $model ? $this->toEntity($model) : null;
     }
@@ -89,7 +89,7 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     public function save(Article $article): void
     {
         /**
- * @var ArticleModel $model 
+ * @var ArticleModel $model
 */
         $model = $article->id() ? ArticleModel::find($article->id()) : new ArticleModel();
         if ($article->id() && ! $model) {

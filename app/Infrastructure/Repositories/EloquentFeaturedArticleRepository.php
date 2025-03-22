@@ -28,11 +28,24 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
     public function findAll(): array
     {
         try {
-            return FeaturedArticleModel::query()
+            $models = FeaturedArticleModel::query()
                 ->where('is_active', true)
                 ->orderBy('priority')
-                ->get()
-                ->map(fn ($model) => $this->toEntity($model))
+                ->get();
+
+            return $models
+                ->filter(
+                    function ($model) {
+                        try {
+                            return $model->toEntity($model);
+                        } catch (\Exception $e) {
+                            return null;
+                        }
+                    }
+                )
+                ->map(
+                    fn ($model) => $this->toEntity($model)
+                )
                 ->toArray();
         } catch (\Exception $e) {
             throw new \RuntimeException(
@@ -51,9 +64,9 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
         try {
             FeaturedArticleModel::query()->create(
                 [
-                'article_id' => $articleId,
-                'priority'   => $priority->value(),
-                'is_active'  => true,
+                    'article_id' => $articleId,
+                    'priority' => $priority->value(),
+                    'is_active' => true,
                 ]
             );
         } catch (\Exception $e) {
@@ -126,10 +139,17 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
      *
      * @param  FeaturedArticleModel $model 変換対象のモデルインスタンス
      * @return FeaturedArticle 生成されたエンティティ
+     *
+     * @throws \RuntimeException 記事情報の取得に失敗した場合
      */
     private function toEntity(FeaturedArticleModel $model): FeaturedArticle
     {
         $article = $this->articleRepository->findById($model->article_id);
+        if ($article === null) {
+            throw new \RuntimeException(
+                '記事情報の取得に失敗しました。記事ID: '. $model->article_id
+            );
+        }
 
         return new FeaturedArticle(
             new FeaturedArticleId($model->id),

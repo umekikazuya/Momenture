@@ -14,6 +14,8 @@ interface FeaturedArticleRepositoryInterface
      * 注目記事一覧を取得（優先度順）
      *
      * @return FeaturedArticle[]
+     *
+     * @throws \RuntimeException DBエラーが発生した場合
      */
     public function findAll(): array;
 
