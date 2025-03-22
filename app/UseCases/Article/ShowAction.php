@@ -9,7 +9,7 @@ class ShowAction
     /**
      * IDから記事Modelの取得.
      *
-     * @param string $id
+     * @param  string $id
      * @return Article
      */
     public function handle(string $id): Article

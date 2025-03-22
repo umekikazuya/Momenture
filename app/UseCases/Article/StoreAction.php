@@ -10,7 +10,7 @@ class StoreAction
     /**
      * 記事データ作成.
      *
-     * @param StoreRequest $request
+     * @param  StoreRequest $request
      * @return Article
      */
     public function handle(StoreRequest $request): Article

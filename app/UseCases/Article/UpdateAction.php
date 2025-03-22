@@ -10,8 +10,8 @@ class UpdateAction
     /**
      * 記事データ更新.
      *
-     * @param string $id
-     * @param UpdateRequest $request
+     * @param  string        $id
+     * @param  UpdateRequest $request
      * @return Article
      */
     public function handle(string $id, UpdateRequest $request): Article

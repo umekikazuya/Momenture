@@ -13,16 +13,18 @@ class ArticleCollectionResource extends ResourceCollection
     public function toArray($request): array
     {
         return [
-            'data' => $this->collection->map(function (Article $article) {
-                return [
+            'data' => $this->collection->map(
+                function (Article $article) {
+                    return [
                     'id' => $article->id,
                     'title' => $article->title,
                     'link' => $article->link,
                     'service' => $article->service,
                     'is_pickup' => $article->is_pickup,
                     'published' => $article->published,
-                ];
-            }),
+                    ];
+                }
+            ),
             'meta' => [],
         ];
     }
