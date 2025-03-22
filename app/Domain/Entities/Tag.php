@@ -13,7 +13,7 @@ class Tag
      *
      * タグの識別子と名前を設定します。
      *
-     * @param int $id タグの識別子
+     * @param int    $id   タグの識別子
      * @param string $name タグの名前
      */
     public function __construct(int $id, string $name)

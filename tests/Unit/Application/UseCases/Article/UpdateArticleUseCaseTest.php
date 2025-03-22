@@ -9,6 +9,8 @@ use App\Domain\Entities\ArticleService;
 use App\Domain\Enums\ArticleStatus;
 use App\Domain\Repositories\ArticleRepositoryInterface;
 use App\Domain\ValueObjects\ArticleLink;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 use App\Domain\ValueObjects\ArticleTitle;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +32,7 @@ class UpdateArticleUseCaseTest extends TestCase
             id: 1,
             title: new ArticleTitle('元のタイトル'),
             status: ArticleStatus::DRAFT,
-            service: new ArticleService(1, 'Qiita'),
+            service: new ArticleService(new ArticleServiceId(1), new ArticleServiceName('Qiita')),
             createdAt: new \DateTimeImmutable,
             updatedAt: new \DateTimeImmutable
         );

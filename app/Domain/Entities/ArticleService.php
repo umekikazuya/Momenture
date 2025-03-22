@@ -12,7 +12,7 @@ class ArticleService
      *
      * コンストラクタは、記事サービスの識別子と名称を受け取り、オブジェクトの内部状態を設定します。
      *
-     * @param ArticleServiceId $id 記事サービスの識別子を表す値オブジェクト
+     * @param ArticleServiceId   $id   記事サービスの識別子を表す値オブジェクト
      * @param ArticleServiceName $name 記事サービスの名称を表す値オブジェクト
      */
     public function __construct(

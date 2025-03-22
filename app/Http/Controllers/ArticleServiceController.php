@@ -33,14 +33,15 @@ class ArticleServiceController extends Controller
         private DeleteUseCaseInterface $delete,
         private FindByIdUseCaseInterface $findById,
         private FindAllUseCaseInterface $findAll,
-    ) {}
+    ) {
+    }
 
     /**
      * 記事サービスを新規作成し、そのリソースを返却します。
      *
      * 入力リクエストから記事サービスの名称を取得し、作成用ユースケースを実行して新しい記事サービスを生成します。
      *
-     * @param  StoreRequest  $request  作成に必要なリクエスト。記事サービスの名称情報を含みます。
+     * @param  StoreRequest $request 作成に必要なリクエスト。記事サービスの名称情報を含みます。
      * @return ArticleServiceResource 作成された記事サービスのリソース。
      */
     public function store(StoreRequest $request): ArticleServiceResource
@@ -56,24 +57,21 @@ class ArticleServiceController extends Controller
      * 指定されたIDの記事サービスの名前を、リクエストに含まれる情報に基づいて更新します。
      * 更新はアップデート用ユースケースを介して実行され、処理結果は更新後の記事サービス情報を含むリソースとして返されます。
      *
-     * @param  int  $id  更新対象の記事サービスの識別子。
-     * @param  UpdateRequest  $request  更新情報を含むリクエストインスタンス。
+     * @param  int           $id      更新対象の記事サービスの識別子。
+     * @param  UpdateRequest $request 更新情報を含むリクエストインスタンス。
      * @return ArticleServiceResource 更新後の記事サービス情報を保持するリソース。
      */
     public function update(int $id, UpdateRequest $request): ArticleServiceResource
     {
         try {
             $entity = $this->update->execute(
-                new ArticleService(
-                    id: new ArticleServiceId($id),
-                    name: new ArticleServiceName($request->name),
-                )
+                id: new ArticleServiceId($id),
+                name: new ArticleServiceName($request->name),
             );
             return new ArticleServiceResource($entity);
         } catch (\DomainException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage());
         }
-
     }
 
     /**
@@ -82,8 +80,9 @@ class ArticleServiceController extends Controller
      * リクエストから "force" パラメータを取得し、true の場合は完全削除、false の場合はソフトデリートを行います。
      * 削除処理完了後、HTTP 204 (No Content) のレスポンスを返します。
      *
-     * @param  int  $id  削除対象の記事サービスのID
-     * @param  DeleteRequest  $request  削除リクエスト。'force' フラグで削除方法を指定
+     * @param  int           $id      削除対象の記事サービスのID
+     * @param  DeleteRequest $request 削除リクエスト。'force'
+     *                                フラグで削除方法を指定
      * @return Response HTTP 204 No Content レスポンス
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException 記事サービスの削除中にエラーが発生した場合
@@ -100,7 +99,6 @@ class ArticleServiceController extends Controller
         } catch (\RuntimeException $e) {
             abort(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
-
     }
 
     /**
@@ -108,7 +106,7 @@ class ArticleServiceController extends Controller
      *
      * 指定のIDで記事サービスを検索し、存在しない場合はHTTP 404エラーで中断します。存在する場合は、その詳細情報を含むリソースを返却します。
      *
-     * @param  int  $entityId  取得対象のサービスID
+     * @param  int $entityId 取得対象のサービスID
      * @return ArticleServiceResource 記事サービスの詳細情報を含むリソース
      */
     public function show(ShowRequest $request, int $entityId): ArticleServiceResource

@@ -2,58 +2,45 @@
 
 namespace App\Domain\Entities;
 
+use App\Domain\ValueObjects\FeaturedArticleId;
+use App\Domain\ValueObjects\FeaturedPriority;
+
 class FeaturedArticle
 {
     /**
-     * FeaturedArticleクラスのインスタンスを初期化するコンストラクタ。
+     * 注目記事クラスのインスタンスを初期化するコンストラクタ。
      *
-     * 指定された一意のID、記事、開始日時、および（任意で）終了日時を用いて、FeaturedArticleオブジェクトのプロパティを初期化します。
+     * 指定された一意の識別子、記事エンティティ、優先度、有効状態、および作成日時を用いて、注目記事オブジェクトのプロパティを初期化します。
      *
-     * @param int $id 記事の一意の識別子
-     * @param Article $article 関連付けられた記事オブジェクト
-     * @param \DateTimeImmutable $startDate 記事の開始日時
-     * @param \DateTimeImmutable|null $endDate 記事の終了日時。終了日時が設定されていない場合はnull
+     * @param FeaturedArticleId  $id        注目記事の識別子
+     * @param Article            $article   記事エンティティ
+     * @param FeaturedPriority   $priority  記事の優先度
+     * @param bool               $isActive  記事が有効かどうかのフラグ
+     * @param \DateTimeImmutable $createdAt 作成日時
      */
     public function __construct(
-        private int $id,
+        private FeaturedArticleId $id,
         private Article $article,
-        private \DateTimeImmutable $startDate,
-        private ?\DateTimeImmutable $endDate = null
+        private FeaturedPriority $priority,
+        private bool $isActive,
+        private \DateTimeImmutable $createdAt
     ) {
-        $this->id = $id;
-        $this->article = $article;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
     }
 
     /**
-     * フィーチャード記事が現在有効かどうかを判定する
+     * 注目記事の識別子を取得します。
      *
-     * 終了日時が未設定か、現在日時より未来の場合に、記事が有効であると判断する。
-     *
-     * @return bool 有効な場合はtrue、無効な場合はfalse
+     * @return FeaturedArticleId 注目記事の識別子
      */
-    public function isActive(): bool
-    {
-        return $this->endDate === null || $this->endDate > new \DateTimeImmutable();
-    }
-
-    /**
-     * フィーチャード記事の識別子を取得します。
-     *
-     * @return int フィーチャード記事の識別子
-     */
-    public function id(): int
+    public function id(): FeaturedArticleId
     {
         return $this->id;
     }
 
     /**
-     * 関連付けられた記事オブジェクトを返します。
+     * 注目記事に紐づくArticleオブジェクトを取得します。
      *
-     * このメソッドは、FeaturedArticleインスタンスに保持されているArticleオブジェクトを取得します。
-     *
-     * @return Article 関連付けられた記事オブジェクト
+     * @return Article 関連する記事の詳細情報を保持するArticleオブジェクト
      */
     public function article(): Article
     {
@@ -61,26 +48,26 @@ class FeaturedArticle
     }
 
     /**
-     * フィーチャー記事の開始日時を取得する。
+     * 記事の優先度を返します。
      *
-     * このメソッドは、フィーチャー記事として設定された開始日時を DateTimeImmutable オブジェクトで返します。
+     * このメソッドは、記事に設定された優先度を示す FeaturedPriority オブジェクトを取得します。
      *
-     * @return \DateTimeImmutable フィーチャー記事の開始日時
+     * @return FeaturedPriority 記事の優先度
      */
-    public function startDate(): \DateTimeImmutable
+    public function priority(): FeaturedPriority
     {
-        return $this->startDate;
+        return $this->priority;
     }
 
     /**
-     * 記事の終了日を取得します。
+     * 注目記事がアクティブな状態かどうかを返します。
      *
-     * 終了日が設定されている場合、その日時を返し、未設定の場合は null を返します。
+     * このメソッドは、記事が現在有効（アクティブ）であるかを示すブール値を返します。
      *
-     * @return \DateTimeImmutable|null 終了日または null
+     * @return bool 有効な場合は true、そうでない場合は false を返します。
      */
-    public function endDate(): ?\DateTimeImmutable
+    public function isActive(): bool
     {
-        return $this->endDate;
+        return $this->isActive;
     }
 }

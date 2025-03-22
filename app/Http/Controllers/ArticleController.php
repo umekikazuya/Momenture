@@ -46,7 +46,7 @@ class ArticleController extends Controller
      * StoreRequestからCreateArticleInputを生成し、記事作成ユースケースを実行して新規記事を作成します。
      * その後、作成済み記事をArticleResourceでラップして返却します。
      *
-     * @param StoreRequest $request 記事作成に必要なデータを含むリクエスト
+     * @param  StoreRequest $request 記事作成に必要なデータを含むリクエスト
      * @return ArticleResource 作成された記事を表すリソース
      */
     public function store(StoreRequest $request): ArticleResource
@@ -63,8 +63,8 @@ class ArticleController extends Controller
      * 更新内容は UpdateArticleInput に変換され、更新処理が実行されます。
      * 更新後の記事は ArticleResource として返されます。
      *
-     * @param int $id 更新対象の記事の一意なID。
-     * @param UpdateRequest $request 更新内容を含むリクエストオブジェクト。
+     * @param  int           $id      更新対象の記事の一意なID。
+     * @param  UpdateRequest $request 更新内容を含むリクエストオブジェクト。
      * @return ArticleResource 更新後の記事データをラップしたリソースオブジェクト。
      */
     public function update(int $id, UpdateRequest $request): ArticleResource
@@ -80,7 +80,7 @@ class ArticleController extends Controller
      *
      * リクエストの "force" パラメータが true の場合は完全削除、false または未指定の場合はソフトデリートを実行する。
      *
-     * @param int $id 削除対象の記事ID。
+     * @param  int $id 削除対象の記事ID。
      * @return Response HTTP 204 No Content のレスポンスを返す。
      */
     public function destroy(int $id, Request $request): Response
@@ -96,7 +96,7 @@ class ArticleController extends Controller
      *
      * 指定されたIDに対応する記事の復元処理を実行し、ボディのないHTTPレスポンス（204 No Content）を返します。
      *
-     * @param int $id 復元する記事のID
+     * @param  int $id 復元する記事のID
      * @return Response ボディなしのレスポンス
      */
     public function restore(int $id): Response
@@ -113,7 +113,7 @@ class ArticleController extends Controller
      * その結果をArticleResourceにラップしてレスポンスとする。
      *
      * @param ShowRequest $request リクエスト情報を保持するShowRequestインスタンス
-     * @param int $id 取得対象の記事の一意な識別子
+     * @param int         $id      取得対象の記事の一意な識別子
      *
      * @return ArticleResource 取得された記事詳細を含むリソースオブジェクト
      */
@@ -129,7 +129,7 @@ class ArticleController extends Controller
      *
      * リクエストから抽出した検索条件（状態、サービスID、タグID）に加え、並び順とページネーションの情報を利用して記事一覧を取得する。
      *
-     * @param SearchRequest $request 検索条件、並び順、ページ番号、1ページ当たりの件数を含むリクエスト
+     * @param  SearchRequest $request 検索条件、並び順、ページ番号、1ページ当たりの件数を含むリクエスト
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection 取得した記事のリソースコレクション
      */
     public function index(SearchRequest $request)
@@ -150,8 +150,8 @@ class ArticleController extends Controller
      * 指定された記事IDに対し、リクエストで指定された新しい公開状態に更新します。
      * 更新処理完了後、内容のないHTTPレスポンスを返します。
      *
-     * @param ChangeStatusRequest $request 新しい公開状態を含むリクエスト。
-     * @param int $id 公開状態を変更する対象記事のID。
+     * @param  ChangeStatusRequest $request 新しい公開状態を含むリクエスト。
+     * @param  int                 $id      公開状態を変更する対象記事のID。
      * @return Response 空のHTTPレスポンス。
      */
     public function changeStatus(ChangeStatusRequest $request, int $id): Response

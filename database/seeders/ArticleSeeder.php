@@ -2,34 +2,26 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Article;
-use App\Models\ArticleService;
 use App\Models\Tag;
+use Illuminate\Database\Seeder;
 
 class ArticleSeeder extends Seeder
 {
     /**
      * データベースにサンプル記事データを登録します。
      *
-     * 最初のサービスのIDを取得し、その情報を基に記事を作成します。
-     * 作成された記事には、全タグが紐付けられます。
+     * 50件の記事を生成し、各記事にランダムに1〜3個のタグを紐付けます。
      */
     public function run()
     {
-        // 最初のサービスを取得
-        $serviceId = ArticleService::first()->id;
-
-        /** @var Article $article */
-        $article = Article::create([
-            'title' => 'シーディング記事サンプル',
-            'status' => 'published',
-            'article_service_id' => $serviceId,
-            'link' => 'https://example.com',
-        ]);
-
-        // タグを1つ以上付与
-        $tagIds = Tag::pluck('id')->toArray();
-        $article->tags()->attach($tagIds);
+        Article::factory()
+            ->count(50)
+            ->create()
+            ->each(function ($article) {
+                // 全タグをランダムに1〜3個付与
+                $tagIds = Tag::inRandomOrder()->limit(rand(1, 3))->pluck('id');
+                $article->tags()->attach($tagIds);
+            });
     }
 }

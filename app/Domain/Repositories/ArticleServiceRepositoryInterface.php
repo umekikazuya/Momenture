@@ -21,7 +21,7 @@ interface ArticleServiceRepositoryInterface
      * 指定されたIDに基づいてArticleServiceエンティティを検索し、該当するエンティティが存在すれば返します。
      * 該当するエンティティが見つからない場合はnullを返します。
      *
-     * @param  int  $id  検索対象となるArticleServiceエンティティの一意な識別子。
+     * @param  int $id 検索対象となるArticleServiceエンティティの一意な識別子。
      * @return ArticleService|null 対応するArticleServiceエンティティが存在する場合はそのオブジェクト、見つからない場合はnull。
      */
     public function findById(int $id): ?ArticleService;
@@ -29,7 +29,9 @@ interface ArticleServiceRepositoryInterface
     /**
      * 与えられた ArticleService エンティティを元に新規レコードを作成し、作成後のエンティティを返却します。
      *
-     * @param  ArticleService  $articleService  作成対象の ArticleService インスタンス
+     * @param  ArticleService $articleService 作成対象の
+     *                                        ArticleService
+     *                                        インスタンス
      * @return ArticleService 作成された ArticleService エンティティ
      */
     public function create(ArticleService $articleService): ArticleService;
@@ -39,7 +41,9 @@ interface ArticleServiceRepositoryInterface
      *
      * 渡された ArticleService オブジェクトの情報に基づいて、データソース上の対応するレコードを更新します。
      *
-     * @param  ArticleService  $articleService  更新対象の ArticleService エンティティ。
+     * @param  ArticleService $articleService 更新対象の
+     *                                        ArticleService
+     *                                        エンティティ。
      * @return ArticleService 更新後の ArticleService エンティティ。
      *
      * @throws \DomainException 指定された記事サービスが見つからない場合にスローされます
@@ -49,7 +53,9 @@ interface ArticleServiceRepositoryInterface
     /**
      * 指定された ArticleService エンティティを削除する。
      *
-     * @param  ArticleService  $articleService  削除対象の ArticleService エンティティ
+     * @param ArticleService $articleService 削除対象の
+     *                                       ArticleService
+     *                                       エンティティ
      *
      * @throws \DomainException 指定された記事サービスが見つからない場合にスローされます
      */
@@ -60,7 +66,9 @@ interface ArticleServiceRepositoryInterface
      *
      * このメソッドは、ArticleService エンティティに対して論理削除ではなく、強制的な物理削除を実行します。
      *
-     * @param  ArticleService  $articleService  削除対象の ArticleService エンティティ
+     * @param ArticleService $articleService 削除対象の
+     *                                       ArticleService
+     *                                       エンティティ
      *
      * @throws \DomainException 指定された ID の記事サービスが見つからない場合にスローされます
      */

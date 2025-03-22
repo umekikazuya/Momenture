@@ -26,6 +26,8 @@ use App\Application\UseCases\ArticleService\FindByIdUseCase;
 use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Application\UseCases\ArticleService\UpdateUseCase;
 use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
+use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
+use App\Infrastructure\Repositories\EloquentFeaturedArticleRepository;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
@@ -38,30 +40,33 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * アプリケーションサービスおよびユースケースのバインディングを登録し、依存性注入の設定を行います。
+     * アプリケーション内の各種サービスおよびユースケースのインターフェースと実装をコンテナに登録し、
+     * 依存性注入の設定を行います。
      *
-     * このメソッドでは、フィードの取得およびパースサービス、DynamoDbClientのシングルトンインスタンス、
-     * 記事関連のリポジトリ（記事リポジトリおよび記事サービスリポジトリ）、
-     * 記事管理に関するユースケース（作成、更新、削除、復元、検索、状態変更）と、
-     * 記事サービスに関連するユースケース（作成、更新、IDによる検索、全件検索、削除）の
-     * インターフェースと実装をコンテナに登録し、アプリケーション全体での依存性解決をサポートします。
+     * このメソッドでは、フィード取得・パースサービス、DynamoDbClient、記事関連および記事サービス関連の
+     * リポジトリやユースケースのバインディングに加え、フィーチャード記事に関するリポジトリと
+     * 記事の割り当て、無効化、優先順位変更、全件検索の各ユースケースのバインディングを設定します。
      */
     public function register(): void
     {
         $this->app->bind(FeedFetcherInterface::class, FeedFetcherService::class);
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
-        $this->app->singleton(DynamoDbClient::class, function ($app) {
-            return new DynamoDbClient([
-                'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
-                'version' => 'latest',
-                'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
-                'credentials' => [
+        $this->app->singleton(
+            DynamoDbClient::class, function ($app) {
+                return new DynamoDbClient(
+                    [
+                    'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
+                    'version' => 'latest',
+                    'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
+                    'credentials' => [
                     'key' => env('AWS_ACCESS_KEY_ID'),
                     'secret' => env('AWS_SECRET_ACCESS_KEY'),
-                ],
-            ]);
-        });
+                    ],
+                    ]
+                );
+            }
+        );
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
@@ -83,6 +88,29 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FindByIdUseCaseInterface::class, FindByIdUseCase::class);
         $this->app->bind(FindAllUseCaseInterface::class, FindAllUseCase::class);
         $this->app->bind(DeleteUseCaseInterface::class, DeleteUseCase::class);
+
+        $this->app->bind(FeaturedArticleRepositoryInterface::class, EloquentFeaturedArticleRepository::class);
+
+        // $this->app->bind(
+        //     \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
+        //     FindAllUseCase::class
+        // );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\AssignArticleUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\AssignArticleUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\DeactivateUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\DeactivateUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\ChangePriorityUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\ChangePriorityUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
+            \App\Application\UseCases\FeaturedArticle\FindAllUseCase::class
+        );
     }
 
     /**

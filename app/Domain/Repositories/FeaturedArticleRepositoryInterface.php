@@ -5,41 +5,72 @@ declare(strict_types=1);
 namespace App\Domain\Repositories;
 
 use App\Domain\Entities\FeaturedArticle;
+use App\Domain\ValueObjects\FeaturedArticleId;
+use App\Domain\ValueObjects\FeaturedPriority;
 
 interface FeaturedArticleRepositoryInterface
 {
     /**
-     * 指定されたIDに対応するFeaturedArticleエンティティを取得する。
+     * 注目記事一覧を取得（優先度順）
      *
-     * 入力されたIDに基づき、該当するFeaturedArticleエンティティが存在すればそれを返し、存在しない場合はnullを返します。
+     * @return FeaturedArticle[]
      *
-     * @param  int  $id  検索対象のFeaturedArticleエンティティのID
-     * @return FeaturedArticle|null 該当するエンティティ、存在しない場合はnull
+     * @throws \RuntimeException DBエラーが発生した場合
      */
-    public function findById(int $id): ?FeaturedArticle;
+    public function findAll(): array;
 
     /**
-     * 有効なFeaturedArticleエンティティの配列を返します。
+     * 新しい注目記事を追加する。
      *
-     * リポジトリ内で現在有効とされる記事のみを取得します。
+     * 指定された記事IDと優先度を使用して、記事を注目記事リストに追加します。
      *
-     * @return array 有効なFeaturedArticleエンティティの配列
+     * @param int              $articleId 追加する記事の識別子
+     * @param FeaturedPriority $priority  記事の表示優先度を表すオブジェクト
+     *
+     * @throws \RuntimeException データベースエラーが発生した場合
      */
-    public function findActive(): array;
+    public function add(int $articleId, FeaturedPriority $priority): void;
 
     /**
-     * 指定されたFeaturedArticleエンティティをリポジトリに保存します。
+     * 指定された注目記事の優先度を更新する。
      *
-     * @param  FeaturedArticle  $featuredArticle  保存対象のFeaturedArticleオブジェクト
+     * 更新対象の注目記事を識別するIDと新しい優先度を受け取り、記事の表示順序を更新します。
+     *
+     * @param FeaturedArticleId $id       更新対象の注目記事を示す識別子。
+     * @param FeaturedPriority  $priority 設定する新しい優先度を表す値オブジェクト。
+     *
+     * @throws \DomainException 指定されたIDで該当するレコードが見つからなかった場合にスローされる。
      */
-    public function save(FeaturedArticle $featuredArticle): void;
+    public function updatePriority(FeaturedArticleId $id, FeaturedPriority $priority): void;
 
     /**
-     * 指定されたFeaturedArticleエンティティを削除します。
+     * 指定された注目記事の状態を無効化します。
      *
-     * 渡されたFeaturedArticleオブジェクトをリポジトリから削除する操作を定義します。
+     * このメソッドは、対象の注目記事の is_active プロパティを false に設定し、記事を無効な状態に更新します。
      *
-     * @param  FeaturedArticle  $featuredArticle  削除対象のFeaturedArticleエンティティ
+     * @param FeaturedArticleId $id 無効化する注目記事の識別子
+     *
+     * @throws \DomainException 指定されたIDで該当するレコードが見つからなかった場合にスローされる。
      */
-    public function delete(FeaturedArticle $featuredArticle): void;
+    public function deactivate(FeaturedArticleId $id): void;
+
+    /**
+     * 指定された識別子に対応する注目記事を取得する。
+     *
+     * 指定した FeaturedArticleId を元に注目記事を検索し、存在する場合はそのオブジェクトを返します。
+     * 見つからない場合は null を返します。
+     *
+     * @param  FeaturedArticleId $id 対象の注目記事の識別子
+     * @return FeaturedArticle|null 該当する注目記事、存在しない場合は null
+     */
+    public function findById(FeaturedArticleId $id): ?FeaturedArticle;
+
+    /**
+     * 有効なフィーチャード記事の件数を取得します。
+     *
+     * このメソッドは、アクティブなフィーチャード記事の数を返し、登録数の上限チェックなどに利用されます。
+     *
+     * @return int 有効なフィーチャード記事の件数
+     */
+    public function countActive(): int;
 }

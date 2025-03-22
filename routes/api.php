@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleServiceController;
+use App\Http\Controllers\FeaturedArticleController;
 use App\Http\Controllers\FeedQiitaController;
 use App\Http\Controllers\FeedZennController;
 use App\Http\Controllers\ProfileController;
@@ -15,6 +16,12 @@ Route::prefix('articles')->group(function () {
     Route::get('{id}', [ArticleController::class, 'show']); // 詳細取得
     Route::get('/', [ArticleController::class, 'index']); // 一覧・検索
     Route::patch('{id}/status', [ArticleController::class, 'changeStatus']); // 公開状態変更
+});
+Route::prefix('featured-articles')->group(function () {
+    Route::get('/', [FeaturedArticleController::class, 'index']);
+    Route::post('/', [FeaturedArticleController::class, 'store']);
+    Route::patch('{id}/priority', [FeaturedArticleController::class, 'changePriority']);
+    Route::patch('{id}/deactivate', [FeaturedArticleController::class, 'deactivate']);
 });
 Route::prefix('article-services')->group(function () {
     Route::post('/', [ArticleServiceController::class, 'store']);

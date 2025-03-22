@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Application\UseCases\ArticleService;
 
 use App\Domain\Entities\ArticleService;
+use App\Domain\ValueObjects\ArticleServiceId;
+use App\Domain\ValueObjects\ArticleServiceName;
 
 interface UpdateUseCaseInterface
 {
@@ -13,12 +15,14 @@ interface UpdateUseCaseInterface
      *
      * 渡された ArticleService インスタンスに対して更新操作を行い、更新後のインスタンスを返却します。
      *
-     * @param  ArticleService $articleService 更新対象の記事サービスインスタンス
+     * @param  ArticleServiceId   $articleService 更新対象の記事サービスの識別子
+     * @param  ArticleServiceName $name           更新後の記事サービス名
      * @return ArticleService 更新後の記事サービスインスタンス
      *
      * @throws \DomainException 更新処理に失敗した場合にスローされます
      */
     public function execute(
-        ArticleService $articleService,
+        ArticleServiceId $id,
+        ArticleServiceName $name,
     ): ArticleService;
 }

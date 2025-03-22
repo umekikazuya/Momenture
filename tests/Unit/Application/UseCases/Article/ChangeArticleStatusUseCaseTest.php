@@ -32,9 +32,11 @@ class ChangeArticleStatusUseCaseTest extends TestCase
             ->shouldReceive('findById')
             ->with(1)
             ->andReturn($this->article);
-
         $this->article
-            ->shouldReceive('changeStatus')
+            ->shouldReceive('status')
+            ->andReturn(ArticleStatus::DRAFT);
+        $this->article
+            ->shouldReceive('updateStatus')
             ->with(ArticleStatus::PUBLISHED);
 
         $this->repository
