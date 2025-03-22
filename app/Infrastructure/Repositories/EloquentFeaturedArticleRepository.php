@@ -34,21 +34,23 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
                 ->get();
 
             return $models
-                ->map(function ($model) {
-                    try {
-                        return $this->toEntity($model);
-                    } catch (\Exception $e) {
-                        return null;
+                ->map(
+                    function ($model) {
+                        try {
+                            return $this->toEntity($model);
+                        } catch (\DomainException $e) {
+                            // @todo ログ出力を追加
+                            return null;
+                        } catch (\Exception $e) {
+                            // @todo ログ出力を追加
+                            return null;
+                        }
                     }
-                })
+                )
                 ->filter()
                 ->toArray();
         } catch (\Exception $e) {
-            throw new \RuntimeException(
-                '注目記事の取得に失敗しました。',
-                0,
-                $e
-            );
+            throw new \RuntimeException('注目記事の取得に失敗しました。', 0, $e);
         }
     }
 
@@ -85,7 +87,7 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
 
         if ($rows === 0) {
             throw new \DomainException(
-                '指定されたIDで更新対象のレコードが見つかりません: '.$id->value()
+                '指定されたIDで更新対象のレコードが見つかりません: ' . $id->value()
             );
         }
     }
@@ -100,7 +102,7 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
             ->update(['is_active' => false]);
         if ($rows === 0) {
             throw new \DomainException(
-                '指定されたIDで削除対象のレコードが見つかりません: '.$id->value()
+                '指定されたIDで無効化対象のレコードが見つかりません: ' . $id->value()
             );
         }
     }
@@ -143,7 +145,7 @@ class EloquentFeaturedArticleRepository implements FeaturedArticleRepositoryInte
         $article = $this->articleRepository->findById($model->article_id);
         if ($article === null) {
             throw new \DomainException(
-                '記事情報の取得に失敗しました。記事ID: '. $model->article_id
+                '記事情報の取得に失敗しました。記事ID: ' . $model->article_id
             );
         }
 

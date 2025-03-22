@@ -18,7 +18,7 @@ class AssignArticleUseCaseTest extends TestCase
         $repo->shouldReceive('add')->once();
 
         $useCase = new AssignArticleUseCase($repo, 5);
-        $useCase->handle(articleId: new FeaturedArticleId(10), priority: new FeaturedPriority(1));
+        $useCase->handle(id: new FeaturedArticleId(10), priority: new FeaturedPriority(1));
     }
 
     public function test_上限を超えた場合は例外を投げる()
@@ -28,6 +28,6 @@ class AssignArticleUseCaseTest extends TestCase
         $useCase = new AssignArticleUseCase($repo, 5);
 
         $this->expectException(\DomainException::class);
-        $useCase->handle(articleId: new FeaturedArticleId(11), priority: new FeaturedPriority(1));
+        $useCase->handle(id: new FeaturedArticleId(11), priority: new FeaturedPriority(1));
     }
 }

@@ -29,7 +29,7 @@ class ChangeArticleStatusUseCase implements ChangeArticleStatusUseCaseInterface
      * @param string $newStatus 更新するステータス（ArticleStatusに変換可能な文字列）
      *
      * @throws \DomainException 指定された記事IDに対応する記事が存在しない場合
-     * @throws \InvalidArgumentException 渡されたステータスが無効な場合
+     * @throws \RuntimeException 渡されたステータスが無効な場合
      */
     public function execute(int $articleId, string $newStatus): void
     {
@@ -42,7 +42,7 @@ class ChangeArticleStatusUseCase implements ChangeArticleStatusUseCaseInterface
         $newStatusEnum = ArticleStatus::tryFrom($newStatus);
 
         if (! $newStatusEnum) {
-            throw new \InvalidArgumentException("無効なステータスです: {$newStatus}");
+            throw new \RuntimeException("無効なステータスです: {$newStatus}");
         }
 
         // 同じステータスの場合は更新しない
