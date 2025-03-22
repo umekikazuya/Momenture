@@ -24,43 +24,57 @@ class ArticleResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
+            ->schema(
+                [
                 TextInput::make('title')->label('記事タイトル')->required(),
                 TextInput::make('link')->label('リンク')->required(),
                 Select::make('service')
-                ->label('サービス')
-                ->options([
-                    'Qiita' => 'Qiita',
-                    'Zenn' => 'Zenn',
-                    'モチヤブログ' => 'モチヤブログ',
-                ])
-                ->required()
-                ->placeholder('サービスを選択'),
+                    ->label('サービス')
+                    ->options(
+                        [
+                        'Qiita' => 'Qiita',
+                        'Zenn' => 'Zenn',
+                        'モチヤブログ' => 'モチヤブログ',
+                        ]
+                    )
+                    ->required()
+                    ->placeholder('サービスを選択'),
                 DatePicker::make('published')->label('公開日')->required(),
                 Toggle::make('is_pickup')->label('注目記事に表示する')->required(),
-            ])->columns(1);
+                ]
+            )->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
+            ->columns(
+                [
                 TextColumn::make('title'),
                 TextColumn::make('link'),
                 ToggleColumn::make('is_pickup'),
                 TextColumn::make('published'),
-            ])
-            ->filters([
+                ]
+            )
+            ->filters(
+                [
                 //
-            ])
-            ->actions([
+                ]
+            )
+            ->actions(
+                [
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                ]
+            )
+            ->bulkActions(
+                [
+                Tables\Actions\BulkActionGroup::make(
+                    [
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                    ]
+                ),
+                ]
+            );
     }
 
     public static function getRelations(): array
