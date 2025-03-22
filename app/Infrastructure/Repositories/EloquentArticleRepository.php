@@ -80,12 +80,16 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
         }
 
         if ($serviceId) {
-            $query->where('service_id', $serviceId);
+            $query->where('article_service_id', $serviceId);
         }
 
         if ($tagId) {
             $query->whereHas('tags', fn ($q) => $q->where('tags.id', $tagId));
         }
+
+        $query->where('status', ArticleStatus::PUBLISHED->value);
+
+        $query->orderBy('created_at', 'desc');
 
         return $query->get()->map(fn ($model) => $this->toEntity($model))->all();
     }
