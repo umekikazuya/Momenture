@@ -25,9 +25,9 @@ Route::prefix('featured-articles')->group(function () {
 });
 Route::prefix('article-services')->group(function () {
     Route::post('/', [ArticleServiceController::class, 'store']);
-    Route::put('{articleService}', [ArticleServiceController::class, 'update']);
-    Route::delete('{articleService}', [ArticleServiceController::class, 'destroy']);
-    Route::get('{articleService}', [ArticleServiceController::class, 'show']);
+    Route::put('{id}', [ArticleServiceController::class, 'update']);
+    Route::delete('{id}', [ArticleServiceController::class, 'destroy']);
+    Route::get('{id}', [ArticleServiceController::class, 'show']);
     Route::get('/', [ArticleServiceController::class, 'index']);
 });
 Route::prefix('profile')->group(function () {
