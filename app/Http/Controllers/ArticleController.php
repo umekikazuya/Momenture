@@ -12,6 +12,7 @@ use App\Application\UseCases\Article\DeleteArticleUseCaseInterface;
 use App\Application\UseCases\Article\FindArticleByIdUseCaseInterface;
 use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
 use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
+use App\Application\UseCases\Article\SearchArticlesUseCaseInterface;
 use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
 use App\Http\Requests\Article\ChangeStatusRequest;
 use App\Http\Requests\Article\SearchRequest;
@@ -30,13 +31,14 @@ class ArticleController extends Controller
      * 本コンストラクタは、記事の作成、更新、削除、復元、ID検索、複数記事検索、およびステータス変更を担当する各ユースケースを注入します。
      */
     public function __construct(
+        private ChangeArticleStatusUseCaseInterface $changeArticleStatus,
         private CreateArticleUseCaseInterface $createArticle,
-        private UpdateArticleUseCaseInterface $updateArticle,
         private DeleteArticleUseCaseInterface $deleteArticle,
-        private RestoreArticleUseCaseInterface $restoreArticle,
         private FindArticleByIdUseCaseInterface $findArticleById,
         private FindArticlesUseCaseInterface $findArticles,
-        private ChangeArticleStatusUseCaseInterface $changeArticleStatus,
+        private RestoreArticleUseCaseInterface $restoreArticle,
+        private SearchArticlesUseCaseInterface $search,
+        private UpdateArticleUseCaseInterface $updateArticle,
     ) {
     }
 
@@ -158,11 +160,10 @@ class ArticleController extends Controller
      */
     public function index(SearchRequest $request)
     {
-        $articles = $this->findArticles->execute(
-            $request->only(['status', 'service_id', 'tag_id']),
-            $request->get('sort', 'created_at_desc'),
-            (int) $request->get('page', $request->get('page', 0)),
-            (int) $request->get('per_page', $request->get('per_page', 10)),
+        $articles = $this->search->execute(
+            keyword: $request->get('keyword'),
+            serviceId: (int) $request->get('service_id'),
+            tagId: null,
         );
 
         return ArticleResource::collection($articles);

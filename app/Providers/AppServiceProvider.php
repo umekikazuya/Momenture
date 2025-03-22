@@ -14,6 +14,8 @@ use App\Application\UseCases\Article\FindArticlesUseCase;
 use App\Application\UseCases\Article\FindArticlesUseCaseInterface;
 use App\Application\UseCases\Article\RestoreArticleUseCase;
 use App\Application\UseCases\Article\RestoreArticleUseCaseInterface;
+use App\Application\UseCases\Article\SearchArticlesUseCase;
+use App\Application\UseCases\Article\SearchArticlesUseCaseInterface;
 use App\Application\UseCases\Article\UpdateArticleUseCase;
 use App\Application\UseCases\Article\UpdateArticleUseCaseInterface;
 use App\Application\UseCases\ArticleService\CreateUseCase;
@@ -76,13 +78,14 @@ class AppServiceProvider extends ServiceProvider
             \App\Domain\Repositories\ArticleServiceRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleServiceRepository::class
         );
+        $this->app->bind(ChangeArticleStatusUseCaseInterface::class, ChangeArticleStatusUseCase::class);
         $this->app->bind(CreateArticleUseCaseInterface::class, CreateArticleUseCase::class);
-        $this->app->bind(UpdateArticleUseCaseInterface::class, UpdateArticleUseCase::class);
         $this->app->bind(DeleteArticleUseCaseInterface::class, DeleteArticleUseCase::class);
-        $this->app->bind(RestoreArticleUseCaseInterface::class, RestoreArticleUseCase::class);
         $this->app->bind(FindArticleByIdUseCaseInterface::class, FindArticleByIdUseCase::class);
         $this->app->bind(FindArticlesUseCaseInterface::class, FindArticlesUseCase::class);
-        $this->app->bind(ChangeArticleStatusUseCaseInterface::class, ChangeArticleStatusUseCase::class);
+        $this->app->bind(RestoreArticleUseCaseInterface::class, RestoreArticleUseCase::class);
+        $this->app->bind(UpdateArticleUseCaseInterface::class, UpdateArticleUseCase::class);
+        $this->app->bind(SearchArticlesUseCaseInterface::class, SearchArticlesUseCase::class);
 
         $this->app->bind(CreateUseCaseInterface::class, CreateUseCase::class);
         $this->app->bind(UpdateUseCaseInterface::class, UpdateUseCase::class);
