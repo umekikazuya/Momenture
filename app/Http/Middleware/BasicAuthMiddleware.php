@@ -10,7 +10,7 @@ class BasicAuthMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      *
      * @description
      * リクエストヘッダーからBasic認証情報を検証。
@@ -75,14 +75,15 @@ class BasicAuthMiddleware
         }
 
         // 認証チェック.
-        if ($inputUser !== $user || $inputPass !== $pass) {
-            return response('Unauthorized', 401)
-                ->header('WWW-Authenticate', 'Basic realm="Protected Area"')
-                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                ->header('Pragma', 'no-cache')
-                ->header('Expires', '0');
+        if ($inputUser === $user && $inputPass === $pass) {
+            return $next($request);
         }
 
-        return $next($request);
+        return response('Unauthorized', 401)
+            ->header('WWW-Authenticate', 'Basic realm="Protected Area"')
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
+
     }
 }
