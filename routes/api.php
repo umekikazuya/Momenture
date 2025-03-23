@@ -8,7 +8,7 @@ use App\Http\Controllers\FeedZennController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth.basic')->group(function () {
+Route::middleware(App\Http\Middleware\BasicAuthMiddleware::class)->group(function () {
     Route::prefix('articles')->group(function () {
         Route::post('/', [ArticleController::class, 'store']); // 作成
         Route::put('{id}', [ArticleController::class, 'update']); // 更新
