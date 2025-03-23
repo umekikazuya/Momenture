@@ -21,11 +21,6 @@ class BasicAuthMiddleware
      */
     public function handle(Request $request, \Closure $next): Response
     {
-        // 本番環境でHTTPSを強制
-        if (app()->environment('production') && ! $request->secure()) {
-            return redirect()->secure($request->getRequestUri());
-        }
-
         // 構成からユーザー名・パスワードを取得.
         $user = config('auth.basic.username');
         $pass = config('auth.basic.password');
