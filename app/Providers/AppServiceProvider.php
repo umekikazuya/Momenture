@@ -29,13 +29,14 @@ use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Application\UseCases\ArticleService\UpdateUseCase;
 use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
 use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
+use App\Infrastructure\Clients\AwsDynamoDbClient;
+use App\Infrastructure\Clients\DynamoDbClientInterface;
 use App\Infrastructure\Repositories\EloquentFeaturedArticleRepository;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
 use App\Services\FeedQiitaParserService;
 use App\Services\FeedZennParserService;
-use Aws\DynamoDb\DynamoDbClient;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -54,22 +55,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FeedFetcherInterface::class, FeedFetcherService::class);
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
-        $this->app->singleton(
-            DynamoDbClient::class,
-            function ($app) {
-                return new DynamoDbClient(
-                    [
-                    'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
-                    'version' => 'latest',
-                    'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
-                    'credentials' => [
-                        'key' => env('AWS_ACCESS_KEY_ID'),
-                        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-                    ],
-                    ]
-                );
-            }
-        );
+
+        $this->app->bind(DynamoDbClientInterface::class, AwsDynamoDbClient::class);
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
