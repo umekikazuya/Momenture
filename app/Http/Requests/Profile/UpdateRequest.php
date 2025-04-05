@@ -47,7 +47,7 @@ class UpdateRequest extends FormRequest
     {
         return ProfileDto::fromArray([
             ...$this->validated(),
-            'id' => 'ME',
+            'id' => 1,
         ]);
     }
 }

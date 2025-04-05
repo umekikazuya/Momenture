@@ -17,6 +17,7 @@ interface UpdateProfileUseCaseInterface
      * @param ProfileDto $dto 更新対象のDTO
      *
      * @throws \DomainException
+     * @throws \RuntimeException
      */
     public function execute(ProfileDto $dto): void;
 }

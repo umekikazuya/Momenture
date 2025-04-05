@@ -37,6 +37,7 @@ use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
 use App\Services\FeedQiitaParserService;
 use App\Services\FeedZennParserService;
+use Aws\DynamoDb\DynamoDbClient;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -99,6 +100,14 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Profile.
+        $this->app->bind(
+            \App\Application\Mappers\ProfileMapperInterface::class,
+            \App\Application\Mappers\ProfileMapper::class
+        );
+        $this->app->bind(
+            \App\Infrastructure\Clients\DynamoDbClientInterface::class,
+            \App\Infrastructure\Clients\AwsDynamoDbClient::class
+        );
         $this->app->bind(
             \App\Domain\Repositories\ProfileRepositoryInterface::class,
             \App\Infrastructure\Repositories\DynamoDbProfileRepository::class
