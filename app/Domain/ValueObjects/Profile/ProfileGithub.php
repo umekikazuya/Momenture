@@ -19,7 +19,7 @@ final class ProfileGithub
     }
 
     /**
-     * Githubアカウント名が有効かどうかを検証
+     * Githubアカウント名が有効かどうかを検証(空文字は許可)
      *
      * @param  string $github Githubアカウント名
      * @return void
@@ -28,9 +28,17 @@ final class ProfileGithub
      */
     private function isValid(string $github): void
     {
-        // アルファベット、数字、ハイフン、アンダースコアのみを許可
-        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $github)) {
-            throw new \DomainException('無効なGithubアカウント名: ' . $github);
+        // 空文字は許可.
+        if ($github === '') {
+            return;
+        }
+
+        if (mb_strlen($github) > 39) {
+            throw new \DomainException('Githubアカウント名は39文字以内で指定してください。');
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$/', $github)) {
+            throw new \DomainException('Githubアカウント名は半角英数字、ハイフン、アンダースコアのみ使用できます。');
         }
     }
 

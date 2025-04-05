@@ -9,17 +9,10 @@ class ProfileAddress
     /**
      * ProfileAddress クラスのインスタンスを初期化。
      *
-     * 渡された文字列が有効な形式かどうか検証し、無効な場合は DomainException をスロー。
-     *
      * @param string $address 文字列
-     *
-     * @throws \DomainException 無効なAddressが指定された場合
      */
     public function __construct(private readonly string $address)
     {
-        if (trim($address) === '') {
-            throw new \DomainException('Addressが空です。');
-        }
     }
 
     /**

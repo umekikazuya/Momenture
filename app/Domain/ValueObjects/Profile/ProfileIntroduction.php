@@ -9,16 +9,9 @@ class ProfileIntroduction
     /**
      * ProfileIntroduction クラスのインスタンスを初期化。
      *
-     * @param string $introduction 文字列
-     *
-     * @throws \DomainException 無効な概要が指定された場合
+     * @param  string  $introduction  文字列
      */
-    public function __construct(private readonly string $introduction)
-    {
-        if (trim($introduction) === '') {
-            throw new \DomainException('概要は空にできません。');
-        }
-    }
+    public function __construct(private readonly string $introduction) {}
 
     /**
      * 格納された概要を取得。

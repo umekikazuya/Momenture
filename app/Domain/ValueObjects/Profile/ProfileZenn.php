@@ -19,7 +19,7 @@ final class ProfileZenn
     }
 
     /**
-     * Zennアカウント名が有効かどうかを検証
+     * Zennアカウント名が有効かどうかを検証(空文字は許可)
      *
      * @param  string $zenn Zennアカウント名
      * @return void
@@ -28,9 +28,13 @@ final class ProfileZenn
      */
     private function isValid(string $zenn): void
     {
-        // アルファベット、数字、ハイフン、アンダースコアのみを許可
-        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $zenn)) {
-            throw new \DomainException('無効なZennアカウント名: ' . $zenn);
+        // 空文字は許可.
+        if ($zenn === '') {
+            return;
+        }
+        // アルファベット、数字、ハイフン、アンダースコアのみを許可(空文字は許可)
+        if (!preg_match('/^[a-zA-Z0-9-_]+$/', $zenn)) {
+            throw new \DomainException('Invalid Zenn account name.');
         }
     }
 
