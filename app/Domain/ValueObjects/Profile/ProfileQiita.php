@@ -28,6 +28,10 @@ class ProfileQiita
      */
     private function isValid(string $qiita): void
     {
+        // 空文字は許可.
+        if ($qiita === '') {
+            return;
+        }
         // アルファベット、数字、ハイフン、アンダースコアのみを許可
         if (!preg_match('/^[a-zA-Z0-9_-]+$/', $qiita)) {
             throw new \DomainException('無効なアカウント名: ' . $qiita);

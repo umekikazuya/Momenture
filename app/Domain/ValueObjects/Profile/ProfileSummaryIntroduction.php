@@ -10,14 +10,9 @@ class ProfileSummaryIntroduction
      * ProfileSummaryIntroduction クラスのインスタンスを初期化。
      *
      * @param string $summaryIntroduction 文字列
-     *
-     * @throws \DomainException 無効な概要(詳細)が指定された場合
      */
     public function __construct(private readonly string $summaryIntroduction)
     {
-        if (trim($summaryIntroduction) === '') {
-            throw new \DomainException('概要(詳細)は空にできません。');
-        }
         if (mb_strlen($summaryIntroduction) > 1000) {
             throw new \DomainException('概要(詳細)は1000文字以内で指定してください。');
         }

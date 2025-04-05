@@ -10,14 +10,9 @@ final class ProfileJob
      * 職業を表す文字列を初期化。
      *
      * @param string $job 職業
-     *
-     * @throws \DomainException 無効な職業が指定された場合
      */
     public function __construct(private readonly string $job)
     {
-        if (trim($job) === '') {
-            throw new \DomainException('Job は空にできません。');
-        }
     }
 
     /**
