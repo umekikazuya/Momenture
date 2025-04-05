@@ -11,12 +11,12 @@ class ProfileZenn
      *
      * @param  string  $zenn  文字列
      *
-     * @throws \DomainException 無効なZennが指定された場合
+     * @throws \DomainException 無効なZennアカウント名が指定された場合
      */
     public function __construct(private readonly string $zenn) {}
 
     /**
-     * 格納されたZennを取得。
+     * Getter.
      *
      * コンストラクタで設定された、有効なZennの文字列を返す。
      *
@@ -24,6 +24,6 @@ class ProfileZenn
      */
     public function value(): string
     {
-        return $this->zenn === '' ? null : $this->zenn;
+        return $this->zenn;
     }
 }

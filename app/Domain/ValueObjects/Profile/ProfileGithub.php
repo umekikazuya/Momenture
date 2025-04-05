@@ -11,19 +11,19 @@ class ProfileGithub
      *
      * @param  string  $github  文字列
      *
-     * @throws \DomainException 無効なGithubが指定された場合
+     * @throws \DomainException 無効なGithubアカウント名が指定された場合
      */
     public function __construct(private readonly string $github) {}
 
     /**
      * 格納されたGithubを取得。
      *
-     * コンストラクタで設定された、有効なGithubの文字列を返す。
+     * コンストラクタで設定された、有効なGithubアカウント名の文字列を返す。
      *
      * @return string 保持されているGithub文字列
      */
     public function value(): string
     {
-        return $this->github === '' ? null : $this->github;
+        return $this->github;
     }
 }

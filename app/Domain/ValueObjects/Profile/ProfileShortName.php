@@ -11,7 +11,8 @@ class ProfileShortName
      *
      * 渡された文字列が有効な形式かどうか検証し、無効な場合は DomainException をスロー。
      *
-     * @param  string  $shortName  文字列
+     * @param  string  $shortName
+     *                             文字列.
      *
      * @throws \DomainException 無効なShortNameが指定された場合
      */
@@ -26,6 +27,6 @@ class ProfileShortName
      */
     public function value(): string
     {
-        return $this->shortName === '' ? null : $this->shortName;
+        return $this->shortName;
     }
 }

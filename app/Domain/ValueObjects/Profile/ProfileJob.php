@@ -19,6 +19,7 @@ class ProfileJob
             throw new \DomainException('Job は空にできません。');
         }
     }
+
     /**
      * 格納された職業を取得。
      *

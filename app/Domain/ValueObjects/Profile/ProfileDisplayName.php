@@ -26,6 +26,6 @@ class ProfileDisplayName
      */
     public function value(): string
     {
-        return $this->displayName === '' ? null : $this->displayName;
+        return $this->displayName;
     }
 }

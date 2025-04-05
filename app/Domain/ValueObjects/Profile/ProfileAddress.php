@@ -29,6 +29,6 @@ class ProfileAddress
      */
     public function value(): string
     {
-        return $this->address === '' ? null : $this->address;
+        return $this->address;
     }
 }

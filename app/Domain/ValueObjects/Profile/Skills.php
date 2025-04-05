@@ -10,12 +10,12 @@ final class Skills
     private array $skills;
 
     /**
-     * @param Skill[] $skills
+     * @param  Skill[]  $skills
      */
     public function __construct(array $skills)
     {
         foreach ($skills as $skill) {
-            if (!$skill instanceof Skill) {
+            if (! $skill instanceof Skill) {
                 throw new \DomainException('Skills に渡す配列は Skill のみを含めてください。');
             }
         }
@@ -38,6 +38,7 @@ final class Skills
                 return true;
             }
         }
+
         return false;
     }
 

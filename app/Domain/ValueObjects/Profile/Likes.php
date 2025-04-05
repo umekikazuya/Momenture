@@ -12,12 +12,12 @@ final class Likes
     private array $likes;
 
     /**
-     * @param Like[] $likes
+     * @param  Like[]  $likes
      */
     public function __construct(array $likes)
     {
         foreach ($likes as $like) {
-            if (!$like instanceof Like) {
+            if (! $like instanceof Like) {
                 throw new \DomainException('Likes に渡す配列は Like のみを含めてください。');
             }
         }
@@ -40,6 +40,7 @@ final class Likes
                 return true;
             }
         }
+
         return false;
     }
 
@@ -53,13 +54,11 @@ final class Likes
      */
     public function toArray(): array
     {
-        return array_map(fn(Skill $likes) => $likes->value(), $this->likes);
+        return array_map(fn (Skill $likes) => $likes->value(), $this->likes);
     }
 
     public function toCollection(): Collection
     {
         return collect($this->likes);
     }
-    
-
 }

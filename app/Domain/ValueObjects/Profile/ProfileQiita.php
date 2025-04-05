@@ -11,19 +11,19 @@ class ProfileQiita
      *
      * @param  string  $qiita  文字列
      *
-     * @throws \DomainException 無効なZennが指定された場合
+     * @throws \DomainException 無効なQiitaアカウント名が指定された場合
      */
     public function __construct(private readonly string $qiita) {}
 
     /**
-     * 格納されたZennを取得。
+     * 格納されたQiitaアカウント名を取得。
      *
-     * コンストラクタで設定された、有効なZennの文字列を返す。
+     * コンストラクタで設定された、有効なQiitaアカウント名の文字列を返す。
      *
-     * @return string 保持されているZenn文字列
+     * @return string 保持されているQiitaアカウント名文字列
      */
     public function value(): string
     {
-        return $this->qiita === '' ? null : $this->qiita;
+        return $this->qiita;
     }
 }

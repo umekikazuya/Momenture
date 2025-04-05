@@ -26,6 +26,6 @@ class ProfileFrom
      */
     public function value(): string
     {
-        return $this->from === '' ? null : $this->from;
+        return $this->from;
     }
 }
