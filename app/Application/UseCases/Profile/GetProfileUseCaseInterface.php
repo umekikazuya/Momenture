@@ -6,7 +6,6 @@ namespace App\Application\UseCases\Profile;
 
 use App\Application\DTOs\ProfileDto;
 
-
 /**
  * Profile情報を取得.
  *

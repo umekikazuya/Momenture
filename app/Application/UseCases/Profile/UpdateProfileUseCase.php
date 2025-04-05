@@ -11,7 +11,8 @@ class UpdateProfileUseCase implements UpdateProfileUseCaseInterface
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
         private readonly ProfileMapperInterface $mapper,
-    ) {}
+    ) {
+    }
 
     public function execute(ProfileDto $dto): void
     {

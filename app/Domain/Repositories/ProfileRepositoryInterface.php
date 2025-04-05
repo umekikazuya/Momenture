@@ -21,5 +21,5 @@ interface ProfileRepositoryInterface
      *
      * @throws \RuntimeException データベース操作で例外が発生した場合
      */
-    public function save(Profile $profile): void;
+    public function update(Profile $profile): Profile;
 }

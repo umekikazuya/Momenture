@@ -9,9 +9,11 @@ class ProfileIntroduction
     /**
      * ProfileIntroduction クラスのインスタンスを初期化。
      *
-     * @param  string  $introduction  文字列
+     * @param string $introduction 文字列
      */
-    public function __construct(private readonly string $introduction) {}
+    public function __construct(private readonly string $introduction)
+    {
+    }
 
     /**
      * 格納された概要を取得。
