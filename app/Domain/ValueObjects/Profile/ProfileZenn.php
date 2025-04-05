@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects\Profile;
 
-class ProfileZenn
+final class ProfileZenn
 {
     /**
      * ProfileZenn クラスのインスタンスを初期化。

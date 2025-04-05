@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects\Profile;
 
-class ProfileJob
+final class ProfileJob
 {
     /**
      * 職業を表す文字列を初期化。

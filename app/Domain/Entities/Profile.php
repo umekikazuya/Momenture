@@ -16,25 +16,25 @@ use App\Domain\ValueObjects\Profile\ProfileSummaryIntroduction;
 use App\Domain\ValueObjects\Profile\ProfileZenn;
 use App\Domain\ValueObjects\Profile\Skills;
 
-class Profile
+class Profile implements EntityInterface
 {
     /**
      * Profileエンティティを初期化。
      */
     public function __construct(
-        private ProfileId $id,
-        private ProfileAddress $address,
-        private ProfileDisplayName $displayName,
-        private ProfileShortName $displayShortName,
-        private ProfileFrom $from,
-        private ProfileGithub $github,
-        private ProfileIntroduction $introduction,
-        private ProfileJob $job,
-        private Likes $likes,
-        private ProfileQiita $qiita,
-        private Skills $skill,
-        private ProfileSummaryIntroduction $summaryIntroduction,
-        private ProfileZenn $zenn,
+        private readonly ProfileId $id,
+        private readonly ProfileAddress $address,
+        private readonly ProfileDisplayName $displayName,
+        private readonly ProfileShortName $displayShortName,
+        private readonly ProfileFrom $from,
+        private readonly ProfileGithub $github,
+        private readonly ProfileIntroduction $introduction,
+        private readonly ProfileJob $job,
+        private readonly Likes $likes,
+        private readonly ProfileQiita $qiita,
+        private readonly Skills $skills,
+        private readonly ProfileSummaryIntroduction $summaryIntroduction,
+        private readonly ProfileZenn $zenn,
     ) {
     }
 
@@ -127,7 +127,7 @@ class Profile
      */
     public function skills(): Skills
     {
-        return $this->skill;
+        return $this->skills;
     }
 
     /**

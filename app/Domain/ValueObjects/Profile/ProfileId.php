@@ -9,7 +9,7 @@ class ProfileId
     /**
      * ProfileId クラスのインスタンスを初期化。
      *
-     * 渡された文字列が有効な形式かどうか検証し、無効な場合は DomainException をスロー。
+     * 渡されたIDが有効な値であるかどうか検証し、無効な場合は DomainException をスロー。
      *
      * @param int $id ID
      *
@@ -20,7 +20,6 @@ class ProfileId
         if ($id <= 0) {
             throw new \DomainException('無効なIdです: ' . $id);
         }
-        $this->id = $id;
     }
 
     /**

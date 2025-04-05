@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects\Profile;
 
-class ProfileGithub
+final class ProfileGithub
 {
     /**
      * ProfileGithub クラスのインスタンスを初期化。

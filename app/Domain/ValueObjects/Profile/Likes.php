@@ -48,7 +48,7 @@ final class Likes
 
     public function isEmpty(): bool
     {
-        return count($this->likes) === 0;
+        return empty($this->likes);
     }
 
     /**
@@ -56,7 +56,7 @@ final class Likes
      */
     public function toArray(): array
     {
-        return array_map(fn (Like $likes) => $likes->value(), $this->likes);
+        return array_map(fn (Like $like) => $like->value(), $this->likes);
     }
 
     public function toCollection(): Collection

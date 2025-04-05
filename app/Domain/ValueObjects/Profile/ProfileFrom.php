@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects\Profile;
 
-class ProfileFrom
+final class ProfileFrom
 {
     /**
      * ProfileFrom クラスのインスタンスを初期化。
