@@ -97,6 +97,20 @@ class AppServiceProvider extends ServiceProvider
             \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
             \App\Application\UseCases\FeaturedArticle\FindAllUseCase::class
         );
+
+        // Profile.
+        $this->app->bind(
+            \App\Domain\Repositories\ProfileRepositoryInterface::class,
+            \App\Infrastructure\Repositories\DynamoDbProfileRepository::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\Profile\GetProfileUseCaseInterface::class,
+            \App\Application\UseCases\Profile\GetProfileUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\Profile\UpdateProfileUseCaseInterface::class,
+            \App\Application\UseCases\Profile\UpdateProfileUseCase::class
+        );
     }
 
     /**

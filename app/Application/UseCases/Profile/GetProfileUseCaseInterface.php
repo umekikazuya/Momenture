@@ -15,6 +15,9 @@ interface GetProfileUseCaseInterface
 {
     /**
      * Profile情報を取得.
+     *
+     * @throws \DomainException プロフィールが見つからない場合
+     * @throws \RuntimeException データベース操作で例外が発生した場合
      */
     public function execute(): ProfileDto;
 }

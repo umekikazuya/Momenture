@@ -48,4 +48,9 @@ final class Skills
     {
         return count($this->skills) === 0;
     }
+
+    public function toCollection(): array
+    {
+        return collect($this->skills)->toArray();
+    }
 }
