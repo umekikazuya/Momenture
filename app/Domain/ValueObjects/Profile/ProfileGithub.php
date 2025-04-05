@@ -15,22 +15,23 @@ class ProfileGithub
      */
     public function __construct(private readonly string $github)
     {
-        // アカウント名のバリデーション
-        // 空でないこと、特殊文字を含まないこと、最大長の制限など
-        if (! $this->isValidGithubAccount($github)) {
-            throw new \DomainException('無効なGithubアカウント名です: '.$github);
-        }
+        $this->isValid($github);
     }
 
     /**
      * Githubアカウント名が有効かどうかを検証
      *
      * @param  string $github Githubアカウント名
-     * @return bool 有効な場合はtrue、そうでない場合はfalse
+     * @return void
+     *
+     * @throws \DomainException 無効なGithubアカウント名が指定された場合
      */
-    private function isValidGithubAccount(string $github): bool
+    private function isValid(string $github): void
     {
-        return ! empty($github) && preg_match('/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i', $github);
+        // アルファベット、数字、ハイフン、アンダースコアのみを許可
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $github)) {
+            throw new \DomainException('無効なGithubアカウント名: ' . $github);
+        }
     }
 
     /**

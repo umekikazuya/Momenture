@@ -18,6 +18,12 @@ class ProfileShortName
      */
     public function __construct(private readonly string $shortName)
     {
+        if (trim($shortName) === '') {
+            throw new \DomainException('ShortNameは空にできません。');
+        }
+        if (mb_strlen($shortName) > 30) {
+            throw new \DomainException('ShortNameは30文字以内で指定してください。');
+        }
     }
 
     /**

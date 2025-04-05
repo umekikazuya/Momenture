@@ -7,7 +7,7 @@ namespace App\Domain\ValueObjects\Profile;
 final class Skills
 {
     /**
-     * @var Skill[] 
+     * @var Skill[]
      */
     private array $skills;
 

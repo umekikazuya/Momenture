@@ -17,7 +17,9 @@ class ProfileAddress
      */
     public function __construct(private readonly string $address)
     {
-        $this->address = $address;
+        if (trim($address) === '') {
+            throw new \DomainException('Addressが空です。');
+        }
     }
 
     /**

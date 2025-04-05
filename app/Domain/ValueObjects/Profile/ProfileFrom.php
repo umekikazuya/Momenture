@@ -17,6 +17,12 @@ class ProfileFrom
      */
     public function __construct(private readonly string $from)
     {
+        if (trim($from) === '') {
+            throw new \DomainException('Fromは空にできません。');
+        }
+        if (mb_strlen($from) > 100) {
+            throw new \DomainException('Fromは100文字以内で指定してください。');
+        }
     }
 
     /**

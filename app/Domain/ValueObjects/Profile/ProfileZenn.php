@@ -15,6 +15,23 @@ class ProfileZenn
      */
     public function __construct(private readonly string $zenn)
     {
+        $this->isValid($zenn);
+    }
+
+    /**
+     * Zennアカウント名が有効かどうかを検証
+     *
+     * @param  string $zenn Zennアカウント名
+     * @return void
+     *
+     * @throws \DomainException 無効なZennアカウント名が指定された場合
+     */
+    private function isValid(string $zenn): void
+    {
+        // アルファベット、数字、ハイフン、アンダースコアのみを許可
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $zenn)) {
+            throw new \DomainException('無効なZennアカウント名: ' . $zenn);
+        }
     }
 
     /**

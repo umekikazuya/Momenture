@@ -17,6 +17,9 @@ class ProfileDisplayName
      */
     public function __construct(private readonly string $displayName)
     {
+        if (trim($displayName) === '') {
+            throw new \DomainException('DisplayNameは空にできません。');
+        }
     }
 
     /**

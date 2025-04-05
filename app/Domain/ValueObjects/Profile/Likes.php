@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 final class Likes
 {
     /**
-     * @var Like[] 
+     * @var Like[]
      */
     private array $likes;
 

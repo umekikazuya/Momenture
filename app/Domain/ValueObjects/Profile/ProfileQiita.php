@@ -15,6 +15,23 @@ class ProfileQiita
      */
     public function __construct(private readonly string $qiita)
     {
+        $this->isValid($qiita);
+    }
+
+    /**
+     * Qiitaアカウント名が有効かどうかを検証
+     *
+     * @param  string $qiita Qiitaアカウント名
+     * @return void
+     *
+     * @throws \DomainException 無効なQiitaアカウント名が指定された場合
+     */
+    private function isValid(string $qiita): void
+    {
+        // アルファベット、数字、ハイフン、アンダースコアのみを許可
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $qiita)) {
+            throw new \DomainException('無効なQiitaアカウント名: ' . $qiita);
+        }
     }
 
     /**

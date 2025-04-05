@@ -18,7 +18,7 @@ class ProfileId
     public function __construct(private readonly int $id)
     {
         if ($id <= 0) {
-            throw new \DomainException('無効なIdです: '.$id);
+            throw new \DomainException('無効なIdです: ' . $id);
         }
         $this->id = $id;
     }
