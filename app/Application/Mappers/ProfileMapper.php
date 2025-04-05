@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Factories;
+namespace App\Application\Mappers;
 
 use App\Application\DTOs\ProfileDto;
 use App\Domain\Entities\Profile;
@@ -22,15 +22,9 @@ use App\Domain\ValueObjects\Profile\ProfileZenn;
 use App\Domain\ValueObjects\Profile\Skill;
 use App\Domain\ValueObjects\Profile\Skills;
 
-/**
- * ProfileFactoryは、DTOからEntityを作成.
- */
-class ProfileEntityFactory
+class ProfileMapper implements ProfileMapperInterface
 {
-    /**
-     * DtoからEntityを作成する.
-     */
-    public static function fromDto(ProfileDto $dto): Profile
+    public function toEntity(ProfileDto $dto): Profile
     {
         return new Profile(
             new ProfileId($dto->id),
@@ -41,33 +35,30 @@ class ProfileEntityFactory
             new ProfileGithub($dto->github ?? ''),
             new ProfileIntroduction($dto->introduction ?? ''),
             new ProfileJob($dto->job ?? ''),
-            new Likes(array_map(fn ($v) => new Like($v), $dto->likes ?? [])),
+            new Likes(array_map(fn ($v) => new Like($v), $dto->likes)),
             new ProfileQiita($dto->qiita ?? ''),
-            new Skills(array_map(fn ($v) => new Skill($v), $dto->skills ?? [])),
+            new Skills(array_map(fn ($v) => new Skill($v), $dto->skills)),
             new ProfileSummaryIntroduction($dto->summaryIntroduction ?? ''),
             new ProfileZenn($dto->zenn ?? ''),
         );
     }
 
-    /**
-     * EntityからDtoを作成する.
-     */
-    public static function toDto(Profile $profile): ProfileDto
+    public function toDto(Profile $entity): ProfileDto
     {
         return new ProfileDto(
-            id: $profile->id()->value(),
-            address: $profile->address()->value(),
-            displayName: $profile->displayName()->value(),
-            displayShortName: $profile->displayShortName()->value(),
-            from: $profile->from()->value(),
-            github: $profile->github()->value(),
-            introduction: $profile->introduction()->value(),
-            job: $profile->job()->value(),
-            likes: $profile->likes()->toArray(),
-            qiita: $profile->qiita()->value(),
-            skills: array_map(fn ($skill) => $skill->value(), $profile->skills()->all()),
-            summaryIntroduction: $profile->summaryIntroduction()->value(),
-            zenn: $profile->zenn()->value()
+            id: $entity->id()->value(),
+            address: $entity->address()->value(),
+            displayName: $entity->displayName()->value(),
+            displayShortName: $entity->displayShortName()->value(),
+            from: $entity->from()->value(),
+            github: $entity->github()->value(),
+            introduction: $entity->introduction()->value(),
+            job: $entity->job()->value(),
+            likes: $entity->likes()->toArray(),
+            qiita: $entity->qiita()->value(),
+            skills: array_map(fn ($skill) => $skill->value(), $entity->skills()->all()),
+            summaryIntroduction: $entity->summaryIntroduction()->value(),
+            zenn: $entity->zenn()->value()
         );
     }
 }

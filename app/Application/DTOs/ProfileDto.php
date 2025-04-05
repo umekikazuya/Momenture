@@ -23,65 +23,41 @@ final class ProfileDto
     ) {
     }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array{
-     *     id: int,
-     *     address: string|null,
-     *     display_name: string|null,
-     *     display_short_name: string|null,
-     *     from: string|null,
-     *     github: string|null,
-     *     introduction: string|null,
-     *     job: string|null,
-     *     likes: array<string>,
-     *     qiita: string|null,
-     *     skills: array<string>,
-     *     summary_introduction: string|null,
-     *     zenn: string|null
-     * }
-     */
     public function toArray(): array
     {
-        return \get_object_vars($this);
+        return [
+            'id' => $this->id,
+            'address' => $this->address ?? '',
+            'display_name' => $this->displayName ?? '',
+            'display_short_name' => $this->displayShortName ?? '',
+            'from' => $this->from ?? '',
+            'github' => $this->github ?? '',
+            'introduction' => $this->introduction ?? '',
+            'job' => $this->job ?? '',
+            'likes' => $this->likes,
+            'qiita' => $this->qiita ?? '',
+            'skills' => $this->skills,
+            'summary_introduction' => $this->summaryIntroduction ?? '',
+            'zenn' => $this->zenn ?? '',
+        ];
     }
 
-    /**
-     * Create a new instance from an array.
-     *
-     * @param array{
-     *     id?: int,
-     *     address?: string,
-     *     display_name?: string,
-     *     display_short_name?: string,
-     *     from?: string,
-     *     github?: string,
-     *     introduction?: string,
-     *     job?: string,
-     *     likes?: array<string>,
-     *     qiita?: string,
-     *     skills?: array<string>,
-     *     summary_introduction?: string,
-     *     zenn?: string
-     * } $data
-     */
     public static function fromArray(array $data): self
     {
         return new self(
             id: (int) ($data['id'] ?? 1),
-            address: $data['address'] ?? null,
-            displayName: $data['display_name'] ?? null,
-            displayShortName: $data['display_short_name'] ?? null,
-            from: $data['from'] ?? null,
-            github: $data['github'] ?? null,
-            introduction: $data['introduction'] ?? null,
-            job: $data['job'] ?? null,
+            address: $data['address'] ?? '',
+            displayName: $data['display_name'] ?? '',
+            displayShortName: $data['display_short_name'] ?? '',
+            from: $data['from'] ?? '',
+            github: $data['github'] ?? '',
+            introduction: $data['introduction'] ?? '',
+            job: $data['job'] ?? '',
             likes: $data['likes'] ?? [],
-            qiita: $data['qiita'] ?? null,
+            qiita: $data['qiita'] ?? '',
             skills: $data['skills'] ?? [],
-            summaryIntroduction: $data['summary_introduction'] ?? null,
-            zenn: $data['zenn'] ?? null,
+            summaryIntroduction: $data['summary_introduction'] ?? '',
+            zenn: $data['zenn'] ?? '',
         );
     }
 }
