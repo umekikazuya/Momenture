@@ -9,11 +9,13 @@ class ProfileZenn
     /**
      * ProfileZenn クラスのインスタンスを初期化。
      *
-     * @param  string  $zenn  文字列
+     * @param string $zenn 文字列
      *
      * @throws \DomainException 無効なZennアカウント名が指定された場合
      */
-    public function __construct(private readonly string $zenn) {}
+    public function __construct(private readonly string $zenn)
+    {
+    }
 
     /**
      * Getter.

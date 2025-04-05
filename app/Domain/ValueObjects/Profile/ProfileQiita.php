@@ -9,11 +9,13 @@ class ProfileQiita
     /**
      * ProfileQiita クラスのインスタンスを初期化。
      *
-     * @param  string  $qiita  文字列
+     * @param string $qiita 文字列
      *
      * @throws \DomainException 無効なQiitaアカウント名が指定された場合
      */
-    public function __construct(private readonly string $qiita) {}
+    public function __construct(private readonly string $qiita)
+    {
+    }
 
     /**
      * 格納されたQiitaアカウント名を取得。

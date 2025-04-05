@@ -9,7 +9,7 @@ class ProfileIntroduction
     /**
      * ProfileIntroduction クラスのインスタンスを初期化。
      *
-     * @param  string  $introduction  文字列
+     * @param string $introduction 文字列
      *
      * @throws \DomainException 無効な概要が指定された場合
      */

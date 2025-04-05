@@ -11,11 +11,13 @@ class ProfileFrom
      *
      * 渡された文字列が有効な形式かどうか検証し、無効な場合は DomainException をスロー。
      *
-     * @param  string  $from  文字列
+     * @param string $from 文字列
      *
      * @throws \DomainException 無効なFromが指定された場合
      */
-    public function __construct(private readonly string $from) {}
+    public function __construct(private readonly string $from)
+    {
+    }
 
     /**
      * 格納されたFromを取得。

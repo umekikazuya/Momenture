@@ -8,11 +8,13 @@ use Illuminate\Support\Collection;
 
 final class Likes
 {
-    /** @var Like[] */
+    /**
+     * @var Like[] 
+     */
     private array $likes;
 
     /**
-     * @param  Like[]  $likes
+     * @param Like[] $likes
      */
     public function __construct(array $likes)
     {
@@ -54,7 +56,7 @@ final class Likes
      */
     public function toArray(): array
     {
-        return array_map(fn (Skill $likes) => $likes->value(), $this->likes);
+        return array_map(fn (Like $likes) => $likes->value(), $this->likes);
     }
 
     public function toCollection(): Collection

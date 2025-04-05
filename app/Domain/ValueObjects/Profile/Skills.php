@@ -6,11 +6,13 @@ namespace App\Domain\ValueObjects\Profile;
 
 final class Skills
 {
-    /** @var Skill[] */
+    /**
+     * @var Skill[] 
+     */
     private array $skills;
 
     /**
-     * @param  Skill[]  $skills
+     * @param Skill[] $skills
      */
     public function __construct(array $skills)
     {

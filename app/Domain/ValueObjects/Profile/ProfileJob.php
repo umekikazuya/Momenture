@@ -9,7 +9,7 @@ class ProfileJob
     /**
      * 職業を表す文字列を初期化。
      *
-     * @param  string  $job  職業
+     * @param string $job 職業
      *
      * @throws \DomainException 無効な職業が指定された場合
      */
