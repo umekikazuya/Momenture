@@ -10,20 +10,12 @@ use App\Domain\Entities\Profile;
 interface ProfileMapperInterface
 {
     /**
-     * ProfileDtoをProfileエンティティに変換.
-     *
-     * @param ProfileDto $dto
-     *
-     * @return Profile
+     * ProfileDtoからProfileエンティティに変換する
      */
     public function toEntity(ProfileDto $dto): Profile;
 
     /**
-     * ProfileエンティティをProfileDtoに変換.
-     *
-     * @param Profile $entity
-     *
-     * @return ProfileDto
+     * Profileエンティティから ProfileDtoに変換する
      */
     public function toDto(Profile $entity): ProfileDto;
 }
