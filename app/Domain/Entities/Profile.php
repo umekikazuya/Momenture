@@ -35,7 +35,8 @@ class Profile
         private Skills $skill,
         private ProfileSummaryIntroduction $summaryIntroduction,
         private ProfileZenn $zenn,
-    ) {}
+    ) {
+    }
 
     /**
      * Profileの一意なIDを取得。

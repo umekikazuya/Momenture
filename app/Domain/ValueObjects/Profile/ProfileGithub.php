@@ -9,13 +9,6 @@ class ProfileGithub
     /**
      * ProfileGithub クラスのインスタンスを初期化。
      *
-     * @param string  $github  文字列
-     *
-     * @throws \DomainException 無効なGithubアカウント名が指定された場合
-     */
-    /**
-     * ProfileGithub クラスのインスタンスを初期化。
-     *
      * @param string $github 文字列
      *
      * @throws \DomainException 無効なGithubアカウント名が指定された場合
