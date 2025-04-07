@@ -79,7 +79,7 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
                         'likes' => ['SS' => $dto->likes],
                         'qiita' => ['S' => $dto->qiita ?? ''],
                         'skills' => ['SS' => $dto->skills],
-                        'summary_introduction' => ['S' => $dto->summaryIntroduction ?? 'a'],
+                        'summary_introduction' => ['S' => $dto->summaryIntroduction ?? ''],
                         'zenn' => ['S' => $dto->zenn ?? ''],
                     ],
                 ]
