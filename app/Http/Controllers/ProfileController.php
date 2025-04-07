@@ -41,7 +41,7 @@ class ProfileController extends Controller
                 $this->updateProfile->execute($request->toDto())
             );
         } catch (\DomainException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 404);
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
