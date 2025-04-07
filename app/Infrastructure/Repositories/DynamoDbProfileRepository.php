@@ -15,9 +15,10 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
 {
     private const TABLE_NAME = 'profiles';
 
-    private const PK = 'PROFILE#ME';
-
-    private const SK = 'LATEST';
+    private const PK_NAME = 'PK';
+    private const SK_NAME = 'SK';
+    private const PK_VALUE = 'PROFILE#ME';
+    private const SK_VALUE = 'LATEST';
 
     public function __construct(
         private readonly DynamoDbClientInterface $client,
@@ -35,8 +36,8 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
                 [
                     'TableName' => self::TABLE_NAME,
                     'Key' => [
-                        'PK' => ['S' => self::PK],
-                        'SK' => ['S' => self::SK],
+                        self::PK_NAME => ['S' => self::PK_VALUE],
+                        self::SK_NAME => ['S' => self::SK_VALUE],
                     ],
                 ]
             );
@@ -46,6 +47,7 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
             }
 
             $item = array_map(fn ($v) => $v['S'] ?? ($v['SS'] ?? ''), $result['Item']);
+            $item['id'] = 1;
             $dto = ProfileDto::fromArray($item);
 
             return $this->mapper->toEntity($dto);
@@ -61,13 +63,12 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
     {
         try {
             $dto = $this->mapper->toDto($profile);
-            $result = $this->client->putItem(
+            $this->client->putItem(
                 [
                     'TableName' => self::TABLE_NAME,
                     'Item' => [
-                        'PK' => ['S' => self::PK],
-                        'SK' => ['S' => self::SK],
-                        'id' => ['N' => (string) $dto->id],
+                        self::PK_NAME => ['S' => self::PK_VALUE],
+                        self::SK_NAME => ['S' => self::SK_VALUE],
                         'address' => ['S' => $dto->address ?? ''],
                         'display_name' => ['S' => $dto->displayName ?? ''],
                         'display_short_name' => ['S' => $dto->displayShortName ?? ''],
@@ -83,10 +84,8 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
                     ],
                 ]
             );
-            $item = array_map(fn ($v) => $v['S'] ?? ($v['SS'] ?? ''), $result['Item']);
-            $dto = ProfileDto::fromArray($item);
 
-            return $this->mapper->toEntity($dto);
+            return $profile;
         } catch (DynamoDbException $e) {
             throw new \RuntimeException('プロフィールの保存に失敗しました: ' . $e->getMessage(), 500, $e);
         }

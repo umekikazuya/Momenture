@@ -4,6 +4,7 @@ namespace App\Application\UseCases\Profile;
 
 use App\Application\DTOs\ProfileDto;
 use App\Application\Mappers\ProfileMapperInterface;
+use App\Domain\Entities\Profile;
 use App\Domain\Repositories\ProfileRepositoryInterface;
 
 /**
@@ -17,15 +18,19 @@ class GetProfileUseCase implements GetProfileUseCaseInterface
     ) {
     }
 
-    public function execute(): ProfileDto
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(): Profile
     {
         try {
             $profile = $this->repository->find();
-            return $this->mapper->toDto($profile);
+
+            return $profile;
         } catch (\DomainException $e) {
             throw new \DomainException('プロフィール情報の取得に失敗しました。', 500, $e);
         } catch (\Exception $e) {
-            throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
+            throw new \RuntimeException('DBエラー', $e->getCode(), $e);
         }
     }
 }

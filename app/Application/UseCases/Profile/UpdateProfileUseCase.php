@@ -4,6 +4,7 @@ namespace App\Application\UseCases\Profile;
 
 use App\Application\DTOs\ProfileDto;
 use App\Application\Mappers\ProfileMapperInterface;
+use App\Domain\Entities\Profile;
 use App\Domain\Repositories\ProfileRepositoryInterface;
 
 class UpdateProfileUseCase implements UpdateProfileUseCaseInterface
@@ -14,11 +15,10 @@ class UpdateProfileUseCase implements UpdateProfileUseCaseInterface
     ) {
     }
 
-    public function execute(ProfileDto $dto): void
+    public function execute(ProfileDto $dto): Profile
     {
         try {
-            $profile = $this->mapper->toEntity($dto);
-            $this->repository->update($profile);
+            return $this->repository->update($this->mapper->toEntity($dto));
         } catch (\DomainException $e) {
             throw new \DomainException('プロフィール情報の更新に失敗しました。', 500, $e);
         } catch (\Exception $e) {

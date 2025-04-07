@@ -37,6 +37,7 @@ use App\Services\Contracts\FeedParserInterface;
 use App\Services\FeedFetcherService;
 use App\Services\FeedQiitaParserService;
 use App\Services\FeedZennParserService;
+use Aws\DynamoDb\DynamoDbClient;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -56,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
 
-        $this->app->bind(DynamoDbClientInterface::class, AwsDynamoDbClient::class);
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
@@ -96,6 +96,28 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
             \App\Application\UseCases\FeaturedArticle\FindAllUseCase::class
+        );
+
+        // Profile.
+        $this->app->bind(
+            \App\Application\Mappers\ProfileMapperInterface::class,
+            \App\Application\Mappers\ProfileMapper::class
+        );
+        $this->app->bind(
+            \App\Infrastructure\Clients\DynamoDbClientInterface::class,
+            \App\Infrastructure\Clients\AwsDynamoDbClient::class
+        );
+        $this->app->bind(
+            \App\Domain\Repositories\ProfileRepositoryInterface::class,
+            \App\Infrastructure\Repositories\DynamoDbProfileRepository::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\Profile\GetProfileUseCaseInterface::class,
+            \App\Application\UseCases\Profile\GetProfileUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\Profile\UpdateProfileUseCaseInterface::class,
+            \App\Application\UseCases\Profile\UpdateProfileUseCase::class
         );
     }
 

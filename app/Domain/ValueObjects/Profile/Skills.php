@@ -48,4 +48,14 @@ final class Skills
     {
         return count($this->skills) === 0;
     }
+
+    public function toArray(): array
+    {
+        return $this->skills
+            ? array_map(
+                static fn (Skill $skill) => $skill->value(),
+                $this->skills
+            )
+            : [];
+    }
 }

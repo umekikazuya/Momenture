@@ -14,20 +14,23 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        if (! $this->resource instanceof \App\Domain\Entities\Profile) {
+            return [];
+        }
         return [
-            'address' => $this->resource->address,
-            'display_name' => $this->resource->display_name,
-            'display_short_name' => $this->resource->display_short_name,
-            'from' => $this->resource->from,
-            'github' => $this->resource->github,
-            'id' => $this->resource->id,
-            'introduction' => $this->resource->introduction,
-            'job' => $this->resource->job,
-            'likes' => $this->resource->likes,
-            'qiita' => $this->resource->qiita,
-            'skill' => $this->resource->skill,
-            'summary_introduction' => $this->resource->summary_introduction,
-            'zenn' => $this->resource->zenn,
+            'id' => $this->resource->id()->value(),
+            'address' => $this->resource->address()->value(),
+            'display_name' => $this->resource->displayName()->value(),
+            'display_short_name' => $this->resource->displayShortName()->value(),
+            'from' => $this->resource->from()->value(),
+            'github' => $this->resource->github()->value(),
+            'introduction' => $this->resource->introduction()->value(),
+            'job' => $this->resource->job()->value(),
+            'likes' => $this->resource->likes()->toCollection(),
+            'qiita' => $this->resource->qiita()->value(),
+            'skills' => $this->resource->skills()->toArray(),
+            'summary_introduction' => $this->resource->summaryIntroduction()->value(),
+            'zenn' => $this->resource->zenn()->value(),
         ];
     }
 }
