@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects\Profile;
 
-class ProfileQiita
+final class ProfileQiita
 {
     /**
      * ProfileQiita クラスのインスタンスを初期化。

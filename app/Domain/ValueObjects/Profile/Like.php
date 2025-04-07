@@ -15,7 +15,7 @@ final class Like
      *
      * @throws \DomainException 無効なLikeが指定された場合
      */
-    public function __construct(private string $value)
+    public function __construct(private readonly string $value)
     {
         // 空文字列は無効
         if (trim($value) === '') {

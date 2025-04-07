@@ -14,7 +14,6 @@ class GetProfileUseCase implements GetProfileUseCaseInterface
 {
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
-        private readonly ProfileMapperInterface $mapper,
     ) {
     }
 

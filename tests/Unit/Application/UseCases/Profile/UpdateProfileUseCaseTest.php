@@ -54,13 +54,13 @@ class UpdateProfileUseCaseTest extends TestCase
         $repository->shouldReceive('update')
             ->once()
             ->with($profile)
-            ->andReturn();
+            ->andReturn($profile);
 
         $useCase = new UpdateProfileUseCase($repository, $mapper);
 
         // Act & Assert - 例外が発生しないことを検証
-        $useCase->execute($dto);
-        $this->assertTrue(true); // アサーションが必要なので、例外が投げられなければテスト成功とする
+        $result = $useCase->execute($dto);
+        $this->assertSame(true, $result); // アサーションが必要なので、例外が投げられなければテスト成功とする
     }
 
     public function test_execute_throws_domain_exception_when_mapper_fails(): void

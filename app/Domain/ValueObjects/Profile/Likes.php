@@ -35,32 +35,11 @@ final class Likes
         return $this->likes;
     }
 
-    public function contains(Like $target): bool
-    {
-        foreach ($this->likes as $like) {
-            if ($like->equals($target)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->likes);
-    }
-
     /**
      * @return string[]
      */
     public function toArray(): array
     {
         return array_map(fn (Like $like) => $like->value(), $this->likes);
-    }
-
-    public function toCollection(): Collection
-    {
-        return collect($this->likes);
     }
 }

@@ -34,7 +34,7 @@ final class ProfileZenn
         }
         // アルファベット、数字、ハイフン、アンダースコアのみを許可(空文字は許可)
         if (!preg_match('/^[a-zA-Z0-9-_]+$/', $zenn)) {
-            throw new \DomainException('Invalid Zenn account name.');
+            throw new \DomainException('無効なZennアカウント名: ' . $zenn);
         }
     }
 

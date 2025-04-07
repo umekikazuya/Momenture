@@ -11,11 +11,23 @@ interface ProfileMapperInterface
 {
     /**
      * ProfileDtoからProfileエンティティに変換する
+     *
+     * @param ProfileDto $dto
+     *
+     * @return Profile
+     *
+     * @throws \DomainException
      */
     public function toEntity(ProfileDto $dto): Profile;
 
     /**
      * Profileエンティティから ProfileDtoに変換する
+     *
+     * @param Profile $entity
+     *
+     * @return ProfileDto
+     *
+     * @throws \DomainException
      */
     public function toDto(Profile $entity): ProfileDto;
 }

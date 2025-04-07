@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\Entities\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,7 +15,7 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if (! $this->resource instanceof \App\Domain\Entities\Profile) {
+        if (! $this->resource instanceof Profile) {
             return [];
         }
         return [
@@ -26,7 +27,7 @@ class ProfileResource extends JsonResource
             'github' => $this->resource->github()->value(),
             'introduction' => $this->resource->introduction()->value(),
             'job' => $this->resource->job()->value(),
-            'likes' => $this->resource->likes()->toCollection(),
+            'likes' => $this->resource->likes()->toArray(),
             'qiita' => $this->resource->qiita()->value(),
             'skills' => $this->resource->skills()->toArray(),
             'summary_introduction' => $this->resource->summaryIntroduction()->value(),
