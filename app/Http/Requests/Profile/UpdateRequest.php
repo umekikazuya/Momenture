@@ -45,9 +45,11 @@ class UpdateRequest extends FormRequest
 
     public function toDto(): ProfileDto
     {
-        return ProfileDto::fromArray([
-            ...$this->validated(),
-            'id' => 1,
-        ]);
+        return ProfileDto::fromArray(
+            [
+                ...$this->validated(),
+                'id' => 1,
+            ]
+        );
     }
 }

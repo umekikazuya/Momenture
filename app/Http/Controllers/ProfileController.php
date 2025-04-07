@@ -12,7 +12,8 @@ class ProfileController extends Controller
     public function __construct(
         private readonly GetProfileUseCaseInterface $getProfile,
         private readonly UpdateProfileUseCaseInterface $updateProfile
-    ) {}
+    ) {
+    }
 
     /**
      * Display the specified resource.
