@@ -54,17 +54,23 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // DynamoDB Client
-        $this->app->singleton(DynamoDbClientInterface::class, function () {
-            return new AwsDynamoDbClient(new DynamoDbClient([
-                'region' => config('database.connections.dynamodb.region'),
-                'version' => config('database.connections.dynamodb.version'),
-                'endpoint' => config('database.connections.dynamodb.endpoint'),
-                'credentials' => [
-                    'key' => config('database.connections.dynamodb.key'),
-                    'secret' => config('database.connections.dynamodb.secret'),
-                ],
-            ]));
-        });
+        $this->app->singleton(
+            DynamoDbClientInterface::class, function () {
+                return new AwsDynamoDbClient(
+                    new DynamoDbClient(
+                        [
+                            'region' => config('database.connections.dynamodb.region'),
+                            'version' => config('database.connections.dynamodb.version'),
+                            'endpoint' => config('database.connections.dynamodb.endpoint'),
+                            'credentials' => [
+                            'key' => config('database.connections.dynamodb.key'),
+                            'secret' => config('database.connections.dynamodb.secret'),
+                            ],
+                        ]
+                    )
+                );
+            }
+        );
         $this->app->bind(FeedFetcherInterface::class, FeedFetcherService::class);
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);

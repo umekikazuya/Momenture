@@ -2,8 +2,6 @@
 
 namespace App\Application\UseCases\Profile;
 
-use App\Application\DTOs\ProfileDto;
-use App\Application\Mappers\ProfileMapperInterface;
 use App\Domain\Entities\Profile;
 use App\Domain\Repositories\ProfileRepositoryInterface;
 

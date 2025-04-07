@@ -22,7 +22,8 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
     public function __construct(
         private readonly DynamoDbClientInterface $client,
         private readonly ProfileMapperInterface $mapper,
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}
@@ -106,7 +107,7 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
     /**
      * DynamoDBの属性値を適切な型に変換
      *
-     * @param  array  $value  DynamoDBの属性値
+     * @param  array $value DynamoDBの属性値
      * @return mixed 変換後の値
      */
     private function parseAttributeValue(array $value): mixed
