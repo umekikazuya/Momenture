@@ -1,156 +1,195 @@
-# コーディングスタイル
+# 0. Coding Style and Purpose
 
-APIファースト + ドメイン駆動設計（DDD）+ テスト駆動開発（TDD）
+## - Coding Style
 
-## 目的
+Based on API-first + Domain-Driven Design (DDD) + Test-Driven Development (TDD).
 
-このメタプロンプトは、Next.js（フロントエンド）と統合するAPIファーストなLaravelアプリケーション を DDD をベースに構築するための設計指針 を提供する。
-特に、以下の点を重視する：
-- ビジネスロジックの独立性（ドメイン駆動設計）
-- エラーハンドリングの統一（例外ベース）
-- テスト駆動開発（TDD）の徹底
-- 型安全なDTOと値オブジェクトの活用
-- APIドキュメントとの整合性
-- SOLID原則に基づいた設計
-- 適切なレイヤー分離（オニオンアーキテクチャ）
+## - Purpose
 
-## 1. 原則（Principles）
+Build a Laravel application using DDD with the premise of integrating with a Next.js (frontend) application, aiming for independence of business logic, unified error handling, and thorough test-driven development.
 
-### 1.1. APIファースト
-- Next.js フロントエンドとの統合を前提としたバックエンド
-- RESTful 設計に準拠し、エラーハンドリング・認証・レスポンスフォーマットを統一
-- OpenAPI 仕様を活用し、API の設計と実装の整合性を確保
+## - Key Points
 
-### 1.2. DDD（ドメイン駆動設計）の適用
+1. Independence of business logic (DDD)
+2. Unified error handling (exception-based)
+3. Thorough TDD
+4. Type-safe DTOs and Value Objects
+5. Consistency with API documentation (e.g., OpenAPI)
+6. SOLID principles
+7. Proper layer separation (Onion Architecture)
 
-DDD の原則に基づき、以下のレイヤーに分割する
+# 1. Principles
 
-1️⃣ ドメイン層（Domain Layer）
-- ビジネスロジックの中心となるレイヤー
-- エンティティ（Entity）
-- 値オブジェクト（ValueObject）
-- ドメインサービス（DomainService）
-- ドメインイベント（DomainEvent）
-- 集約ルート（Aggregate Root）
+## 1.1. API-First
 
-2️⃣ アプリケーション層（Application Layer）
-- ドメイン層の機能をユースケース単位で実行
-- ユースケース（UseCase）
-- DTO（Data Transfer Object）
-- クエリサービス（QueryService）
+-   Design the backend API first, assuming integration with Next.js.
+-   Follow RESTful or OpenAPI guidelines, standardizing authentication, error handling, and response format.
+-   Manage the Laravel endpoints using OpenAPI to maintain alignment with the Next.js side.
 
-3️⃣ インフラストラクチャ層（Infrastructure Layer）
-- 永続化のためのデータアクセス（Eloquent, Redis, S3, 外部API など）
-- リポジトリ（Repository）
-- キャッシュサービス（CacheService）
-- 外部APIクライアント（ExternalApiClient）
+## 1.2. DDD (Domain-Driven Design) Adoption
 
-4️⃣ プレゼンテーション層（Presentation Layer）
-- リクエストのバリデーションを行い、アプリケーション層のユースケースを呼び出す
-- コントローラ（Controller）
-- リクエストバリデーション（FormRequest）
-- APIレスポンス整形（JsonResource）
+Employ Onion Architecture by separating into four layers:
 
+1. **Domain Layer**
 
-### 1.3. 例外ベースのエラーハンドリング
-- ドメインエラー（DomainException）
-- アプリケーションエラー（ApplicationException）
-- インフラエラー（InfrastructureException）
-- 統一したエラーレスポンスの設計
-```json
-{
-  "status": "error",
-  "message": "対象のデータが見つかりません",
-  "code": 404
-}
-```
+-   The core of business logic
+-   Consists of Entities, ValueObjects, DomainServices, DomainEvents, and Aggregate Roots
 
-### 1.4. TDD（テスト駆動開発）の適用
+2. **Application Layer**
 
-Red-Green-Refactor のサイクルを厳密に適用：
-  1.  Red → まず失敗するテストを書く
-  2.  Green → 最小の実装でテストを通す
-  3.  Refactor → 設計を改善し、再テスト
+-   Executes Domain layer functionalities in terms of use cases
+-   Includes UseCases, DTOs, and QueryServices
 
-テストレイヤー
-- ユニットテスト（ドメイン層）
-- ユースケーステスト（アプリケーション層）
-- APIテスト（プレゼンテーション層）
-- 統合テスト（データアクセスを含めた全体）
+3. **Infrastructure Layer**
 
+-   Handles persistence and external services (Eloquent, DynamoDB, Redis, S3, external APIs)
+-   Contains Repositories, CacheService, and ExternalApiClient
 
-## 2. 実装手順（Implementation Workflow）
-1. ユビキタス言語の定義（チーム内での用語統一）
-2. ドメインの設計（エンティティ、値オブジェクト、集約ルート）
-3. リポジトリのインターフェース設計
-4. ユースケースの設計（DTOを定義）
-5. ユースケースのテスト作成（TDD）
-6. リポジトリの実装（Eloquent などの具体的な実装）
-7. プレゼンテーション層の実装（Controller, API, Validation）
-8. APIドキュメントの作成・更新
-9. 統合テスト・リファクタリング
+4. **Presentation Layer**
 
-## 3. ディレクトリ構成
-```text
-app/
-│── Domain/         # ドメイン層（ビジネスロジックの核）
-│   ├── Entities/
-│   ├── ValueObjects/
-│   ├── Services/
-│   ├── Events/
-│── Application/    # アプリケーション層（ユースケースの実装）
-│   ├── UseCases/
-│   ├── DTOs/
-│   ├── Queries/
-│── Infrastructure/ # インフラ層（永続化・外部API・キャッシュなど）
-│   ├── Repositories/
-│   ├── ExternalApis/
-│   ├── Cache/
-│── Http/          # プレゼンテーション層（リクエスト処理）
-│   ├── Controllers/
-│   ├── Requests/
-│   ├── Resources/
-│── Exceptions/    # 例外クラス
-│── Providers/     # DI 設定
-tests/
-│── Unit/          # ユニットテスト（ドメイン層）
-│── Feature/       # 機能テスト（API & ユースケース）
-│── Integration/   # 統合テスト（DBを含む）
-```
+-   Manages API request validation, authentication, and response formatting
+-   Contains Controllers, FormRequests for validation, and JsonResources for response formatting
 
-## 4. API設計のベストプラクティス
-- エンドポイントはリソースベース（/articles, /users）に統一
-- エラーレスポンスのフォーマットを統一
-- OpenAPI / JSON:API 準拠
-- リクエスト/レスポンスの DTO を必ず設計
-- キャッシュやレートリミットの適用を検討
+## 1.3. Exception-Based Error Handling
 
+-   Primarily use DomainException, ApplicationException, InfrastructureException.
+-   Design a unified error response (e.g., JSON containing status, message, and code):
 
-## 5. TDDによるテスト設計
+## 1.4. TDD (Test-Driven Development)
 
-✅ ドメイン層のテスト
-- 値オブジェクト・エンティティの動作を保証
-- ビジネスルールの検証
+-   Strictly follow the Red-Green-Refactor cycle:
 
-✅ ユースケースのテスト
-- リポジトリをモック化し、ユースケースのロジックをテスト
+    1. Red → Write failing tests first
+    2. Green → Implement the minimal code to pass the tests
+    3. Refactor → Improve design and refactor, ensuring tests pass again
 
-✅ APIテスト
-- FeatureTest でリクエストをシミュレートし、期待したレスポンスを検証
+-   Hierarchy of tests:
+    -   Unit Tests (Domain Layer)
+    -   Use Case Tests (Application Layer)
+    -   API Tests (Presentation Layer, Feature Tests)
+    -   Integration Tests (including end-to-end with Infrastructure)
 
-✅ 統合テスト
-- DBを含むエンドツーエンドのテスト
+# 2. Implementation Workflow
 
+1. Define the Ubiquitous Language (unify terminology within the team).
+2. Design the domain (identify Entities, ValueObjects, and AggregateRoots).
+3. Design repository interfaces (how domain models are persisted and retrieved).
+4. Design use cases (UseCase), together with DTOs.
+5. Write tests for use cases (TDD).
+6. Implement repositories (Eloquent, DynamoDB, etc.) in the infrastructure.
+7. Implement the presentation layer (Controllers, FormRequests, JsonResources).
+8. Create or update API documentation (OpenAPI/Swagger).
+9. Conduct integration tests and refactoring (verify end-to-end, including the database).
 
-## 6. CI/CD & デプロイ
-- GitHub Actions などを利用して CI/CD を構築
-- テストが通らない場合はデプロイをブロック
-- 環境ごとに .env を管理
-- 本番環境では Redis などを活用したキャッシュを導入
-- エラーログの監視（Sentry, Datadog など）を設定
+# 3. Directory Structure
 
+_(Section intentionally left empty or to be defined)_
 
-## 7. 運用・保守
-- API のバージョン管理（v1, v2 など）
-- パフォーマンス改善（キャッシュ・DB最適化）
-- 定期的なコードレビュー & リファクタリング
+# 4. Best Practices for API Design
+
+-   Resource-based endpoint naming (e.g., /articles, /users).
+-   Unified error response format (linked to exception classes).
+-   Consider compliance with OpenAPI or JSON:API.
+-   Always design DTOs for both requests and responses.
+-   Introduce caching or rate-limiting as needed for performance.
+
+# 5. TDD-Based Test Design
+
+-   **Domain Layer (Unit Tests)**
+
+    -   Verify business logic of ValueObjects, Entities, and DomainServices.
+
+-   **Use Cases (Application Layer)**
+
+    -   Mock repositories, covering all branching scenarios in the use cases.
+
+-   **API Tests (Presentation Layer)**
+
+    -   Simulate requests and validate HTTP responses.
+
+-   **Integration Tests (E2E)**
+
+    -   Include DB and external service verification.
+
+-   Rigorously adhere to the Red-Green-Refactor cycle.
+
+# 6. CI/CD and Deployment
+
+-   Use GitHub Actions or similar to build a CI/CD pipeline.
+-   Block deployments if tests fail.
+-   Manage .env files by environment (development, staging, production).
+-   Optimize performance in production using Redis or a CDN.
+-   Monitor and log errors with tools like Sentry or Datadog.
+
+# 7. Operations and Maintenance
+
+-   Plan for API versioning (e.g., /api/v1/, /api/v2/).
+-   Optimize performance (DB tuning, caching strategies, etc.).
+-   Conduct regular code reviews and refactoring to ensure compliance with SOLID and DDD.
+
+# 8. Development Flow (Detailed Workflow)
+
+## 1. Step 0: Concept Design (once per project or domain)
+
+-   Centrally manage Ubiquitous Language for the entire application or domain.
+-   Decide on use cases, ID design policies, and deletion strategies (logical vs. physical) from a broad perspective.
+
+## 2. Step 1: Domain Modeling (each time you add a new use case)
+
+-   Extend the Ubiquitous Language definitions.
+-   Create or update Entities, ValueObjects, DomainServices, and DomainExceptions.
+-   Enforce immutability in ValueObjects—fixing internal state via constructors or factories.
+
+## 3. Step 2: Implement Application Layer
+
+-   Create DTOs (the bridge between API requests/responses and the domain).
+-   Define UseCase classes (single responsibility).
+-   Use Mappers or Assemblers for DTO ↔ Entity transformation.
+
+## 4. Step 3: Test First
+
+-   Write tests for use cases (both normal and exceptional paths).
+-   Write unit tests for domain logic (ValueObjects, AggregateRoots, etc.).
+
+## 5. Step 4: Implement Infrastructure Layer
+
+-   Implement Repository interfaces (Eloquent, DynamoDB, etc.).
+-   Provide wrappers for SDK clients and design interfaces for easy mocking.
+
+## 6. Step 5: Implement Presentation Layer
+
+-   Controllers: FormRequests (validation) + UseCase invocation + JsonResources (response formatting).
+-   Explicitly validate and transform inputs/outputs to express them as an API.
+
+## 7. Step 6: API Testing and E2E Verification
+
+-   Use Feature Tests to verify the API flow (including authentication/authorization).
+-   Test DB and external service connections.
+-   Cover edge cases such as null parameters or unexpected errors.
+
+## 8. Step 7: Deployment, Operation, Documentation
+
+-   Run migrations and seeding.
+-   Set up API versioning and error monitoring (Sentry, CloudWatch, etc.).
+-   Document outcomes in Notion, Qiita, Zenn, or similar.
+
+## 9. Step 8: Continual Improvement of Design Templates
+
+-   Standardize UseCase, Repository, and DTO+Mapper templates.
+-   Maintain documentation on Domain Layer design conventions.
+-   Share style guides within the team or with the open-source community.
+
+## Other
+
+-   Output in Japanese
+
+-   Data Transfer Objects (DTOs) are used to transfer data between layers.
+    | **From → To** | **Recommended Data Structure** | **Notes** |
+    | --------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+    | Controller → UseCase | DTO | To explicitly separate the responsibility of request formatting |
+    | UseCase → Controller | DTO or Entity | If you use a JsonResource for formatting, you can directly pass the Entity. Choose based on API requirements |
+    | UseCase → Domain | Entity / VO | Use domain models to apply business logic |
+    | UseCase → Repository | Entity | Pass Entities to ensure consistency within the aggregate |
+    | Repository → UseCase | Entity | Convert persisted data back into an Entity and return it |
+    | Repository ⇄ Infrastructure | DTO / Array | The Infrastructure layer handles data transformation (Mapper) |
+    | JsonResource ⇐ Controller | Entity or DTO | Choose according to frontend requirements. If passing an Entity is sufficient, it can go directly |
