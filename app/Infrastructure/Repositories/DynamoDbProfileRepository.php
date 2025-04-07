@@ -55,7 +55,7 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
 
             return $this->mapper->toEntity($dto);
         } catch (DynamoDbException $e) {
-            throw new \RuntimeException('DynamoDBからの取得に失敗しました: '.$e->getMessage(), 500, $e);
+            throw new \RuntimeException('DynamoDBからの取得に失敗しました: ' . $e->getMessage(), 500, $e);
         }
     }
 
@@ -97,10 +97,10 @@ class DynamoDbProfileRepository implements ProfileRepositoryInterface
 
             // 更新後のエンティティを取得して返す
             return $this->find();
-
-            return $profile;
         } catch (DynamoDbException $e) {
-            throw new \RuntimeException('プロフィールの保存に失敗しました: '.$e->getMessage(), 500, $e);
+            throw new \RuntimeException('プロフィールの保存に失敗しました: ' . $e->getMessage(), 500, $e);
+        } catch (\Exception $e) {
+            throw new \RuntimeException('DynamoDBからの取得に失敗しました: ' . $e->getMessage(), 500, $e);
         }
     }
 

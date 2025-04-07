@@ -25,9 +25,9 @@ class GetProfileUseCase implements GetProfileUseCaseInterface
 
             return $profile;
         } catch (\DomainException $e) {
-            throw new \DomainException('プロフィール情報の取得に失敗しました。', 500, $e);
+            throw new \DomainException('プロフィール情報の取得に失敗しました: ' . $e->getMessage(), 500, $e);
         } catch (\Exception $e) {
-            throw new \RuntimeException('DBエラー', $e->getCode(), $e);
+            throw new \RuntimeException('データベース操作エラー: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 }

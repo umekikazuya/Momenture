@@ -55,7 +55,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // DynamoDB Client
         $this->app->singleton(
-            DynamoDbClientInterface::class, function () {
+            DynamoDbClientInterface::class,
+            function () {
                 return new AwsDynamoDbClient(
                     new DynamoDbClient(
                         [
