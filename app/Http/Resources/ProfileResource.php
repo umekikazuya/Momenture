@@ -28,7 +28,7 @@ class ProfileResource extends JsonResource
             'job' => $this->resource->job()->value(),
             'likes' => $this->resource->likes()->toCollection(),
             'qiita' => $this->resource->qiita()->value(),
-            'skills' => $this->resource->skills()->toCollection(),
+            'skills' => $this->resource->skills()->toArray(),
             'summary_introduction' => $this->resource->summaryIntroduction()->value(),
             'zenn' => $this->resource->zenn()->value(),
         ];

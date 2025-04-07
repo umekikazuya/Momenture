@@ -19,8 +19,8 @@ interface UpdateProfileUseCaseInterface
      *
      * @return Profile 更新後のProfileエンティティ
      *
-     * @throws \DomainException
-     * @throws \RuntimeException
+     * @throws \DomainException 無効なデータが渡された場合
+     * @throws \RuntimeException データベース接続エラーや保存失敗時など、実行時に発生する可能性のあるエラー
      */
     public function execute(ProfileDto $dto): Profile;
 }

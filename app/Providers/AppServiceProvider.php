@@ -57,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
         $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
 
-        $this->app->bind(DynamoDbClientInterface::class, AwsDynamoDbClient::class);
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
