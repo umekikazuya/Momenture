@@ -32,8 +32,8 @@ Route::middleware(App\Http\Middleware\BasicAuthMiddleware::class, App\Http\Middl
         Route::get('/', [ArticleServiceController::class, 'index']);
     });
     Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'show']);
-        Route::put('/', [ProfileController::class, 'update']);
+        Route::get('', [ProfileController::class, 'show']);
+        Route::put('', [ProfileController::class, 'update']);
     });
 });
 Route::get('qiita/{id}', FeedQiitaController::class);
