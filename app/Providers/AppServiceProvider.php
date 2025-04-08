@@ -29,6 +29,8 @@ use App\Application\UseCases\ArticleService\FindByIdUseCaseInterface;
 use App\Application\UseCases\ArticleService\UpdateUseCase;
 use App\Application\UseCases\ArticleService\UpdateUseCaseInterface;
 use App\Domain\Repositories\FeaturedArticleRepositoryInterface;
+use App\Infrastructure\Clients\AwsDynamoDbClient;
+use App\Infrastructure\Clients\DynamoDbClientInterface;
 use App\Infrastructure\Repositories\EloquentFeaturedArticleRepository;
 use App\Services\Contracts\FeedFetcherInterface;
 use App\Services\Contracts\FeedParserInterface;
@@ -51,25 +53,29 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(FeedFetcherInterface::class, FeedFetcherService::class);
-        $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
-        $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
+        // DynamoDB Client
         $this->app->singleton(
-            DynamoDbClient::class,
-            function ($app) {
-                return new DynamoDbClient(
-                    [
-                    'region' => env('AWS_DEFAULT_REGION', 'ap-northeast-1'),
-                    'version' => 'latest',
-                    'endpoint' => env('APP_ENV') === 'local' ? env('DYNAMODB_ENDPOINT') : null,
-                    'credentials' => [
-                        'key' => env('AWS_ACCESS_KEY_ID'),
-                        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-                    ],
-                    ]
+            DynamoDbClientInterface::class,
+            function () {
+                return new AwsDynamoDbClient(
+                    new DynamoDbClient(
+                        [
+                            'region' => config('database.connections.dynamodb.region'),
+                            'version' => config('database.connections.dynamodb.version'),
+                            'endpoint' => config('database.connections.dynamodb.endpoint'),
+                            'credentials' => [
+                            'key' => config('database.connections.dynamodb.key'),
+                            'secret' => config('database.connections.dynamodb.secret'),
+                            ],
+                        ]
+                    )
                 );
             }
         );
+        $this->app->bind(FeedFetcherInterface::class, FeedFetcherService::class);
+        $this->app->singleton(FeedParserInterface::class, FeedQiitaParserService::class);
+        $this->app->singleton(FeedParserInterface::class, FeedZennParserService::class);
+
         $this->app->bind(
             \App\Domain\Repositories\ArticleRepositoryInterface::class,
             \App\Infrastructure\Repositories\EloquentArticleRepository::class
@@ -109,6 +115,24 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Application\UseCases\FeaturedArticle\FindAllUseCaseInterface::class,
             \App\Application\UseCases\FeaturedArticle\FindAllUseCase::class
+        );
+
+        // Profile.
+        $this->app->bind(
+            \App\Application\Mappers\ProfileMapperInterface::class,
+            \App\Application\Mappers\ProfileMapper::class
+        );
+        $this->app->bind(
+            \App\Domain\Repositories\ProfileRepositoryInterface::class,
+            \App\Infrastructure\Repositories\DynamoDbProfileRepository::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\Profile\GetProfileUseCaseInterface::class,
+            \App\Application\UseCases\Profile\GetProfileUseCase::class
+        );
+        $this->app->bind(
+            \App\Application\UseCases\Profile\UpdateProfileUseCaseInterface::class,
+            \App\Application\UseCases\Profile\UpdateProfileUseCase::class
         );
     }
 
