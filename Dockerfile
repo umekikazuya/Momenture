@@ -17,7 +17,10 @@ RUN mkdir -p /var/www/html/storage/framework/views \
     && mkdir -p /var/www/html/storage/logs \
     && chown -R www-data:www-data /var/www/html/storage
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
 # Apache の設定（Laravel 用）
 RUN chown -R www-data:www-data /var/www/html \
