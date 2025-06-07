@@ -21,13 +21,8 @@ RUN set -ex; \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# 依存関係ファイルのみ先にコピー
-COPY composer.json composer.lock /var/www/html/
-
-# 作業ディレクトリ設定
+COPY . /var/www/html/
 WORKDIR /var/www/html
-
-# 依存関係のインストール（この時点ではアプリコードは存在しない）
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # Storage ディレクトリとキャッシュディレクトリの作成と権限設定
