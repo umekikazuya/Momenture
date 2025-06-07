@@ -34,14 +34,10 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 RUN mkdir -p /var/www/html/storage/framework/views \
     && mkdir -p /var/www/html/storage/framework/cache \
     && mkdir -p /var/www/html/storage/logs \
-    && chown -R www-data:www-data /var/www/html/storage
-
-RUN php artisan route:cache \
-    && php artisan view:cache
-
-# Apache の設定（Laravel 用）
-RUN chown -R www-data:www-data /var/www/html \
-&& a2enmod rewrite
+    && chown -R www-data:www-data /var/www/html /var/www/html/storage \
+    && php artisan route:cache \
+    && php artisan view:cache \
+    && a2enmod rewrite
 
 # Apache のドキュメントルートを Laravel の public に変更
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
