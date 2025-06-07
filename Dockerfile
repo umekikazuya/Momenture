@@ -1,9 +1,23 @@
 FROM php:8.3-apache
 
-# 必要な PHP 拡張をインストール
+# 必要な拡張をインストール
 RUN apt-get update && apt-get install -y \
     git unzip zip libzip-dev libonig-dev libxml2-dev libpq-dev \
-    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql intl
+    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql intl bcmath opcache
+
+# OPcacheなどCloud Run向けphp.ini
+RUN set -ex; \
+  { \
+    echo "; Cloud Run enforces memory & timeouts"; \
+    echo "memory_limit = -1"; \
+    echo "max_execution_time = 0"; \
+    echo "upload_max_filesize = 32M"; \
+    echo "post_max_size = 32M"; \
+    echo "; Configure Opcache for Containers"; \
+    echo "opcache.enable = On"; \
+    echo "opcache.validate_timestamps = Off"; \
+    echo "opcache.memory_consumption = 32"; \
+  } > "$PHP_INI_DIR/conf.d/cloud-run.ini"
 
 # Composer インストール
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -18,7 +32,6 @@ RUN mkdir -p /var/www/html/storage/framework/views \
     && chown -R www-data:www-data /var/www/html/storage
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist \
-    && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
 
