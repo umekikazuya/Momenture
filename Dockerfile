@@ -3,7 +3,7 @@ FROM php:8.3-apache
 # 必要な拡張をインストール
 RUN apt-get update && apt-get install -y \
     git unzip zip libzip-dev libonig-dev libxml2-dev libpq-dev \
-    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql intl bcmath opcache
+    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql bcmath opcache
 
 # OPcacheなどCloud Run向けphp.ini
 RUN set -ex; \
