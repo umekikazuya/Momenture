@@ -1,0 +1,32 @@
+FROM php:8.3-apache
+
+# PHP 拡張インストール
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git unzip zip libzip-dev libonig-dev libxml2-dev libpq-dev \
+  && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql bcmath opcache \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN set -ex; \
+  { \
+    echo "; Cloud Run enforces memory & timeouts"; \
+    echo "memory_limit = -1"; \
+    echo "max_execution_time = 0"; \
+    echo "upload_max_filesize = 32M"; \
+    echo "post_max_size = 32M"; \
+    echo "; Configure Opcache for Containers"; \
+    echo "opcache.enable = On"; \
+    echo "opcache.validate_timestamps = Off"; \
+    echo "opcache.memory_consumption = 32"; \
+  } > "$PHP_INI_DIR/conf.d/cloud-run.ini"
+
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Apache の mod_rewrite 有効化
+RUN a2enmod rewrite
+
+# Laravel public をドキュメントルートに設定
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
