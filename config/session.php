@@ -17,8 +17,7 @@ return [
     |            "memcached", "redis", "dynamodb", "array"
     |
     */
-
-    'driver' => 'cookie',
+    'driver' => env('SESSION_DRIVER', 'cookie'),
 
     /*
     |--------------------------------------------------------------------------
