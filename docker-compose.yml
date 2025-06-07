@@ -23,9 +23,9 @@ services:
     ports:
       - "${DB_HOST_PORT}:${DB_PORT}"
     environment:
-      POSTGRES_DB: momenture_db
-      POSTGRES_USER: momenture_user
-      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
 
