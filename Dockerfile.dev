@@ -1,0 +1,17 @@
+FROM php:8.3-apache
+
+# PHP 拡張インストール
+RUN apt-get update && apt-get install -y \
+    git unzip zip libzip-dev libonig-dev libxml2-dev libpq-dev \
+    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql
+
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Apache の mod_rewrite 有効化
+RUN a2enmod rewrite
+
+# Laravel public をドキュメントルートに設定
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf

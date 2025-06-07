@@ -1,0 +1,27 @@
+# Node関連（ビルド不要）
+node_modules
+npm-debug.log
+yarn-error.log
+
+# LaravelキャッシュやIDE
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+.env
+.env.* # 環境ごとのenvファイル
+
+# Git関連
+.git
+.gitignore
+
+# Composer不要ファイル
+vendor
+
+# その他
+docker-compose.yml
+Dockerfile*
+*.md
+.idea
+.vscode
+tests
