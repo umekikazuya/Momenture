@@ -25,3 +25,6 @@ steps:
 
 images:
   - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/momenture-api-repo/momenture-api:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
