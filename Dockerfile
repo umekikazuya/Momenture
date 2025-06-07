@@ -19,11 +19,16 @@ RUN set -ex; \
     echo "opcache.memory_consumption = 32"; \
   } > "$PHP_INI_DIR/conf.d/cloud-run.ini"
 
-# Composer インストール
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Laravel アプリのコピー
-COPY . /var/www/html
+# 依存関係ファイルのみ先にコピー
+COPY composer.json composer.lock /var/www/html/
+
+# 作業ディレクトリ設定
+WORKDIR /var/www/html
+
+# 依存関係のインストール（この時点ではアプリコードは存在しない）
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # Storage ディレクトリとキャッシュディレクトリの作成と権限設定
 RUN mkdir -p /var/www/html/storage/framework/views \
@@ -31,8 +36,7 @@ RUN mkdir -p /var/www/html/storage/framework/views \
     && mkdir -p /var/www/html/storage/logs \
     && chown -R www-data:www-data /var/www/html/storage
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist \
-    && php artisan route:cache \
+RUN php artisan route:cache \
     && php artisan view:cache
 
 # Apache の設定（Laravel 用）
