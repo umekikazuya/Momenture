@@ -17,7 +17,6 @@ services:
     depends_on:
       - momenture-db
 
-
   momenture-db:
     image: postgres:15
     ports:
