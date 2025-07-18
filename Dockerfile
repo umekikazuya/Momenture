@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# PHP設定ファイルをコピー
-COPY docker/php/laravel.ini "$PHP_INI_DIR/conf.d/00-laravel.ini"
-COPY docker/php/production.ini "$PHP_INI_DIR/conf.d/production.ini"
+# PHP設定ファイルをコピー（番号順で読み込み、後のファイルが優先）
+COPY docker/php/00-laravel.ini "$PHP_INI_DIR/conf.d/00-laravel.ini"
+COPY docker/php/20-production.ini "$PHP_INI_DIR/conf.d/20-production.ini"
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -28,7 +28,6 @@ RUN mkdir -p /var/www/html/storage/framework/views \
     && chown -R www-data:www-data /var/www/html /var/www/html/storage \
     && php artisan route:cache \
     && php artisan view:cache \
-    && php artisan migrate \
     && a2enmod rewrite
 
 # Apache のドキュメントルートを Laravel の public に変更

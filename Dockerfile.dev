@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# PHP設定ファイルをコピー
-COPY docker/php/laravel.ini "$PHP_INI_DIR/conf.d/00-laravel.ini"
-COPY docker/php/development.ini "$PHP_INI_DIR/conf.d/development.ini"
+# PHP設定ファイルをコピー（番号順で読み込み、後のファイルが優先）
+COPY docker/php/00-laravel.ini "$PHP_INI_DIR/conf.d/00-laravel.ini"
+COPY docker/php/10-development.ini "$PHP_INI_DIR/conf.d/10-development.ini"
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
