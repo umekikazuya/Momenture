@@ -1,10 +1,9 @@
-version: '3.8'
-
 services:
   momenture-app:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    container_name: momenture-app
     ports:
       - "${APP_PORT}:80"
     volumes:
@@ -19,6 +18,7 @@ services:
 
   momenture-db:
     image: postgres:15
+    container_name: momenture-db
     ports:
       - "${DB_HOST_PORT}:${DB_PORT}"
     environment:
