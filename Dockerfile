@@ -1,23 +1,19 @@
 FROM php:8.3-apache
 
 # 必要な拡張をインストール
-RUN apt-get update && apt-get install -y \
-    git unzip zip libzip-dev libonig-dev libxml2-dev libpq-dev \
-    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql bcmath opcache
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    unzip zip curl \
+    libzip-dev libxml2-dev libpq-dev \
+    libcurl4-openssl-dev libicu-dev \
+    && docker-php-ext-install -j$(nproc) \
+        zip pdo_pgsql bcmath opcache \
+        curl xml intl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# OPcacheなどCloud Run向けphp.ini
-RUN set -ex; \
-  { \
-    echo "; Cloud Run enforces memory & timeouts"; \
-    echo "memory_limit = -1"; \
-    echo "max_execution_time = 0"; \
-    echo "upload_max_filesize = 32M"; \
-    echo "post_max_size = 32M"; \
-    echo "; Configure Opcache for Containers"; \
-    echo "opcache.enable = On"; \
-    echo "opcache.validate_timestamps = Off"; \
-    echo "opcache.memory_consumption = 32"; \
-  } > "$PHP_INI_DIR/conf.d/cloud-run.ini"
+# PHP設定ファイルをコピー
+COPY docker/php/laravel.ini "$PHP_INI_DIR/conf.d/00-laravel.ini"
+COPY docker/php/production.ini "$PHP_INI_DIR/conf.d/production.ini"
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -32,6 +28,7 @@ RUN mkdir -p /var/www/html/storage/framework/views \
     && chown -R www-data:www-data /var/www/html /var/www/html/storage \
     && php artisan route:cache \
     && php artisan view:cache \
+    && php artisan migrate \
     && a2enmod rewrite
 
 # Apache のドキュメントルートを Laravel の public に変更
