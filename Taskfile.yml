@@ -1,0 +1,22 @@
+version: "3"
+
+vars:
+  GREETING: Welcome to Momenture!!
+
+tasks:
+  default:
+    cmd: echo "{{.GREETING}}"
+    silent: true
+
+  setup:
+    desc: 初回環境構築を行います
+    deps: [deps]
+    silent: true
+
+  dev:
+    desc: ローカル開発サーバー(Air)を起動します
+    cmd: air -c build/local/.air.toml
+
+  deps:
+    cmd: go mod tidy
+    silent: true
