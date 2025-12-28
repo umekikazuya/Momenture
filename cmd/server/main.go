@@ -15,6 +15,7 @@ func main() {
 	http.HandleFunc("/test", test)
 	err := server.ListenAndServe()
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "サーバー起動エラー: %v\n", err)
 		os.Exit(1)
 	}
 }
@@ -23,14 +24,16 @@ func main() {
 func root(w http.ResponseWriter, r *http.Request) {
 	_, err := fmt.Fprint(w, "Welcome!!")
 	if err != nil {
-		os.Exit(1)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 }
 
-// test は "/"にアクセスした際のハンドラ
+// test は "/test"にアクセスした際のハンドラ
 func test(w http.ResponseWriter, r *http.Request) {
 	_, err := fmt.Fprint(w, "test path")
 	if err != nil {
-		os.Exit(1)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 }
