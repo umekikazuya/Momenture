@@ -1,0 +1,4 @@
+[tools]
+air = "1.63.4"
+go = "1.25.5"
+golangci-lint = "v2.7.2"
