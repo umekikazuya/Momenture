@@ -21,10 +21,16 @@ func main() {
 
 // root は "/"にアクセスした際のハンドラ
 func root(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Welcome!!")
+	_, err := fmt.Fprint(w, "Welcome!!")
+	if err != nil {
+		os.Exit(1)
+	}
 }
 
 // test は "/"にアクセスした際のハンドラ
 func test(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "test path")
+	_, err := fmt.Fprint(w, "test path")
+	if err != nil {
+		os.Exit(1)
+	}
 }
