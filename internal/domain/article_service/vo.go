@@ -35,7 +35,7 @@ func NewName(input string) (Name, error) {
 	if strings.TrimSpace(input) == "" {
 		return Name{}, errors.New("Nameオブジェクトの生成に失敗しました")
 	}
-	if utf8.RuneCountInString(input) < maxName {
+	if utf8.RuneCountInString(input) > maxName {
 		return Name{}, errors.New("Nameオブジェクトの生成に失敗しました")
 	}
 	return Name{value: input}, nil
