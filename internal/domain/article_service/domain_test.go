@@ -1,10 +1,10 @@
 package articleservice
 
 import (
-	"reflect"
 	"testing"
-	"time"
 
+	"github.com/go-playground/assert/v2"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,122 +22,62 @@ func TestNewArticleService(t *testing.T) {
 			args:    args{name: "aa"},
 			wantErr: false,
 		},
+		{
+			name: "ng: case1 - Nameオブジェクトの初期化に失敗",
+			args: args{
+				name: "",
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := NewArticleService(tt.args.name)
 			if tt.wantErr {
 				require.Error(t, err)
+				require.Equal(t, "", got.Name().Value())
 			} else {
 				require.NoError(t, err)
+				require.Equal(t, tt.args.name, got.Name().value)
 			}
-			require.Equal(t, tt.args.name, got.Name().value)
 		})
 	}
 }
 
 func TestArticleService_ID(t *testing.T) {
-	type fields struct {
-		id        ID
-		name      Name
-		createdAt time.Time
-		updatedAt time.Time
-	}
+	t.Parallel()
 	tests := []struct {
 		name string
-		want ID
+		arg  ID
+		want uuid.UUID
 	}{
-		// TODO: Add test cases.
+		{name: "ok: case1", arg: ID{value: testID}, want: testID},
+		{name: "ok: case2", arg: ID{}, want: uuid.Nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := tt.arg.Value()
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
 
 func TestArticleService_Name(t *testing.T) {
-	type fields struct {
-		id        ID
-		name      Name
-		createdAt time.Time
-		updatedAt time.Time
-	}
+	t.Parallel()
 	tests := []struct {
-		name   string
-		fields fields
-		want   Name
+		name string
+		arg  Name
+		want string
 	}{
-		// TODO: Add test cases.
+		{name: "ok: case1", arg: Name{value: "aa"}, want: "aa"},
+		{name: "ok: case2", arg: Name{value: ""}, want: ""},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			as := &ArticleService{
-				id:        tt.fields.id,
-				name:      tt.fields.name,
-				createdAt: tt.fields.createdAt,
-				updatedAt: tt.fields.updatedAt,
-			}
-			if got := as.Name(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ArticleService.Name() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestArticleService_CreatedAt(t *testing.T) {
-	type fields struct {
-		id        ID
-		name      Name
-		createdAt time.Time
-		updatedAt time.Time
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		want   time.Time
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			as := &ArticleService{
-				id:        tt.fields.id,
-				name:      tt.fields.name,
-				createdAt: tt.fields.createdAt,
-				updatedAt: tt.fields.updatedAt,
-			}
-			if got := as.CreatedAt(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ArticleService.CreatedAt() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestArticleService_UpdatedAt(t *testing.T) {
-	type fields struct {
-		id        ID
-		name      Name
-		createdAt time.Time
-		updatedAt time.Time
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		want   time.Time
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			as := &ArticleService{
-				id:        tt.fields.id,
-				name:      tt.fields.name,
-				createdAt: tt.fields.createdAt,
-				updatedAt: tt.fields.updatedAt,
-			}
-			if got := as.UpdatedAt(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ArticleService.UpdatedAt() = %v, want %v", got, tt.want)
-			}
+			t.Parallel()
+			got := tt.arg.Value()
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

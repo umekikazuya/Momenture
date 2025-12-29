@@ -41,18 +41,18 @@ func NewArticleService(
 
 // --- Getter ---
 
-func (as *ArticleService) ID() ID {
+func (as ArticleService) ID() ID {
 	return as.id
 }
 
-func (as *ArticleService) Name() Name {
+func (as ArticleService) Name() Name {
 	return as.name
 }
 
-func (as *ArticleService) CreatedAt() time.Time {
+func (as ArticleService) CreatedAt() time.Time {
 	return as.createdAt
 }
 
-func (as *ArticleService) UpdatedAt() time.Time {
+func (as ArticleService) UpdatedAt() time.Time {
 	return as.updatedAt
 }
