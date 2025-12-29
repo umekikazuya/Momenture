@@ -1,4 +1,4 @@
-package articleservice
+package platform
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewArticleService(t *testing.T) {
+func TestNewPlatform(t *testing.T) {
 	type args struct {
 		name string
 	}
@@ -31,7 +31,7 @@ func TestNewArticleService(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewArticleService(tt.args.name)
+			got, err := NewPlatform(tt.args.name)
 			if tt.wantErr {
 				require.Error(t, err)
 				require.Equal(t, "", got.Name().Value())
@@ -43,14 +43,14 @@ func TestNewArticleService(t *testing.T) {
 	}
 }
 
-func TestArticleService_Update(t *testing.T) {
+func TestPlatform_Update(t *testing.T) {
 	t.Parallel()
 	originalName := "before"
-	as, err := NewArticleService(originalName)
+	as, err := NewPlatform(originalName)
 	require.NoError(t, err)
 	tests := []struct {
 		name    string
-		entity  ArticleService
+		entity  Platform
 		args    string
 		wantErr bool
 	}{

@@ -1,4 +1,4 @@
-package articleservice
+package platform
 
 import (
 	"time"
