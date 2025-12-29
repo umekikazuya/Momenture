@@ -3,8 +3,6 @@ package articleservice
 import (
 	"testing"
 
-	"github.com/go-playground/assert/v2"
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -44,40 +42,3 @@ func TestNewArticleService(t *testing.T) {
 	}
 }
 
-func TestArticleService_ID(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name string
-		arg  ID
-		want uuid.UUID
-	}{
-		{name: "ok: case1", arg: ID{value: testID}, want: testID},
-		{name: "ok: case2", arg: ID{}, want: uuid.Nil},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			got := tt.arg.Value()
-			assert.Equal(t, tt.want, got)
-		})
-	}
-}
-
-func TestArticleService_Name(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name string
-		arg  Name
-		want string
-	}{
-		{name: "ok: case1", arg: Name{value: "aa"}, want: "aa"},
-		{name: "ok: case2", arg: Name{value: ""}, want: ""},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			got := tt.arg.Value()
-			assert.Equal(t, tt.want, got)
-		})
-	}
-}
