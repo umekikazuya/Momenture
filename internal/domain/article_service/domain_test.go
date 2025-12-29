@@ -3,6 +3,7 @@ package articleservice
 import (
 	"testing"
 
+	"github.com/go-playground/assert/v2"
 	"github.com/stretchr/testify/require"
 )
 
@@ -42,3 +43,32 @@ func TestNewArticleService(t *testing.T) {
 	}
 }
 
+func TestArticleService_Update(t *testing.T) {
+	t.Parallel()
+	originalName := "before"
+	as, err := NewArticleService(originalName)
+	require.NoError(t, err)
+	tests := []struct {
+		name    string
+		entity  ArticleService
+		args    string
+		wantErr bool
+	}{
+		{name: "ok: case1", entity: as, args: "after", wantErr: false},
+		{name: "ng: case1", entity: as, args: "", wantErr: true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			err = tt.entity.Update(tt.args)
+			if tt.wantErr {
+				require.Error(t, err)
+				assert.Equal(t, originalName, tt.entity.Name().Value())
+			} else {
+				require.NoError(t, err)
+				require.NoError(t, err)
+				assert.Equal(t, tt.args, tt.entity.Name().Value())
+			}
+		})
+	}
+}

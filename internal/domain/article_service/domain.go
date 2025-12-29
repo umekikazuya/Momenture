@@ -39,6 +39,19 @@ func NewArticleService(
 	}, nil
 }
 
+// --- 振る舞い ---
+
+// Update はArticleServiceエンティティの名称を更新する
+
+func (as *ArticleService) Update(rawName string) error {
+	name, err := NewName(rawName)
+	if err != nil {
+		return err
+	}
+	as.name = name
+	return nil
+}
+
 // --- Getter ---
 
 func (as ArticleService) ID() ID {
