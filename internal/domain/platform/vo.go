@@ -2,20 +2,24 @@ package platform
 
 import (
 	"errors"
+	"net/url"
 	"unicode/utf8"
 
 	"github.com/google/uuid"
 )
 
 type (
-	ID   struct{ value uuid.UUID }
-	Name struct{ value string }
+	ID          struct{ value uuid.UUID }
+	Name        struct{ value string }
+	AccountName struct{ value string }
+	URL         struct{ value url.URL }
 )
 
 // --- Contraints ---
 
 const (
 	maxName = 50
+	maxAccountName
 )
 
 // --- Factory ---
@@ -40,6 +44,26 @@ func NewName(input string) (Name, error) {
 	return Name{value: input}, nil
 }
 
+// NewAccountName はアカウント名オブジェクトのファクトリー関数
+func NewAccountName(input string) (AccountName, error) {
+	if utf8.RuneCountInString(input) == 0 {
+		return AccountName{}, errors.New("Account名オブジェクトの生成に失敗しました")
+	}
+	if utf8.RuneCountInString(input) > maxAccountName {
+		return AccountName{}, errors.New("Account名オブジェクトの生成に失敗しました")
+	}
+	return AccountName{value: input}, nil
+}
+
+// NewURL はURLオブジェクトのファクトリー関数
+func NewURL(input string) (URL, error) {
+	url, err := url.ParseRequestURI(input)
+	if err != nil {
+		return URL{}, errors.New("URLの形式に誤りがあります")
+	}
+	return URL{value: *url}, nil
+}
+
 // --- Getter ---
 
 // Value はIDのGetter
@@ -50,4 +74,14 @@ func (id ID) Value() uuid.UUID {
 // Value はNameのGetter
 func (name Name) Value() string {
 	return name.value
+}
+
+// Value はAccountNameのGetter
+func (an AccountName) Value() string {
+	return an.value
+}
+
+// Value はURLのGetter
+func (url URL) Value() url.URL {
+	return url.value
 }

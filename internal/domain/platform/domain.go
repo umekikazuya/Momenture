@@ -9,63 +9,119 @@ import (
 // --- Type ---
 
 type Platform struct {
-	id        ID
-	name      Name
-	createdAt time.Time
-	updatedAt time.Time
+	id          ID
+	name        Name
+	accountName AccountName
+	url         URL
+	createdAt   time.Time
+	updatedAt   time.Time
 }
+
+type OptFunc func(*Platform) error
 
 // --- Factory ---
 
 // NewPlatform はPlatformエンティティのファクトリー関数
 func NewPlatform(
 	name string,
-) (Platform, error) {
+	opts ...OptFunc,
+) (*Platform, error) {
 	rawID := uuid.New()
 	id, err := NewID(rawID)
 	if err != nil {
-		return Platform{}, err
+		return &Platform{}, err
 	}
 	n, err := NewName(name)
 	if err != nil {
-		return Platform{}, err
+		return &Platform{}, err
 	}
 	now := time.Now()
-	return Platform{
+	entity := &Platform{
 		id:        id,
 		name:      n,
 		createdAt: now,
 		updatedAt: now,
-	}, nil
+	}
+	for _, opt := range opts {
+		if err := opt(entity); err != nil {
+			return nil, err
+		}
+	}
+	return entity, nil
+}
+
+// --- Functional Option ---
+
+// OptName はNameを設定するOption関数
+func OptName(input string) OptFunc {
+	return func(p *Platform) error {
+		inputName, err := NewName(input)
+		if err != nil {
+			return err
+		}
+		p.name = inputName
+		return nil
+	}
+}
+
+// OptAccountName はAccountNameを設定するOption関数
+func OptAccountName(input string) OptFunc {
+	return func(p *Platform) error {
+		accountName, err := NewAccountName(input)
+		if err != nil {
+			return err
+		}
+		p.accountName = accountName
+		return nil
+	}
+}
+
+// OptURL はURLを設定するOption関数
+func OptURL(input string) OptFunc {
+	return func(p *Platform) error {
+		url, err := NewURL(input)
+		if err != nil {
+			return err
+		}
+		p.url = url
+		return nil
+	}
 }
 
 // --- 振る舞い ---
 
-// Update はPlatformエンティティの名称を更新する
-func (as *Platform) Update(rawName string) error {
-	name, err := NewName(rawName)
-	if err != nil {
-		return err
+// Update はPlatformエンティティの各属性を更新する
+func (p *Platform) Update(opts ...OptFunc) error {
+	for _, opt := range opts {
+		if err := opt(p); err != nil {
+			return err
+		}
 	}
-	as.name = name
-	as.updatedAt = time.Now()
 	return nil
 }
 
 // --- Getter ---
 
-func (as Platform) ID() ID {
-	return as.id
+func (p Platform) ID() ID {
+	return p.id
 }
 
-func (as Platform) Name() Name {
-	return as.name
+func (p Platform) Name() Name {
+	return p.name
 }
 
-func (as Platform) CreatedAt() time.Time {
-	return as.createdAt
+func (p Platform) AccountName() AccountName {
+	return p.accountName
 }
 
-func (as Platform) UpdatedAt() time.Time {
-	return as.updatedAt
+func (p Platform) URL() URL {
+	return p.url
+}
+
+func (p Platform) CreatedAt() time.Time {
+	return p.createdAt
+}
+
+func (p Platform) UpdatedAt() time.Time {
+	return p.updatedAt
 }

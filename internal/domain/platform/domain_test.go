@@ -10,6 +10,7 @@ import (
 func TestNewPlatform(t *testing.T) {
 	type args struct {
 		name string
+		opts []OptFunc
 	}
 	tests := []struct {
 		name    string
@@ -31,7 +32,7 @@ func TestNewPlatform(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewPlatform(tt.args.name)
+			got, err := NewPlatform(tt.args.name, tt.args.opts...)
 			if tt.wantErr {
 				require.Error(t, err)
 				require.Equal(t, "", got.Name().Value())
