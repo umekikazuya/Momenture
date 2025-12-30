@@ -2,7 +2,6 @@ package platform
 
 import (
 	"errors"
-	"strings"
 	"unicode/utf8"
 
 	"github.com/google/uuid"
@@ -32,7 +31,7 @@ func NewID(input uuid.UUID) (ID, error) {
 
 // NewName はNameオブジェクトのファクトリー関数
 func NewName(input string) (Name, error) {
-	if strings.TrimSpace(input) == "" {
+	if utf8.RuneCountInString(input) == 0 {
 		return Name{}, errors.New("Nameオブジェクトの生成に失敗しました")
 	}
 	if utf8.RuneCountInString(input) > maxName {

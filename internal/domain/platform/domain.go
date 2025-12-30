@@ -42,13 +42,13 @@ func NewPlatform(
 // --- 振る舞い ---
 
 // Update はPlatformエンティティの名称を更新する
-
 func (as *Platform) Update(rawName string) error {
 	name, err := NewName(rawName)
 	if err != nil {
 		return err
 	}
 	as.name = name
+	as.updatedAt = time.Now()
 	return nil
 }
 

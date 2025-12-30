@@ -37,7 +37,7 @@ func TestNewPlatform(t *testing.T) {
 				require.Equal(t, "", got.Name().Value())
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tt.args.name, got.Name().value)
+				require.Equal(t, tt.args.name, got.Name().Value())
 			}
 		})
 	}
@@ -65,7 +65,6 @@ func TestPlatform_Update(t *testing.T) {
 				require.Error(t, err)
 				assert.Equal(t, originalName, tt.entity.Name().Value())
 			} else {
-				require.NoError(t, err)
 				require.NoError(t, err)
 				assert.Equal(t, tt.args, tt.entity.Name().Value())
 			}

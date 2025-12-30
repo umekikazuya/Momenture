@@ -86,10 +86,10 @@ func TestNewName(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:    "ng: case3 - empty(contain spaces)",
+			name:    "ok: case4 - empty(contain spaces)",
 			args:    "  ",
-			want:    Name{},
-			wantErr: true,
+			want:    Name{value: "  "},
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
