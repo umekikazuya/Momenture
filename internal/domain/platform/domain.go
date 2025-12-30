@@ -44,7 +44,7 @@ func NewPlatform(
 	}
 	for _, opt := range opts {
 		if err := opt(entity); err != nil {
-			return nil, err
+			return &Platform{}, err
 		}
 	}
 	return entity, nil

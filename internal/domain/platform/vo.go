@@ -12,7 +12,7 @@ type (
 	ID          struct{ value uuid.UUID }
 	Name        struct{ value string }
 	AccountName struct{ value string }
-	URL         struct{ value url.URL }
+	URL         struct{ value string }
 )
 
 // --- Contraints ---
@@ -57,11 +57,11 @@ func NewAccountName(input string) (AccountName, error) {
 
 // NewURL はURLオブジェクトのファクトリー関数
 func NewURL(input string) (URL, error) {
-	url, err := url.ParseRequestURI(input)
+	_, err := url.ParseRequestURI(input)
 	if err != nil {
 		return URL{}, errors.New("URLの形式に誤りがあります")
 	}
-	return URL{value: *url}, nil
+	return URL{value: input}, nil
 }
 
 // --- Getter ---
@@ -82,6 +82,6 @@ func (an AccountName) Value() string {
 }
 
 // Value はURLのGetter
-func (url URL) Value() url.URL {
-	return url.value
+func (u URL) Value() string {
+	return u.value
 }
