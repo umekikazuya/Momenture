@@ -76,8 +76,8 @@ func TestNewPlatform(t *testing.T) {
 				require.NoError(t, err)
 			}
 			require.Equal(t, tt.want.name, got.Name().Value())
-			require.Equal(t, tt.want.accountName, got.accountName.Value())
-			require.Equal(t, tt.want.url, got.url.Value())
+			require.Equal(t, tt.want.accountName, got.AccountName().Value())
+			require.Equal(t, tt.want.url, got.URL().Value())
 		})
 	}
 }

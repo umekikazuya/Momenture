@@ -97,6 +97,7 @@ func (p *Platform) Update(opts ...OptFunc) error {
 			return err
 		}
 	}
+	p.updatedAt = time.Now()
 	return nil
 }
 
