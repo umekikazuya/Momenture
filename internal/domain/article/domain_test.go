@@ -76,11 +76,33 @@ func TestNewArticle(t *testing.T) {
 			},
 		},
 		{
-			name: "ng: case2",
+			name: "ng: case1",
 			args: args{
 				inputTitle:    "",
 				inputPlatform: *p,
 				opts:          []OptFunc{OptLink("https://github.com/")},
+			},
+			want: struct {
+				title        string
+				link         string
+				platformName string
+				platformURL  string
+				status       string
+			}{
+				title:        "",
+				link:         "",
+				platformName: "",
+				platformURL:  "",
+				status:       "",
+			},
+			wantErr: true,
+		},
+		{
+			name: "ng: case2",
+			args: args{
+				inputTitle:    "aa",
+				inputPlatform: *p,
+				opts:          []OptFunc{OptLink("")},
 			},
 			want: struct {
 				title        string

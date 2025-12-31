@@ -51,7 +51,7 @@ func NewArticle(
 
 	for _, opt := range opts {
 		if err := opt(entity); err != nil {
-			return &Article{}, nil
+			return &Article{}, err
 		}
 	}
 	return entity, nil
