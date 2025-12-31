@@ -60,7 +60,7 @@ func NewLink(input string) (Link, error) {
 // NewStatus はStatusオブジェクトのファクトリー関数
 func NewStatus(s string) (Status, error) {
 	switch (Status{value: s}).Value() {
-	case StatusDraft.value, StatusDraft.value:
+	case StatusPublished.value, StatusDraft.value:
 		return Status{value: s}, nil
 	default:
 		return Status{}, errors.New("Statusの形式は'draft'or'published'で入力してください")

@@ -37,7 +37,7 @@ func NewArticle(
 	}
 	title, err := NewTitle(inputTitle)
 	if err != nil {
-		return &Article{}, nil
+		return &Article{}, err
 	}
 	now := time.Now()
 	entity := &Article{
