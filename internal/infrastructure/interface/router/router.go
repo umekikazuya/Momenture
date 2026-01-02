@@ -9,13 +9,15 @@ import (
 
 // NewRouter はアプリケーションのHTTPルーターを生成します
 func NewRouter(
-	feedCtr *controller.FeedController,
+	feedQiitaCtr *controller.FeedController,
+	feedZennCtr *controller.FeedController,
 ) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery())
 
 	// GET /api/v1/action エンドポイントにコントローラのハンドラを登録
-	r.GET("/api/qiita/:id", feedCtr.Qiita)
+	r.GET("/api/qiita/:id", feedQiitaCtr.Qiita)
+	r.GET("/api/zenn/:id", feedZennCtr.Zenn)
 
 	// 404
 	r.NoRoute(func(c *gin.Context) {

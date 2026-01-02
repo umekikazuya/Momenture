@@ -15,11 +15,14 @@ func main() {
 
 	feedFetcher := feedInfra.NewFeedFetcher()
 	feedQiitaParser := feedInfra.NewQiitaFeedParser()
-	feedUsecase := feedApp.NewFeedUsecase(feedFetcher, feedQiitaParser)
-	qiitaCtr := controller.NewFeedController(*feedUsecase)
+	feedZennParser := feedInfra.NewZennFeedParser()
+	feedQiitaUsecase := feedApp.NewFeedUsecase(feedFetcher, feedQiitaParser)
+	feedZennUsecase := feedApp.NewFeedUsecase(feedFetcher, feedZennParser)
+	qiitaCtr := controller.NewFeedController(*feedQiitaUsecase)
+	zennCtr := controller.NewFeedController(*feedZennUsecase)
 
 	// ルーターの初期化
-	r := router.NewRouter(qiitaCtr)
+	r := router.NewRouter(qiitaCtr, zennCtr)
 
 	// サーバー起動
 	if err := http.ListenAndServe(":"+"8080", r); err != nil {
