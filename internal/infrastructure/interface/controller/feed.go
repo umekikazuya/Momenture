@@ -9,11 +9,11 @@ import (
 )
 
 type FeedController struct {
-	usecase feed.Intefactor
+	usecase feed.Interactor
 }
 
 func NewFeedController(
-	usecase feed.Intefactor,
+	usecase feed.Interactor,
 ) *FeedController {
 	return &FeedController{
 		usecase: usecase,
@@ -32,6 +32,7 @@ func (ctl *FeedController) Qiita(c *gin.Context) {
 	var input InputQiitaDto
 	if err := c.ShouldBindUri(&input); err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		return
 	}
 	res, err := ctl.usecase.Handle(c.Request.Context(), fmt.Sprintf("https://qiita.com/%s/feed", input.ID))
 	if err != nil {
@@ -45,6 +46,7 @@ func (ctl *FeedController) Zenn(c *gin.Context) {
 	var input InputZennDto
 	if err := c.ShouldBindUri(&input); err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
+		return
 	}
 	res, err := ctl.usecase.Handle(c.Request.Context(), fmt.Sprintf("https://zenn.dev/%s/feed", input.ID))
 	if err != nil {

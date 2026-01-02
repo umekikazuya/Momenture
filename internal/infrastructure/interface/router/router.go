@@ -15,7 +15,7 @@ func NewRouter(
 	r := gin.New()
 	r.Use(gin.Recovery())
 
-	// GET /api/v1/action エンドポイントにコントローラのハンドラを登録
+	// RSS配信
 	r.GET("/api/qiita/:id", feedQiitaCtr.Qiita)
 	r.GET("/api/zenn/:id", feedZennCtr.Zenn)
 

@@ -6,7 +6,7 @@ import (
 	domain "github.com/umekikazuya/momenture/internal/domain/feed"
 )
 
-type Intefactor struct {
+type Interactor struct {
 	fetcher FeedFetcher
 	parser  FeedParser
 }
@@ -14,14 +14,14 @@ type Intefactor struct {
 func NewFeedUsecase(
 	fetcher FeedFetcher,
 	parser FeedParser,
-) *Intefactor {
-	return &Intefactor{
+) *Interactor {
+	return &Interactor{
 		fetcher: fetcher,
 		parser:  parser,
 	}
 }
 
-func (i *Intefactor) Handle(ctx context.Context, url string) (*domain.Feed, error) {
+func (i *Interactor) Handle(ctx context.Context, url string) (*domain.Feed, error) {
 	// HTTP通信
 	body, err := i.fetcher.Handle(ctx, url)
 	if err != nil {

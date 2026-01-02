@@ -9,7 +9,7 @@ import (
 // Feed はフィードの構造体
 type Feed struct {
 	Title    string    `json:"title"`
-	Link     string    `json:link`
+	Link     string    `json:"link"`
 	Articles []Article `json:"data"`
 }
 

@@ -119,4 +119,3 @@ func toEntityFromZennEntry(data zennFeed) (*domain.Feed, error) {
 	}
 	return f, nil
 }
-
