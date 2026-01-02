@@ -1,21 +1,23 @@
 package feed
 
-import "time"
+import (
+	"time"
+)
 
 // --- Type ---
 
 // Feed はフィードの構造体
 type Feed struct {
-	Title    string
-	Link     string
-	Articles []Article `xml:"data"`
+	Title    string    `json:"title"`
+	Link     string    `json:link`
+	Articles []Article `json:"data"`
 }
 
 // Article はフィード内の各コンテンツの構造体
 type Article struct {
-	Title     string
-	Link      string
-	published time.Time
+	Title     string    `json:"title"`
+	Link      string    `json:"link"`
+	Published time.Time `json:"published"`
 }
 
 // --- Factory ---
@@ -42,6 +44,6 @@ func ReconstructArticle(
 	return &Article{
 		Title:     rawTitle,
 		Link:      rawLink,
-		published: rawPublished,
+		Published: rawPublished,
 	}, nil
 }

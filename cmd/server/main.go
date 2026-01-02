@@ -1,39 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
+
+	feedApp "github.com/umekikazuya/momenture/internal/application/feed"
+	feedInfra "github.com/umekikazuya/momenture/internal/infrastructure/feed"
+	"github.com/umekikazuya/momenture/internal/infrastructure/interface/controller"
+	"github.com/umekikazuya/momenture/internal/infrastructure/interface/router"
 )
 
 func main() {
-	server := http.Server{
-		Addr:    ":8080",
-		Handler: nil,
-	}
-	http.HandleFunc("/", root)
-	http.HandleFunc("/test", test)
-	err := server.ListenAndServe()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "サーバー起動エラー: %v\n", err)
+	// ctx := context.Background()
+
+	feedFetcher := feedInfra.NewFeedFetcher()
+	feedQiitaParser := feedInfra.NewQiitaFeedParser()
+	feedUsecase := feedApp.NewFeedUsecase(feedFetcher, feedQiitaParser)
+	qiitaCtr := controller.NewFeedController(*feedUsecase)
+
+	// ルーターの初期化
+	r := router.NewRouter(qiitaCtr)
+
+	// サーバー起動
+	if err := http.ListenAndServe(":"+"8080", r); err != nil {
 		os.Exit(1)
-	}
-}
-
-// root は "/"にアクセスした際のハンドラ
-func root(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprint(w, "Welcome!!")
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-}
-
-// test は "/test"にアクセスした際のハンドラ
-func test(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprint(w, "test path")
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
 	}
 }
