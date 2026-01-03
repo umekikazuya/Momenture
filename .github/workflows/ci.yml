@@ -1,0 +1,35 @@
+name: CI Workflow
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ".go-version"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Install Tparse
+        run: go install github.com/mfridman/tparse@latest
+
+      - name: Run tests
+        working-directory: .
+        run: |
+          set -o pipefail
+          go test -race -cover -json ./... | tparse --all
