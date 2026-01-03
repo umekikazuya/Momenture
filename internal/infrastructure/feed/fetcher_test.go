@@ -3,36 +3,21 @@ package feed
 import (
 	"context"
 	"net/http"
-	"reflect"
+	"net/http/httptest"
 	"testing"
 	"time"
-
-	application "github.com/umekikazuya/momenture/internal/application/feed"
 )
-
-func TestNewFeedFetcher(t *testing.T) {
-	tests := []struct {
-		name    string
-		want    application.FeedFetcher
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := NewFeedFetcher()
-			if tt.wantErr {
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewFeedFetcher() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
 
 func TestFeedFetcher_Handle(t *testing.T) {
 	t.Parallel()
+
+	// Mockサーバーを生成
+	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`<?xml version="1.0"?><rss><channel><title>Test Feed</title></channel></rss>`))
+	}))
+	defer mockServer.Close()
+
 	ctx := context.Background()
 	type fields struct {
 		client *http.Client
@@ -54,23 +39,37 @@ func TestFeedFetcher_Handle(t *testing.T) {
 				client: &http.Client{Timeout: 10 * time.Second},
 			},
 			args: args{
-				ctx,
-				"https://qiita.com/popular-items/feed",
+				ctx: ctx,
+				url: mockServer.URL,
 			},
+			wantErr: false,
 		},
-		// TODO: Add test cases.
+		{
+			name: "ng: case1",
+			fields: fields{
+				client: &http.Client{Timeout: 10 * time.Second},
+			},
+			args: args{
+				ctx: ctx,
+				url: "http://invalid-url-that-does-not-exist.example.com",
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := &FeedFetcher{
 				client: tt.fields.client,
 			}
-			_, err := f.Handle(tt.args.ctx, tt.args.url)
+			got, err := f.Handle(tt.args.ctx, tt.args.url)
 			if (err != nil) != tt.wantErr {
 				t.Fatalf("FeedFetcher.Handle() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if tt.wantErr {
 				return
+			}
+			if len(got) == 0 {
+				t.Error("FeedFetcher.Handle() returned empty body")
 			}
 		})
 	}
