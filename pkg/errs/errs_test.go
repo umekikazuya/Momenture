@@ -77,9 +77,7 @@ func TestErrorMethod(t *testing.T) {
 		actual := err.Error()
 
 		// Assert
-		if actual != expected {
-			t.Errorf("got %q, want %q", actual, expected)
-		}
+		assert.Equal(t, expected, actual)
 	})
 }
 
@@ -95,21 +93,14 @@ func TestUnwrapMethod(t *testing.T) {
 		unwrapped := errors.Unwrap(wrappedErr)
 
 		// Assert
-		// 1段階アンラップすると "layer 2" のエラーが返る想定
 		var innerErr *Err
-		if !errors.As(unwrapped, &innerErr) {
-			t.Fatal("unwrapped error should be of type *Err")
-		}
-		if innerErr.Message != "layer 2" {
-			t.Errorf("expected message 'layer 2', got %q", innerErr.Message)
-		}
+		assert.True(t, errors.As(unwrapped, &innerErr), "unwrapped error should be of type *Err")
+		assert.Equal(t, "layer 2", innerErr.Message)
 	})
 
 	t.Run("errors.Is should find the original error", func(t *testing.T) {
 		// Act & Assert
-		if !errors.Is(wrappedErr, originalErr) {
-			t.Error("errors.Is should be able to find the original error in the chain")
-		}
+		assert.True(t, errors.Is(wrappedErr, originalErr), "errors.Is should be able to find the original error in the chain")
 	})
 
 	t.Run("errors.As should find the first matching error type", func(t *testing.T) {
@@ -118,16 +109,9 @@ func TestUnwrapMethod(t *testing.T) {
 		found := errors.As(wrappedErr, &target)
 
 		// Assert
-		if !found {
-			t.Fatal("errors.As should find an error of type *Err")
-		}
-		// errors.As はチェーンの中で最初に見つかった *Err 型のエラー (一番外側) を返す
-		if target.Type != NotFound {
-			t.Errorf("expected the outer error type NotFound, but got %v", target.Type)
-		}
-		if target.Message != "layer 1" {
-			t.Errorf("expected the outer error message 'layer 1', but got %q", target.Message)
-		}
+		assert.True(t, found, "errors.As should find an error of type *Err")
+		assert.Equal(t, NotFound, target.Type, "expected the outer error type NotFound")
+		assert.Equal(t, "layer 1", target.Message, "expected the outer error message 'layer 1'")
 	})
 }
 
