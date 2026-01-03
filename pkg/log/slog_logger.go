@@ -13,7 +13,11 @@ type slogLogger struct {
 	l *slog.Logger
 }
 
-// NewSlogLogger はロガーを生成
+// NewSlogLogger は slog ベースの Logger を生成
+//
+// w: ログの出力先
+// level: ログレベル（slog.LevelDebug, slog.LevelInfo など）
+// isJSON: true の場合 JSON 形式、false の場合テキスト形式で出力
 func NewSlogLogger(w io.Writer, level slog.Level, isJSON bool) Logger {
 	var handler slog.Handler
 	opts := &slog.HandlerOptions{
