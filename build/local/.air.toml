@@ -14,7 +14,7 @@ tmp_dir = ".tmp"
   # 実行コマンド
   full_bin = "./.tmp/main"
   # ファイル変更後のビルド遅延 (ミリ秒)
-  delay = 300
+  delay = 100
   # 監視対象の拡張子
   include_ext = ["go", "tpl", "tmpl", "html"]
   # 監視から除外するディレクトリ
