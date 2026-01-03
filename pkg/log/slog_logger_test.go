@@ -66,7 +66,7 @@ func TestSlogLogger_LoggingMethods(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			var buf bytes.Buffer
-			// NewSlogLogger returns applog.Logger, so we need to cast it.
+			// NewSlogLogger returns Logger, so we need to cast it.
 			logger := NewSlogLogger(&buf, slog.LevelDebug, tc.isJSON).(*slogLogger)
 
 			msg := "this is a test"
