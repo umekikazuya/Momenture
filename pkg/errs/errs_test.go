@@ -30,15 +30,9 @@ func TestNewHelperFunctions(t *testing.T) {
 			err := tc.constructor(tc.expectedMsg)
 
 			// Assert
-			if err.Type != tc.expectedType {
-				t.Errorf("unexpected error type: got %v, want %v", err.Type, tc.expectedType)
-			}
-			if err.Message != tc.expectedMsg {
-				t.Errorf("unexpected error message: got %q, want %q", err.Message, tc.expectedMsg)
-			}
-			if err.cause != nil {
-				t.Errorf("expected cause to be nil, but got: %v", err.cause)
-			}
+			assert.Equal(t, tc.expectedType, err.Type)
+			assert.Equal(t, tc.expectedMsg, err.Message)
+			assert.Nil(t, err.Cause())
 		})
 	}
 }
@@ -54,15 +48,9 @@ func TestWrap(t *testing.T) {
 	wrappedErr := Wrap(wrapperType, wrapperMsg, originalErr)
 
 	// Assert
-	if wrappedErr.Type != wrapperType {
-		t.Errorf("unexpected error type: got %v, want %v", wrappedErr.Type, wrapperType)
-	}
-	if wrappedErr.Message != wrapperMsg {
-		t.Errorf("unexpected error message: got %q, want %q", wrappedErr.Message, wrapperMsg)
-	}
-	if wrappedErr.cause != originalErr {
-		t.Errorf("unexpected cause: got %v, want %v", wrappedErr.cause, originalErr)
-	}
+	assert.Equal(t, wrapperType, wrappedErr.Type)
+	assert.Equal(t, wrapperMsg, wrappedErr.Message)
+	assert.Equal(t, originalErr, wrappedErr.Cause())
 }
 
 // TestErrorMethod は、Error()メソッドが期待通りの文字列を返すかテスト
@@ -76,9 +64,7 @@ func TestErrorMethod(t *testing.T) {
 		actual := err.Error()
 
 		// Assert
-		if actual != expected {
-			t.Errorf("got %q, want %q", actual, expected)
-		}
+		assert.Equal(t, expected, actual)
 	})
 
 	t.Run("when cause is not nil", func(t *testing.T) {
