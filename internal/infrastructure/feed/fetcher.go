@@ -10,6 +10,9 @@ import (
 	application "github.com/umekikazuya/momenture/internal/application/feed"
 )
 
+// maxResponseSize は読み込むデータサイズに上限値
+const maxResponseSize = 10 * 1024 * 1024 // 10MB
+
 type FeedFetcher struct {
 	client *http.Client
 }
@@ -35,7 +38,7 @@ func (f *FeedFetcher) Handle(ctx context.Context, url string) ([]byte, error) {
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
-	body, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(io.LimitReader(resp.Body, maxResponseSize))
 	if err != nil {
 		return nil, err
 	}
